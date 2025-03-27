@@ -94,7 +94,7 @@
     Multi-Tenant Implementation
 
       - Laravel Package: Uses stancl/tenancy for multi-tenancy.
-      - Database per Tenant: Each clinic has its own MySQL(phpmyadmin) database.
+      - Database per Tenant: Each tenants has its own MySQL(phpmyadmin) database.
       - Authentication: Centralized login with tenant-based access control.
 #
     Customization & Auto-Updates
