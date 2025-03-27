@@ -88,8 +88,8 @@
 #
     Pricing
     
-        - Free Plan: Limited to 1 doctor, 50 patient records, and basic scheduling.
-        - Pro Plan ($20/month): Unlimited doctors and patients, reports, and detailed scheculing
+        - Free plan : Max 20 feedback entries per month
+        - Pro Plan : Unlimited feedback entries
 #
     Multi-Tenant Implementation
 
