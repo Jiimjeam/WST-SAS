@@ -108,6 +108,113 @@
 
 
 
+      
+
+# ResourceHub – Multi-Tenant Resource Allocation System
+
+        Description:
+            ResourceHub is a simple multi-tenant resource allocation system designed for businesses, schools, NGOs,
+            and government offices. It helps organizations track and allocate resources such as equipment, supplies,
+            or facilities to various departments or projects.
+#             
+       Functionalities (Simple CRUD-Based Features)
+            1. Multi-Tenant System (One App, Multi-Database)
+                Each organization (tenant) has its own database to store and manage resources.
+                Super Admin oversees system-wide settings and subscriptions.
+            
+            2. CRUD Operations for Resource Management
+                Create: Admins can add resources (e.g., office supplies, equipment) with details like name, quantity, and location.
+                Read: Users can view available resources and their current status (Available, In Use, Under Maintenance).
+                Update: Modify resource details, update quantity, or change status when allocated or returned.
+                Delete: Remove obsolete or discarded resources.
+    
+            3. Resource Allocation & Tracking
+                Assign resources to departments or projects.
+                Track the current status and location of each resource.
+                Monitor who is responsible for allocated resources.
+            
+            4. User Roles & Permissions
+                Admin: Manages resources, assigns items, and tracks allocation.
+                Employee/User: Can request resources and check availability.
+                Tenant Model (Who are the Users?)
+  #            
+        Tenants
+            Companies, schools, community centers, government agencies.
+            Each tenant has a separate database to securely manage their resources.
+  #          
+        Pricing Model
+            Free Plan:
+                Limited to 20 resources.
+                Basic CRUD operations.
+                
+            Standard Plan ($25/month per tenant):
+                Unlimited resources.
+                Custom status options.
+                Basic reporting on resource utilization.
+#            
+     Customization & Auto-Updates
+            Custom Branding: Add logos and colors for each organization.
+            Auto Updates: Keep the system up to date with new features and improvements.
+
+
+
+
+
+
+
+
+
+# SkillShareHub – Multi-Tenant Skill and Training Management System
+
+    Description:
+        SkillShareHub is a simple multi-tenant skill and training management system designed for companies, 
+        educational institutions, NGOs, and training centers. It helps organizations manage and track training
+        sessions, skill development programs, and employee progress in one centralized platform.
+#
+    Functionalities (Simple CRUD-Based Features)
+        1. Multi-Tenant System (One App, Multi-Database)
+            Each organization (tenant) has its own database to store and manage training data.
+            Super Admin oversees system-wide settings and subscriptions.
+        
+        2. CRUD Operations for Training Management
+             Create: Admins can add new training programs, skill categories, and schedules.
+             Read: View the list of training sessions, registered participants, and program details.
+             Update: Modify training information, update progress, and manage participant lists.
+             Delete: Remove outdated or completed training programs.
+        
+        3. Skill Tracking and Employee Progress
+            Monitor employee progress through different training modules.
+            Track skills acquired and certifications achieved.
+            Generate basic progress reports.
+        
+        4. User Roles & Permissions
+            Admin: Creates training programs, monitors progress, and manages participants.
+            Trainer: Conducts training and marks attendance.
+            Participant/Employee: Enrolls in training programs and tracks progress.
+ #   
+    Tenant Model (Who are the Users?)
+        Tenants: Companies, training institutes, community centers, government agencies.
+        Each tenant has a separate database to securely manage their training and skill data.
+#        
+    Pricing Model
+    Free Plan:
+        3 active training programs.
+        Up to 20 participants per program.
+        Basic CRUD functionality only.
+    
+    Standard Plan ($20/month per tenant):
+        Unlimited training programs.
+        Participant tracking and progress reports.
+        Basic analytics on training completion rates.
+    
+  #  
+    Customization & Auto-Updates
+        Custom Branding: Each tenant can personalize the dashboard with their logo and colors.
+        Auto Updates: The system updates seamlessly without disrupting ongoing training.
+
+
+
+
 
 
 
