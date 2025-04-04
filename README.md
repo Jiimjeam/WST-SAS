@@ -129,7 +129,7 @@
     
             3. Resource Allocation & Tracking
                 Assign resources to departments or projects.
-                Track the current status and location of each resource.
+                Track the current status resource.
                 Monitor who is responsible for allocated resources.
             
             4. User Roles & Permissions
@@ -178,7 +178,7 @@
         2. CRUD Operations for Training Management
              Create: Admins can add new training programs, skill categories, and schedules.
              Read: View the list of training sessions, registered participants, and program details.
-             Update: Modify training information, update progress, and manage participant lists.
+             Update: Modify training information, and manage participant lists.
              Delete: Remove outdated or completed training programs.
         
         3. Skill Tracking and Employee Progress
