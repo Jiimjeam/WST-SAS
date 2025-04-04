@@ -23,16 +23,15 @@
         - Doctors & Nurses can view a schedule of appointments
       
       4. Role-Based Access Control
-        - Super Admin: Manages tenants, billing, and platform updates.
-        - Clinic Admin (Tenant Owner): Manages doctors, patients, and billing.
+        - Super Admin: Manages tenants, and platform updates.
+        - Clinic Admin: (Tenant Owner): Manages doctors, patients.
         - Doctors: Manage patient records, appointments, and prescriptions.
-        - Receptionists: Schedule appointments and handle billing.
         
 #
     Pricing
     
-        - Free Plan: Limited to 1 doctor, 50 patient records, and basic scheduling.
-        - Pro Plan ($20/month): Unlimited doctors and patients, reports, and detailed scheculing
+        - Free Plan: Limited to 1 doctor, 50 patient records, and scheduling.
+        - Pro Plan: Unlimited doctors and patients, reports, and scheculing
 #
     Multi-Tenant Implementation
 
