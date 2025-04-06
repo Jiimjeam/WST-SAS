@@ -1,11 +1,19 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
