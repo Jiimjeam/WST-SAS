@@ -11,10 +11,6 @@ Route::get('/', function () {
 Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 
 
-
-
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -11,7 +11,6 @@ class Tenant extends BaseTenant
     protected $table = 'tenants';
 
     protected $fillable = [
-        'id',
         'data',
     ];
 
