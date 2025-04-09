@@ -1,27 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light p-5">
-    <div class="container">
-        <h1>Welcome to the Admin Dashboard</h1>
-        <p>You are now logged in as admin.</p>
-    </div>
-
-<form action="{{ route('admin.logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-danger">Logout</button>
-</form>
-
-</body>
-</html>
- -->
-
-
-
-
 <!--
 =========================================================
 * Soft UI Dashboard 3 - v1.1.0
@@ -66,9 +42,8 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html" target="_blank">
-          
+          <span class="ms-1 font-weight-bold">JAMES</span>
           <br>
-           
            <span class="ms-1 text-muted">Admin</span>
         </a>
     </div>
@@ -76,10 +51,8 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
-
-
-      <li class="nav-item ">
-          <a class="nav-link  " href="{{ route('admin.dashboard') }}">
+      <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }} " href="{{ route('admin.dashboard') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>office</title>
@@ -99,8 +72,8 @@
           </a>
         </li>
 
-        <li class="nav-item ">
-          <a class="nav-link" href="{{ route('admin.AllTenants') }}">
+        <li class="nav-item {{ request()->routeIs('admin.AllTenants') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('admin.AllTenants') ? 'active' : '' }}"  href="{{ route('admin.AllTenants') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
@@ -119,8 +92,8 @@
             <span class="nav-link-text ms-1">All Tenants</span>
           </a>
         </li>
-        <li class="nav-item ">
-          <a class="nav-link  " href="{{ route('admin.pendingTenants') }}"> 
+        <li class="nav-item {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }} " href="{{ route('admin.pendingTenants') }}"> 
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>office</title>

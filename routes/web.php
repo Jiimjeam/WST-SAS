@@ -12,7 +12,7 @@ Route::get('/admin/login', function () {
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
-Route::get('/admin/pendingtenants', [AdminLoginController::class, 'AllTenants'])->name('admin.pendingTenants');
+Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 
