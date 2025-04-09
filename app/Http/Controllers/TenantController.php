@@ -30,6 +30,7 @@ class TenantController extends Controller
             'email' => $request->email,
             'contact_number' => $request->contactNumber,
             'barangay_name' => $request->barangayName,
+            'clinic_name' => $request->clinicName,
             'domain' => $request->domain,
             'database' => $databaseName,
         ]);

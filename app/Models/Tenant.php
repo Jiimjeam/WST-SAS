@@ -15,7 +15,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
      * Specify which columns should NOT be stored in the JSON `data` column
      */
           protected $fillable = [
-        'name', 'email', 'contact_number', 'barangay_name', 'domain', 'database'
+        'name', 'email', 'contact_number', 'barangay_name', 'clinic_name', 'domain', 'database'
     ];
 
 
@@ -26,6 +26,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'name',
             'email',
             'contact_number',
+            'clinic_name',
             'barangay_name',
             'domain',
             'database',

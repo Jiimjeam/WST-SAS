@@ -5,6 +5,8 @@ use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminLoginController;
 
+use App\Http\Middleware\IdentifyTenant;
+
 Route::get('/admin/login', function () {
     return redirect('/')->with('showAdminLogin', true);
 })->name('admin.login');
@@ -17,7 +19,6 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 
 
-Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
@@ -27,6 +28,17 @@ foreach (config('tenancy.central_domains') as $domain) {
         });
     });
 }
+
+Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
+
+Route::middleware([IdentifyTenant::class])->group(function () {
+    Route::get('/', function () {
+        $tenant = app('currentTenant');
+
+        // You can pass tenant data to view
+        return view('tenant.tenant', ['tenant' => $tenant]);
+    });
+});
 
 
 

@@ -60,6 +60,10 @@
                         <label for="barangayName" class="form-label">Tenant Barangay Name</label>
                         <input type="text" class="form-control" name="barangayName" value="{{ old('barangayName') }}" required/>
                     </div>
+                    <div class="mb-3">
+                        <label for="clinicName" class="form-label">Clinic Name</label>
+                        <input type="text" class="form-control" name="clinicName" value="{{ old('clinicName') }}" required/>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Register Tenant</button>
