@@ -33,7 +33,6 @@ class TenantController extends Controller
     $tenant = Tenant::create([
         'data' => [
             'name' => $request->name,
-            'domain' => $request->domain,
             'email' => $request->email,
             'contactNumber' => $request->contactNumber,
             'barangayName' => $request->barangayName,

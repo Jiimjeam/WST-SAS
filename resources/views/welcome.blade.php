@@ -14,7 +14,9 @@
         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#registerModal">
             Sign up now!
         </button>
-        <a href="/admin/login" class="btn btn-outline-secondary">Login as Admin</a>
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+            Login as Admin
+        </button>
     </div>
 
     <!-- SignUp Modal -->
@@ -66,15 +68,70 @@
         </div>
     </div>
 
+    
+
+    <!-- Admin Login Modal -->
+<div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('admin.login.submit') }}" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminLoginModalLabel">Admin Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if(session('admin_error'))
+                    <div class="alert alert-danger">{{ session('admin_error') }}</div>
+                @endif
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required placeholder="admin@clinic.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required placeholder="secret123">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    @if (session('showAdminLogin'))
+    <script>
+        var adminLoginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        adminLoginModal.show();
+    </script>
+    @endif
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- jQuery (required for Bootstrap 5 if you're using Bootstrap JS features) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+<script>
     @if ($errors->any())
         var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
         registerModal.show();
+    @endif
+</script>
+
+
+
+<script>
+    @if ($errors->any())
+        var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        registerModal.show();
+    @endif
+
+    @if (session('admin_error'))
+        var adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        adminModal.show();
     @endif
 </script>
 

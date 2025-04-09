@@ -20,16 +20,16 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::middleware([
     'web',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
+    \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
+    \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    
     Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-    });
+        $tenant = tenant(); // Get the current tenant object
 
-    Route::get('/dashboard', function () {
-        return "Welcome, you're in the tenant dashboard for: " . tenant('id');
+        return view('tenant.dashboard', [
+            'tenantName' => $tenant->name ?? 'No Name',
+            'tenantDomain' => $tenant->domain ?? 'No Domain',
+        ]);
     });
 });
 
