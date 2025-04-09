@@ -4,23 +4,32 @@ namespace App\Models;
 
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
-use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
+use Stancl\Tenancy\Database\Concerns\HasDomains;
 
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase, HasDomains;
-    protected $table = 'tenants';
 
-    protected $fillable = [
-        'data',
+    /**
+     * Specify which columns should NOT be stored in the JSON `data` column
+     */
+          protected $fillable = [
+        'name', 'email', 'contact_number', 'barangay_name', 'domain', 'database'
     ];
 
-    protected $casts = [
-        'data' => 'array', 
-    ];
 
-    protected $attributes = [
-    'data' => '{}',
-];
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'name',
+            'email',
+            'contact_number',
+            'barangay_name',
+            'domain',
+            'database',
+        ];
+    }
 }
+

@@ -6,7 +6,5 @@ return [
     App\Providers\AppServiceProvider::class,
     
     // Stancl Tenancy
-    
-    Stancl\Tenancy\TenancyServiceProvider::class,
-    Stancl\Tenancy\Providers\TenancyProvider::class,
+   
 ];

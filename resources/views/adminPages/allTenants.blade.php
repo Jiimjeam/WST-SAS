@@ -4,6 +4,10 @@
 
 @section('Admindashboard')
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <script>
     $(document).ready(function () {
       $('#myDataTable').DataTable({
@@ -46,7 +50,6 @@
                   <tr>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Id</th>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Barangay Name</th>
-                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Email</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Contact#</th>
@@ -62,21 +65,18 @@
                     <td>
                     <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="badge badge-sm bg-gradient-warning">{{ $tenant->data['barangayName'] ?? 'N/A' }}</h6>
+                          <h6 class="badge badge-sm bg-gradient-warning">{{ $tenant->barangay_name ?? 'N/A' }}</h6>
                         </div>
                       </div>
                     </td>
                     <td class="align-middle text-center text-sm">
-                      <span  class="text-secondary text-xs font-weight-bold">clinic name</span>
+                      <span  class="text-secondary text-xs font-weight-bold">{{ $tenant->domain ?? 'N/A' }}</span>
                     </td>
                     <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">domain</span>
+                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->email ?? 'N/A' }}</span>
                     </td>
                     <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">email</span>
-                    </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">contact#</span>
+                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->contact_number ?? 'N/A' }}</span>
                     </td>
                     <td class="text-center">
 
