@@ -19,4 +19,8 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     protected $casts = [
         'data' => 'array', 
     ];
+
+    protected $attributes = [
+    'data' => '{}',
+];
 }

@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
-
-
 use App\Models\Tenant;
+
 
 class TenantController extends Controller
 {
@@ -37,7 +36,6 @@ class TenantController extends Controller
             'contactNumber' => $request->contactNumber,
             'barangayName' => $request->barangayName,
         ],
-        
     ]);
 
     $tenant->domains()->create(['domain' => $request->domain]);
