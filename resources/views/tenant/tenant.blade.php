@@ -9,6 +9,16 @@
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <style>
         body {
             padding: 2rem;
@@ -45,7 +55,29 @@
                             <td>1</td>
                             <td>{{ $tenant->name }}</td>
                             <td>{{ $tenant->email }}</td>
-                            <td>{{ $tenant->created_at }}</td>
+                            <td class="text-center">
+                                <a href="">
+                                    <button class="btn btn-md btn-info view-btn">
+                                    <i class="fas fa-eye"></i>
+                                    </button>
+                                </a> &nbsp;
+                                
+                                <a href="">
+                                <button class="btn btn-md btn-primary" data-bs-toggle="modal" data-bs-target="#editStudentModal">
+                                    <i class="fas fa-edit"></i>  
+                                    </button>
+                                </a> &nbsp;
+
+                                <a href="#" onclick="deleteStudent()">
+                                    <button class="btn btn-md btn-danger">
+                                    <i class="fas fa-archive"></i>
+                                    </button>
+                                </a>
+                                <form method="POST" action="" id="student-form-">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

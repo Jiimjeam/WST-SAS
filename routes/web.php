@@ -4,8 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminLoginController;
-
 use App\Http\Middleware\IdentifyTenant;
+
+use App\Http\Controllers\Admin\AdminCRUDE;
+
+Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 
 Route::get('/admin/login', function () {
     return redirect('/')->with('showAdminLogin', true);
@@ -16,6 +19,8 @@ Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
 Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+
+Route::resource('/tenants', AdminCRUDE::class);
 
 
 
@@ -29,7 +34,7 @@ foreach (config('tenancy.central_domains') as $domain) {
     });
 }
 
-Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
+
 
 Route::middleware([IdentifyTenant::class])->group(function () {
     Route::get('/', function () {
