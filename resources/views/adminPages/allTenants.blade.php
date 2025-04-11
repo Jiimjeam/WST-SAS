@@ -8,6 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,6 +62,7 @@
                   <tr>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Id</th>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Barangay</th>
+                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Name</th>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Email</th>
@@ -80,6 +83,9 @@
                           <h6 class="badge badge-sm bg-gradient-warning">{{ $tenant->barangay_name ?? 'N/A' }}</h6>
                         </div>
                       </div>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->name ?? 'N/A' }}</span>
                     </td>
                     <td class="align-middle text-center">
                       <span class="text-secondary text-xs font-weight-bold">{{ $tenant->clinic_name ?? 'N/A' }}</span>
@@ -103,25 +109,27 @@
 
 
 
-                    <button class="btn btn-sm btn-info view-btn" data-id="{{ $tenant->id }}" data-bs-toggle="modal" data-bs-target="#viewTenantModal">
+                    <button class="btn btn-sm btn-info view-btn" 
+                        data-id="{{ $tenant->id }}" data-bs-toggle="modal" 
+                        data-bs-target="#viewTenantModal">
                         <i class="fas fa-eye"></i>
                     </button>
 
-                      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" >
-                          <i class="fas fa-edit"></i>
-                      </button> 
+                    <button class="btn btn-sm btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editTenantModal-{{ $tenant->id }}">
+                        <i class="fas fa-edit"></i>
+                    </button>
 
-                      <button class="btn btn-sm btn-danger" onclick="deleteStudent()">
-                          <i class="fas fa-archive"></i>
-                      </button>
-
-                      <form method="POST" action="" id="student-form-">
+                    <form id="delete-form-{{ $tenant->id }}" action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
+                        <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $tenant->id }})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                       </form>
                     </td>
                   </tr>
-                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -130,6 +138,91 @@
       </div>
     </div>
   </div>
+
+
+
+  <!-- Delete Confirmation popup -->
+  <script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will permanently delete the tenant!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+  <!-- Edit tenant modal -->
+<div class="modal fade" id="editTenantModal-{{ $tenant->id }}" tabindex="-1" aria-labelledby="editTenantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('tenants.update', $tenant->id) }}" method="POST">
+      @csrf
+      @method('PUT')
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Tenant</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ $tenant->name }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Clinic Name</label>
+            <input type="text" name="clinic_name" value="{{ $tenant->clinic_name }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ $tenant->email }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Contact Number</label>
+            <input type="text" name="contact_number" value="{{ $tenant->contact_number }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Barangay Name</label>
+            <input type="text" name="barangay_name" value="{{ $tenant->barangay_name }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Domain</label>
+            <input type="text" name="domain" value="{{ $tenant->domain }}" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
 
 
 
@@ -192,5 +285,5 @@
         });
     });
 </script>
-
+@endforeach
 @endsection

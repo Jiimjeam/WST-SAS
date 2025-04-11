@@ -57,7 +57,27 @@ class AdminCRUDE extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'clinic_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'contact_number' => 'required|string|max:20',
+            'barangay_name' => 'required|string|max:255',
+            'domain' => 'required|string|max:255',
+        ]);
+    
+        $tenant = Tenant::findOrFail($id);
+    
+        $tenant->update([
+            'name' => $request->name,
+            'clinic_name' => $request->clinic_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+            'barangay_name' => $request->barangay_name,
+            'domain' => $request->domain,
+        ]);
+    
+        return redirect()->back()->with('success', 'Tenant updated successfully.');
     }
 
     /**
@@ -65,6 +85,12 @@ class AdminCRUDE extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tenant = Tenant::findOrFail($id);
+
+        // Optional: drop the tenant's database if needed
+        // DB::statement("DROP DATABASE IF EXISTS `{$tenant->database}`");
+        $tenant->delete();
+
+        return redirect()->back()->with('success', 'Tenant deleted successfully!');
     }
 }
