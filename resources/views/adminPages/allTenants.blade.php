@@ -239,29 +239,46 @@
 
 
 
-  <!-- View Tenant Modal -->
+  <!-- Enhanced View Tenant Modal -->
 <div class="modal fade" id="viewTenantModal" tabindex="-1" aria-labelledby="viewTenantModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title" id="viewTenantModalLabel">Tenant Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="viewTenantModalLabel">
+                    <i class="bi bi-person-lines-fill me-2"></i>Tenant Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <p><strong>ID:</strong> <span id="tenantID"></span></p>
-                <p><strong>Name:</strong> <span id="tenantName"></span></p>
-                <p><strong>Clinic Name:</strong> <span id="tenantClinic_name"></span></p>
-                <p><strong>Email:</strong> <span id="tenantEmail"></span></p>
-                <p><strong>Contact#:</strong> <span id="tenantContact"></span></p>
-                <p><strong>Barangay Name:</strong> <span id="tenant_barangay_name"></span></p>
-                <p><strong>Domain</strong> <span id="tenantDomain"></span></p>
-                <p><strong>Database:</strong> <span id="tenantDatabase"></span></p>
-                <p><strong>Created At:</strong> <span id="tenantCreated"></span></p>
-                <p><strong>Updated At:</strong> <span id="tenantUpdated"></span></p>
+            <div class="modal-body px-4 py-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <p class="mb-1"><strong>ID:</strong> <span id="tenantID" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Name:</strong> <span id="tenantName" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Clinic Name:</strong> <span id="tenantClinic_name" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Email:</strong> <span id="tenantEmail" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Contact #:</strong> <span id="tenantContact" class="text-muted"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Barangay Name:</strong> <span id="tenant_barangay_name" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Domain:</strong> <span id="tenantDomain" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Database:</strong> <span id="tenantDatabase" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Created At:</strong> <span id="tenantCreated" class="text-muted"></span></p>
+                                <p class="mb-1"><strong>Updated At:</strong> <span id="tenantUpdated" class="text-muted"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
