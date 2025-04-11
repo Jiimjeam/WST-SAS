@@ -22,16 +22,15 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 Route::resource('/tenants', AdminCRUDE::class);
 
+Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
+Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
+
+
 
 
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
-
-
-
-        
-
         Route::get('/', function () {
             return view('welcome');
         });

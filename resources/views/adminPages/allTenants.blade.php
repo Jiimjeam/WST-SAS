@@ -222,8 +222,6 @@
 
 
 
- 
-
 @if(session('success'))
     <script>
         Swal.fire({
@@ -234,9 +232,6 @@
         });
     </script>
 @endif
-
-
-
 
 
   <!-- Enhanced View Tenant Modal -->

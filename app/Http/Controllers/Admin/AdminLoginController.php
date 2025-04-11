@@ -52,7 +52,7 @@ class AdminLoginController extends Controller
 
     public function AllTenants()
         {
-                $tenantList = Tenant::all();
+                $tenantList = Tenant::where('status', Tenant::STATUS_APPROVED)->get();
                 return view ('adminPages.allTenants', 
                 [
                     'tenantList' => $tenantList
@@ -62,8 +62,13 @@ class AdminLoginController extends Controller
 
     public function PendingTenants()
         {
-            return view('adminPages.pendingTenants');
+            $pendingTenantList = Tenant::where('status', Tenant::STATUS_PENDING)->get();
+        
+            return view('adminPages.pendingTenants', [
+                'pendingTenantList' => $pendingTenantList
+            ]);
         }
+        
 
     public function logout()
         {

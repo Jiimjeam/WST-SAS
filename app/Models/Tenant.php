@@ -11,9 +11,10 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase, HasDomains;
 
-    /**
-     * Specify which columns should NOT be stored in the JSON `data` column
-     */
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
+
           protected $fillable = [
         'name', 'email', 'contact_number', 'barangay_name', 'clinic_name', 'domain', 'database'
     ];
@@ -23,6 +24,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return [
             'id',
+            'status',
             'name',
             'email',
             'contact_number',

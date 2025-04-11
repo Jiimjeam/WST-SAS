@@ -33,6 +33,7 @@ class TenantController extends Controller
             'clinic_name' => $request->clinicName,
             'domain' => $request->domain,
             'database' => $databaseName,
+            'status' => Tenant::STATUS_PENDING
         ]);
 
         
@@ -40,31 +41,50 @@ class TenantController extends Controller
             'domain' => $request->domain,
         ]);
 
-        // Create the tenant-specific database
-        DB::statement("CREATE DATABASE IF NOT EXISTS `$databaseName`");
 
-        config([
-            'database.connections.tenant' => [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
-                'database' => $databaseName,
-                'username' => env('DB_USERNAME'),
-                'password' => env('DB_PASSWORD'),
-            ],
-        ]);
-
-        // Run tenant migrations
-        try {
-            Artisan::call('migrate', [
-                '--database' => 'tenant',
-                '--path' => '/database/migrations/tenant',
-                '--force' => true,
-            ]);
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['migration' => 'Migration failed: ' . $e->getMessage()]);
-        }
-
-        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered with database '$databaseName' created.");
+        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
     }
+
+
+
+
+    public function approveTenant($id)
+{
+    $tenant = Tenant::findOrFail($id);
+    $tenant->status = Tenant::STATUS_APPROVED;
+    $tenant->save();
+
+    // Create DB only after approval
+    DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
+
+    config([
+        'database.connections.tenant' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => $tenant->database,
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+        ],
+    ]);
+
+    Artisan::call('migrate', [
+        '--database' => 'tenant',
+        '--path' => '/database/migrations/tenant',
+        '--force' => true,
+    ]);
+
+    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved and database created.");
+}
+
+
+
+public function rejectTenant($id)
+{
+    $tenant = Tenant::findOrFail($id);
+    $tenant->status = Tenant::STATUS_REJECTED;
+    $tenant->save();
+
+    return redirect()->back()->with('info', "Tenant '{$tenant->domain}' has been rejected.");
+}
 }
