@@ -130,6 +130,51 @@
                       </form>
                     </td>
                   </tr>
+                   <!-- Edit tenant modal -->
+                    <div class="modal fade" id="editTenantModal-{{ $tenant->id }}" tabindex="-1" aria-labelledby="editTenantModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <form action="{{ route('tenants.update', $tenant->id) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Edit Tenant</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="mb-3">
+                                <label>Name</label>
+                                <input type="text" name="name" value="{{ $tenant->name }}" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Clinic Name</label>
+                                <input type="text" name="clinic_name" value="{{ $tenant->clinic_name }}" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Email</label>
+                                <input type="email" name="email" value="{{ $tenant->email }}" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Contact Number</label>
+                                <input type="text" name="contact_number" value="{{ $tenant->contact_number }}" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Barangay Name</label>
+                                <input type="text" name="barangay_name" value="{{ $tenant->barangay_name }}" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                <label>Domain</label>
+                                <input type="text" name="domain" value="{{ $tenant->domain }}" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -162,55 +207,22 @@
 
 
 
+  <!-- Success Delete tenant -->
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 
 
 
 
-
-  <!-- Edit tenant modal -->
-<div class="modal fade" id="editTenantModal-{{ $tenant->id }}" tabindex="-1" aria-labelledby="editTenantModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('tenants.update', $tenant->id) }}" method="POST">
-      @csrf
-      @method('PUT')
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Tenant</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label>Name</label>
-            <input type="text" name="name" value="{{ $tenant->name }}" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Clinic Name</label>
-            <input type="text" name="clinic_name" value="{{ $tenant->clinic_name }}" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Email</label>
-            <input type="email" name="email" value="{{ $tenant->email }}" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Contact Number</label>
-            <input type="text" name="contact_number" value="{{ $tenant->contact_number }}" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Barangay Name</label>
-            <input type="text" name="barangay_name" value="{{ $tenant->barangay_name }}" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Domain</label>
-            <input type="text" name="domain" value="{{ $tenant->domain }}" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Update</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+ 
 
 @if(session('success'))
     <script>
@@ -285,5 +297,5 @@
         });
     });
 </script>
-@endforeach
+
 @endsection
