@@ -46,9 +46,15 @@ class AdminLoginController extends Controller
   
 
     public function dashboard()
-        {
-            return view('adminPages.AdminDashboard'); 
-        }
+    {
+        $acceptedCount = Tenant::where('status', 'accepted')->count();
+        $pendingCount = Tenant::where('status', 'pending')->count();
+        $rejectedCount = Tenant::where('status', 'rejected')->count();
+        $totalTenants = Tenant::count();
+
+        return view('adminPages.AdminDashboard', compact('acceptedCount', 'pendingCount', 'rejectedCount', 'totalTenants'));
+    }   
+
 
     public function AllTenants()
         {
