@@ -21,29 +21,33 @@ class TenantController extends Controller
             'barangayName' => 'required|string',
         ]);
 
-        // Generate the database name
+       
+        $subdomain = preg_replace('/[^a-z0-9]+/i', '', strtolower($request->domain));
+        $fullDomain = "{$subdomain}.127.0.0.1.nip.io";
+       
         $databaseName = 'tenant_' . preg_replace('/[^a-z0-9_]+/i', '_', strtolower(str_replace(' ', '_', $request->name)));
 
-        
         $tenant = Tenant::create([
             'name' => $request->name,
             'email' => $request->email,
             'contact_number' => $request->contactNumber,
             'barangay_name' => $request->barangayName,
             'clinic_name' => $request->clinicName,
-            'domain' => $request->domain,
+            'domain' => $fullDomain, 
             'database' => $databaseName,
             'status' => Tenant::STATUS_PENDING
         ]);
 
-        
+       
         $tenant->domains()->create([
-            'domain' => $request->domain,
+            'domain' => $fullDomain,
         ]);
-
 
         return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
     }
+
+
+
 
 
 
@@ -54,7 +58,7 @@ class TenantController extends Controller
     $tenant->status = Tenant::STATUS_APPROVED;
     $tenant->save();
 
-    // Create DB only after approval
+   
     DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
 
     config([
@@ -74,17 +78,31 @@ class TenantController extends Controller
         '--force' => true,
     ]);
 
-    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved and database created.");
+    DB::connection('tenant')->table('users')->insert([
+        'name' => $tenant->name,
+        'email' => $tenant->email,
+        'password' => bcrypt('password'), 
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved, database and default user created.");
 }
 
 
 
-public function rejectTenant($id)
-{
-    $tenant = Tenant::findOrFail($id);
-    $tenant->status = Tenant::STATUS_REJECTED;
-    $tenant->save();
 
-    return redirect()->back()->with('info', "Tenant '{$tenant->domain}' has been rejected.");
-}
+
+
+
+    public function rejectTenant($id)
+    {
+        $tenant = Tenant::findOrFail($id);
+        $tenant->status = Tenant::STATUS_REJECTED;
+        $tenant->save();
+
+        $tenant->delete();
+
+        return redirect()->back()->with('info', "Tenant '{$tenant->id}' has been rejected and deleted.");
+    }
 }
