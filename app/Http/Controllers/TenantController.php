@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 use App\Models\Tenant;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TenantApprovedMail;
+use Illuminate\Support\Str;
+
+
 class TenantController extends Controller
 {
     public function store(Request $request)
@@ -53,41 +58,54 @@ class TenantController extends Controller
 
 
     public function approveTenant($id)
-{
-    $tenant = Tenant::findOrFail($id);
-    $tenant->status = Tenant::STATUS_APPROVED;
-    $tenant->save();
-
-   
-    DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
-
-    config([
-        'database.connections.tenant' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => $tenant->database,
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
-        ],
-    ]);
-
-    Artisan::call('migrate', [
-        '--database' => 'tenant',
-        '--path' => '/database/migrations/tenant',
-        '--force' => true,
-    ]);
-
-    DB::connection('tenant')->table('users')->insert([
-        'name' => $tenant->name,
-        'email' => $tenant->email,
-        'password' => bcrypt('password'), 
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-
-    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved, database and default user created.");
-}
+    {
+        $tenant = Tenant::findOrFail($id);
+        $tenant->status = Tenant::STATUS_APPROVED;
+        $tenant->save();
+    
+        // Create DB
+        DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
+    
+        // Set connection config
+        config([
+            'database.connections.tenant' => [
+                'driver' => 'mysql',
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', '3306'),
+                'database' => $tenant->database,
+                'username' => env('DB_USERNAME'),
+                'password' => env('DB_PASSWORD'),
+            ],
+        ]);
+    
+        // Run migrations
+        Artisan::call('migrate', [
+            '--database' => 'tenant',
+            '--path' => '/database/migrations/tenant',
+            '--force' => true,
+        ]);
+    
+        // Generate password
+        $password = Str::random(10);
+    
+        // Check if user exists
+        $existingUser = DB::connection('tenant')->table('users')->where('email', $tenant->email)->first();
+    
+        if (!$existingUser) {
+            DB::connection('tenant')->table('users')->insert([
+                'name' => $tenant->name,
+                'email' => $tenant->email,
+                'password' => bcrypt($password),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+    
+            // ✅ Send email
+            Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password));
+        }
+    
+        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved.");
+    }
 
 
 

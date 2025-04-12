@@ -65,9 +65,6 @@
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Name</th>
                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
-                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Email</th>
-                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Contact#</th>
-                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Database</th>
                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                   </tr>
                 </thead>
@@ -95,20 +92,8 @@
                         {{ $tenant->domain ?? 'N/A' }}
                       </a>
                     </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->email ?? 'N/A' }}</span>
-                    </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->contact_number ?? 'N/A' }}</span>
-                    </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->database ?? 'N/A' }}</span>
-                    </td>
+                  
                     <td class="text-center">
-
-
-
-
                     <button class="btn btn-sm btn-info view-btn" 
                         data-id="{{ $tenant->id }}" data-bs-toggle="modal" 
                         data-bs-target="#viewTenantModal">
