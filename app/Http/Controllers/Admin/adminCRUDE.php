@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class AdminCRUDE extends Controller
 {
@@ -86,11 +88,18 @@ class AdminCRUDE extends Controller
     public function destroy(string $id)
     {
         $tenant = Tenant::findOrFail($id);
-
-        // Optional: drop the tenant's database if needed
-        // DB::statement("DROP DATABASE IF EXISTS `{$tenant->database}`");
+    
+        // Drop the tenant's database if it exists
+        try {
+            DB::statement("DROP DATABASE IF EXISTS `{$tenant->database}`");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to drop tenant database: ' . $e->getMessage());
+        }
+    
+        // Delete the tenant record
         $tenant->delete();
-
-        return redirect()->back()->with('success', 'Tenant deleted successfully!');
+    
+        return redirect()->back()->with('success', 'Tenant and associated database deleted successfully!');
     }
+    
 }
