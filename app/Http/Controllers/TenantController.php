@@ -18,89 +18,71 @@ use Illuminate\Support\Str;
 class TenantController extends Controller
 {
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'domain' => 'required|string|max:255|unique:tenants,domain',
-            'email' => 'required|email|unique:tenants,email',
-            'contactNumber' => 'required|string',
-            'barangayName' => 'required|string',
-        ]);
-    
-        $subdomain = preg_replace('/[^a-z0-9]+/i', '', strtolower($request->domain));
-        $fullDomain = "{$subdomain}.127.0.0.1.nip.io";
-        $databaseName = 'tenant_' . preg_replace('/[^a-z0-9_]+/i', '_', strtolower(str_replace(' ', '_', $request->name)));
-    
-        $tenant = Tenant::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'contact_number' => $request->contactNumber,
-            'barangay_name' => $request->barangayName,
-            'clinic_name' => $request->clinicName,
-            'domain' => $fullDomain,  // Save to tenant for later use
-            'database' => $databaseName,
-            'status' => Tenant::STATUS_PENDING
-        ]);
-    
-        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
-    }
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'domain' => 'required|string|max:255|unique:tenants,domain',
+        'email' => 'required|email|unique:tenants,email',
+        'contactNumber' => 'required|string',
+        'barangayName' => 'required|string',
+    ]);
+
+    $fullDomain = "{$request->domain}.127.0.0.1.nip.io";
+
+    // Step 1: Create the tenant with 'database' set as null
+    $tenant = Tenant::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'contact_number' => $request->contactNumber,
+        'barangay_name' => $request->barangayName,
+        'clinic_name' => $request->clinicName,
+        'domain' => $fullDomain,
+        'database' => null,  // Set database as null initially
+        'status' => Tenant::STATUS_PENDING
+    ]);
+
+    // Step 2: Update the database field with the tenant's ID
+    $tenant->database = 'tenant' . $tenant->id;
+    $tenant->save();  // Save the updated tenant
+
+    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
+}
 
 
 
-public function approveTenant($id)
+
+    public function approveTenant($id)
     {
         $tenant = Tenant::findOrFail($id);
         $tenant->status = Tenant::STATUS_APPROVED;
         $tenant->save();
-
-        // ✅ Store domain after approval
+    
+        // The package will automatically create the database when you create the domain
         $tenant->domains()->create([
             'domain' => $tenant->domain,
         ]);
-
-        // ✅ Create tenant database
-        DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
-
-        // Set tenant DB config
-        config([
-            'database.connections.tenant' => [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
-                'database' => $tenant->database,
-                'username' => env('DB_USERNAME'),
-                'password' => env('DB_PASSWORD'),
-            ],
-        ]);
-
-        // Run migrations
-        Artisan::call('migrate', [
-            '--database' => 'tenant',
-            '--path' => '/database/migrations/tenant',
-            '--force' => true,
-        ]);
-
-        // Generate password
+    
         $password = Str::random(10);
-
-        // Create tenant user
-        $existingUser = DB::connection('tenant')->table('users')->where('email', $tenant->email)->first();
-
+    
+        // Switch to tenant context to create the user
+        tenancy()->initialize($tenant);
+    
+        $existingUser = \App\Models\User::where('email', $tenant->email)->first();
+    
         if (!$existingUser) {
-            DB::connection('tenant')->table('users')->insert([
+            \App\Models\User::create([
                 'name' => $tenant->name,
                 'email' => $tenant->email,
                 'password' => bcrypt($password),
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
-
+    
             Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password));
         }
-
+    
+        tenancy()->end();
+    
         return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved and domain added.");
     }
-
 
 
 public function rejectTenant($id)

@@ -62,7 +62,7 @@ class MedecineCRUDESController extends Controller
     {
         $validated = $request->validate([
             'medicine_name' => 'required|string|max:255',
-            'quantity' => 'required|integer|min:10',
+            'quantity' => 'required|integer|min:1',
         ]);
 
         $medicine = Medicine::findOrFail($id);
