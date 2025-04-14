@@ -5,7 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
+use App\Models\Medicine;
 
 Route::middleware([
     'web',
@@ -14,23 +16,18 @@ Route::middleware([
 ])->group(function () {
 
     
-    Route::get('/', function () {
-        $tenant = tenant(); // or Tenant::current() if you're resolving manually
-    
+    Route::get('/', function () {                       //display medicine and tenant
+        $tenant = tenant(); 
+        $medicines = Medicine::all(); 
         return view('tenant.tenant', [
-            'tenant' => $tenant, // pass full object
+            'tenant' => $tenant, 
+            'medicine' => $medicines, 
         ]);
-    })->name('tenant.tenant');
+    })->name('tenants.tenants');
     
 
     
-
-
-    Route::get('/profile', function () {
-        return view('tenant.profile');
-    })->name('tenant.profile');
-
-
+    Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);               //Tenant medicine crudes (resource)
     
    
     Route::fallback(function () {

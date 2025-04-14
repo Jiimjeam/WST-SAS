@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         body {
@@ -92,29 +94,30 @@
                         <th>ID</th>
                         <th>Medecine</th>
                         <th>Quantity</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>{{ $tenant->name }}</td>
-                        <td><span class="badge badge-material">{{ $tenant->email }}</span></td>
-                        <td class="text-center">
-
-                            <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editStudentModal">
-                                <i class="fas fa-pen"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-outline-danger" onclick="deleteStudent()" title="Archive">
-                                <i class="fas fa-archive"></i>
-                            </a>
-
-                            <form method="POST" action="" id="student-form-" class="d-none">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </td>
-                    </tr>
+                    @foreach($medicine as $medicineeee)
+                        <tr>
+                            <td>{{ $medicineeee->id }}</td>
+                            <td>{{ $medicineeee->medicine_name }}</td>
+                            <td>{{ $medicineeee->quantity }}</td>
+                            <td>{{ $medicineeee->created_at }}</td>
+                            <td>{{ $medicineeee->updated_at }}</td>
+                            <td class="text-center">
+                                <!-- Example actions -->
+                                <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editStudentModal">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-danger" onclick="deleteStudent()" title="Archive">
+                                    <i class="fas fa-archive"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -125,7 +128,7 @@
 <!-- Add Medicine Modal -->
 <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-labelledby="addMedicineModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST" action=""> {{-- Update this route as needed --}}
+        <form method="POST" action="{{ route('addMedicine.store') }}"> 
             @csrf
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
@@ -137,8 +140,18 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="medicine_name" class="form-label">Medicine Name</label>
-                        <input type="text" class="form-control" id="medicine_name" name="medicine_name" required>
+                        <input type="text" 
+                            class="form-control @error('medicine_name') is-invalid @enderror" 
+                            id="medicine_name" 
+                            name="medicine_name" 
+                            value="{{ old('medicine_name') }}" 
+                            required>
+                        @error('medicine_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
+                    
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
@@ -154,8 +167,26 @@
 </div>
 
 
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: @json(session('success')),
+            confirmButtonColor: '#198754'
+        });
+    </script>
+@endif
 
 
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var modal = new bootstrap.Modal(document.getElementById('addMedicineModal'));
+            modal.show();
+        });
+    </script>
+@endif
 
 
 
@@ -177,12 +208,6 @@
             }
         });
     });
-
-    function deleteStudent() {
-        if (confirm('Are you sure you want to archive this record?')) {
-            document.getElementById('student-form-').submit();
-        }
-    }
 </script>
 
 </body>

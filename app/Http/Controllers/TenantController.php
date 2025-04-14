@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 use App\Models\Tenant;
+use App\Models\Medicine;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TenantApprovedMail;
@@ -106,9 +107,6 @@ class TenantController extends Controller
     
         return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved.");
     }
-
-
-
 
 
 
