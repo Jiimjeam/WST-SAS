@@ -78,7 +78,6 @@ class MedecineCRUDESController extends Controller
     {
         $medicine = Medicine::findOrFail($id);
         $medicine->delete();
-
-        return redirect()->route('medicines.index')->with('success', 'Medicine deleted successfully.');
+        return redirect()->route('tenants.tenants')->with('success', 'Medicine deleted successfully.');
     }
 }
