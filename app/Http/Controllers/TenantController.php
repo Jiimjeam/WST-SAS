@@ -21,34 +21,27 @@ class TenantController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'domain' => 'required|string|max:255|unique:domains,domain',
+            'domain' => 'required|string|max:255|unique:tenants,domain',
             'email' => 'required|email|unique:tenants,email',
             'contactNumber' => 'required|string',
             'barangayName' => 'required|string',
         ]);
-
-       
+    
         $subdomain = preg_replace('/[^a-z0-9]+/i', '', strtolower($request->domain));
         $fullDomain = "{$subdomain}.127.0.0.1.nip.io";
-       
         $databaseName = 'tenant_' . preg_replace('/[^a-z0-9_]+/i', '_', strtolower(str_replace(' ', '_', $request->name)));
-
+    
         $tenant = Tenant::create([
             'name' => $request->name,
             'email' => $request->email,
             'contact_number' => $request->contactNumber,
             'barangay_name' => $request->barangayName,
             'clinic_name' => $request->clinicName,
-            'domain' => $fullDomain, 
+            'domain' => $fullDomain,  // Save to tenant for later use
             'database' => $databaseName,
             'status' => Tenant::STATUS_PENDING
         ]);
-
-       
-        $tenant->domains()->create([
-            'domain' => $fullDomain,
-        ]);
-
+    
         return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
     }
 
@@ -59,54 +52,59 @@ class TenantController extends Controller
 
 
     public function approveTenant($id)
-    {
-        $tenant = Tenant::findOrFail($id);
-        $tenant->status = Tenant::STATUS_APPROVED;
-        $tenant->save();
-    
-        // Create DB
-        DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
-    
-        // Set connection config
-        config([
-            'database.connections.tenant' => [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
-                'database' => $tenant->database,
-                'username' => env('DB_USERNAME'),
-                'password' => env('DB_PASSWORD'),
-            ],
+{
+    $tenant = Tenant::findOrFail($id);
+    $tenant->status = Tenant::STATUS_APPROVED;
+    $tenant->save();
+
+    // ✅ Store domain after approval
+    $tenant->domains()->create([
+        'domain' => $tenant->domain,
+    ]);
+
+    // ✅ Create tenant database
+    DB::statement("CREATE DATABASE IF NOT EXISTS `{$tenant->database}`");
+
+    // Set tenant DB config
+    config([
+        'database.connections.tenant' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => $tenant->database,
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+        ],
+    ]);
+
+    // Run migrations
+    Artisan::call('migrate', [
+        '--database' => 'tenant',
+        '--path' => '/database/migrations/tenant',
+        '--force' => true,
+    ]);
+
+    // Generate password
+    $password = Str::random(10);
+
+    // Create tenant user
+    $existingUser = DB::connection('tenant')->table('users')->where('email', $tenant->email)->first();
+
+    if (!$existingUser) {
+        DB::connection('tenant')->table('users')->insert([
+            'name' => $tenant->name,
+            'email' => $tenant->email,
+            'password' => bcrypt($password),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-    
-        // Run migrations
-        Artisan::call('migrate', [
-            '--database' => 'tenant',
-            '--path' => '/database/migrations/tenant',
-            '--force' => true,
-        ]);
-    
-        // Generate password
-        $password = Str::random(10);
-    
-        // Check if user exists
-        $existingUser = DB::connection('tenant')->table('users')->where('email', $tenant->email)->first();
-    
-        if (!$existingUser) {
-            DB::connection('tenant')->table('users')->insert([
-                'name' => $tenant->name,
-                'email' => $tenant->email,
-                'password' => bcrypt($password),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-    
-            // ✅ Send email
-            Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password));
-        }
-    
-        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved.");
+
+        Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password));
     }
+
+    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved and domain added.");
+}
+
 
 
 
