@@ -88,14 +88,7 @@ class AdminCRUDE extends Controller
     public function destroy(string $id)
     {
         $tenant = Tenant::findOrFail($id);
-    
-        // Drop the tenant's database if it exists
-        try {
-            DB::statement("DROP DATABASE IF EXISTS `{$tenant->database}`");
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to drop tenant database: ' . $e->getMessage());
-        }
-    
+
         // Delete the tenant record
         $tenant->delete();
     
