@@ -42,8 +42,8 @@ class MedecineCRUDESController extends Controller
      */
     public function show(string $id)
     {
-        $medicine = Medicine::findOrFail($id);
-        return view('medicines.show', compact('medicine'));
+        // $medicine = Medicine::findOrFail($id);
+        // return view('medicines.show', compact('medicine'));
     }
 
     /**
@@ -51,8 +51,8 @@ class MedecineCRUDESController extends Controller
      */
     public function edit(string $id)
     {
-        $medicine = Medicine::findOrFail($id);
-        return view('medicines.edit', compact('medicine'));
+        // $medicine = Medicine::findOrFail($id);
+        // return view('medicines.edit', compact('medicine'));
     }
 
     /**
@@ -62,13 +62,13 @@ class MedecineCRUDESController extends Controller
     {
         $validated = $request->validate([
             'medicine_name' => 'required|string|max:255',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:10',
         ]);
 
         $medicine = Medicine::findOrFail($id);
         $medicine->update($validated);
 
-        return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully.');
+        return redirect()->route('tenants.tenants')->with('success', 'Medicine updated successfully.');
     }
 
     /**

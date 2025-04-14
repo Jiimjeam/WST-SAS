@@ -109,14 +109,61 @@
                             <td>{{ $medicineeee->updated_at }}</td>
                             <td class="text-center">
                                 <!-- Example actions -->
-                                <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editStudentModal">
+                                <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editMedicineModal-{{ $medicineeee->id }}">
                                     <i class="fas fa-pen"></i>
                                 </a>
+
+
                                 <a href="#" class="btn btn-sm btn-outline-danger" onclick="deleteStudent()" title="Archive">
                                     <i class="fas fa-archive"></i>
                                 </a>
                             </td>
                         </tr>
+                        <!-- Edit Medicine Modal -->
+<div class="modal fade" id="editMedicineModal-{{ $medicineeee->id }}" tabindex="-1" aria-labelledby="editMedicineModalLabel-{{ $medicineeee->id }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('addMedicine.update', $medicineeee->id) }}" method="POST">
+      @csrf
+      @method('PUT')
+
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="editMedicineModalLabel-{{ $medicineeee->id }}">
+            <i class="fas fa-pen me-2"></i>Edit Medicine
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="medicine_name_{{ $medicineeee->id }}" class="form-label">Medicine Name</label>
+            <input type="text" 
+                   class="form-control" 
+                   id="medicine_name_{{ $medicineeee->id }}" 
+                   name="medicine_name" 
+                   value="{{ $medicineeee->medicine_name }}" 
+                   required>
+          </div>
+
+          <div class="mb-3">
+            <label for="quantity_{{ $medicineeee->id }}" class="form-label">Quantity</label>
+            <input type="number" 
+                   class="form-control" 
+                   id="quantity_{{ $medicineeee->id }}" 
+                   name="quantity" 
+                   value="{{ $medicineeee->quantity }}" 
+                   required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
                     @endforeach
                 </tbody>
             </table>
@@ -187,6 +234,9 @@
         });
     </script>
 @endif
+
+
+
 
 
 
