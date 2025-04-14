@@ -4,44 +4,43 @@
 
 @section('Admindashboard')
 
+<!-- Include necessary CSS and JS for DataTables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 <!-- Include SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Include additional required libraries -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function () {
-      $('#myDataTable').DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "pageLength": 25,
-        "searching": true,
-        "ordering": true,
-        "info": false,
-        "autoWidth": false,
-        "responsive": true, // Make it responsive
-        "language": {
-          "paginate": {
-            "previous": "<i class='bi bi-chevron-left'></i>",
-            "next": "<i class='bi bi-chevron-right'></i>"
-          }
-        }
-      });
+   $('#myDataTable').DataTable({
+     "paging": true,
+     "lengthChange": true,
+     "pageLength": 25,
+     "searching": true,
+     "ordering": true,
+     "info": false,
+     "autoWidth": false,
+     "responsive": true,
+     "language": {
+       "paginate": {
+         "previous": "<i class='bi bi-chevron-left'></i>",
+         "next": "<i class='bi bi-chevron-right'></i>"
+       }
+     }
+   });
       $.extend(true, $.fn.dataTable.defaults, {
         dom: "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>>" +
-             "<'row'<'col-sm-12'tr>>" +
-             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         buttons: ["copy", "csv", "excel", "pdf", "print"]
       });
     });
@@ -262,7 +261,6 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     $(document).on('click', '.view-btn', function (e) {
         e.preventDefault();
