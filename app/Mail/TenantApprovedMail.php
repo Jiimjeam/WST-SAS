@@ -12,16 +12,18 @@ class TenantApprovedMail extends Mailable
 
     public $tenant;
     public $password;
+    public $loginUrl;
 
-    public function __construct($tenant, $password)
+    public function __construct($tenant, $password, $loginUrl)
     {
         $this->tenant = $tenant;
         $this->password = $password;
+        $this->loginUrl = $loginUrl;
     }
 
     public function build()
     {
-        return $this->subject('Your Tenant Account Has Been Approved')
-            ->view('tenant.emails');
+        return $this->subject('Welcome to Our Platform')
+                    ->view('tenant.login');
     }
 }

@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tenant Approved</title>
+    <title>Welcome to Our Platform</title>
 </head>
 <body>
-    <h2>Hello {{ $tenant->name }},</h2>
+    <h1>Hello {{ $tenant->name }},</h1>
 
-    <p>Your tenant account has been approved!</p>
+    <p>Welcome to our platform! Your tenant account has been approved.</p>
 
-    <p><strong>Login URL:</strong> <a href="{{ url('/tenant/login') }}">{{ url('/tenant/login') }}</a></p>
-    <p><strong>Email:</strong> {{ $tenant->email }}</p>
-    <p><strong>Temporary Password:</strong> {{ $password }}</p>
+    <p><strong>Here are your login details:</strong></p>
+    <ul>
+        <li><strong>Email:</strong> {{ $tenant->email }}</li>
+        <li><strong>Password:</strong> {{ $password }}</li>
+    </ul>
 
-    <p>For security, please log in and change your password immediately.</p>
+    <p>You can log in here: <a href="{{ $loginUrl }}">{{ $loginUrl }}</a></p>
 
-    <br>
-    <p>Thank you,<br>SAAS-WST Team</p>
+    <p>We recommend changing your password after logging in for the first time.</p>
+
+    <p>Thank you,<br/>The Admin Team</p>
 </body>
 </html>

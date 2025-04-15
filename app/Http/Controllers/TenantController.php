@@ -29,7 +29,6 @@ class TenantController extends Controller
 
     $fullDomain = "{$request->domain}.127.0.0.1.nip.io";
 
-    // Step 1: Create the tenant with 'database' set as null
     $tenant = Tenant::create([
         'name' => $request->name,
         'email' => $request->email,
@@ -37,13 +36,12 @@ class TenantController extends Controller
         'barangay_name' => $request->barangayName,
         'clinic_name' => $request->clinicName,
         'domain' => $fullDomain,
-        'database' => null,  // Set database as null initially
+        'database' => null,  
         'status' => Tenant::STATUS_PENDING
     ]);
 
-    // Step 2: Update the database field with the tenant's ID
     $tenant->database = 'tenant' . $tenant->id;
-    $tenant->save();  // Save the updated tenant
+    $tenant->save(); 
 
     return redirect()->back()->with('success', "Tenant '{$tenant->domain}' registered and pending admin approval.");
 }
@@ -51,38 +49,40 @@ class TenantController extends Controller
 
 
 
-    public function approveTenant($id)
-    {
-        $tenant = Tenant::findOrFail($id);
-        $tenant->status = Tenant::STATUS_APPROVED;
-        $tenant->save();
-    
-        // The package will automatically create the database when you create the domain
-        $tenant->domains()->create([
-            'domain' => $tenant->domain,
+
+public function approveTenant($id)
+{
+    $tenant = Tenant::findOrFail($id);
+    $tenant->status = Tenant::STATUS_APPROVED;
+    $tenant->save();
+
+    $tenant->domains()->create([
+        'domain' => $tenant->domain,
+    ]);
+
+    $password = Str::random(10);
+
+    tenancy()->initialize($tenant);
+
+    $existingUser = \App\Models\User::where('email', $tenant->email)->first();
+
+    if (!$existingUser) {
+        \App\Models\User::create([
+            'name' => $tenant->name,
+            'email' => $tenant->email,
+            'password' => bcrypt($password),
         ]);
-    
-        $password = Str::random(10);
-    
-        // Switch to tenant context to create the user
-        tenancy()->initialize($tenant);
-    
-        $existingUser = \App\Models\User::where('email', $tenant->email)->first();
-    
-        if (!$existingUser) {
-            \App\Models\User::create([
-                'name' => $tenant->name,
-                'email' => $tenant->email,
-                'password' => bcrypt($password),
-            ]);
-    
-            Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password));
-        }
-    
-        tenancy()->end();
-    
-        return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved and domain added.");
     }
+
+    tenancy()->end();
+
+    // Send email
+    $loginUrl = url("http://{$tenant->domain}/login");
+    Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password, $loginUrl));
+
+    return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved, domain added, and welcome email sent.");
+}
+
 
 
 public function rejectTenant($id)
