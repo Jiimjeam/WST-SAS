@@ -32,6 +32,7 @@ Route::middleware([
         $tenant = tenant();
         return view('tenant.dashboard', compact('tenant'));
     })->name('tenant.dashboard');
+    
 
     
     Route::get('/', function () {                       //display medicine and tenant
