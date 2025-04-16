@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 
 class TenantLoginAuthController extends Controller
@@ -47,5 +47,16 @@ class TenantLoginAuthController extends Controller
     
         return redirect()->intended('/dashboard');
     }
+
+    public function logout(Request $request)
+{
+    Auth::guard('web')->logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('tenant.login.submit'); 
+}
+
     
 }

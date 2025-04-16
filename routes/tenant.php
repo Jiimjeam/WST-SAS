@@ -25,7 +25,8 @@ Route::middleware([
     })->name('tenant.login');
 
 
-    Route::post('/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
+    Route::post('tenant/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
+    Route::post('tenant/logout', [TenantLoginAuthController::class, 'logout'])->name('tenant.logout');
 
 
     Route::get('/dashboard', function () {

@@ -26,12 +26,13 @@
         <a href="{{ route('tenants.tenants') }}" class="block px-4 py-2 rounded hover:bg-green-600">Inventory</a>
         <a href="#" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
       </nav>
-      <form method="POST" action="{{ route('logout') }}" class="px-4 pb-6">
+      <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf
-        <button class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded">
-          Logout
+        <button type="button" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded" id="logout-button">
+          <i class="fas fa-sign-out-alt me-1"></i> Logout
         </button>
-      </form>
+    </form>
+
     </aside>
 
     <!-- Main Content -->
@@ -43,5 +44,24 @@
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById("logout-button").addEventListener("click", function (e) {
+        Swal.fire({
+            title: 'Logout?',
+            text: 'Are you sure you want to log out?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, log out',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("logout-form").submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>
