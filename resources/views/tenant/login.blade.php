@@ -67,13 +67,8 @@
 
     <div class="login-title">Tenant Login</div>
 
-    <form method="POST" action="{{ route('tenant.login') }}">
+    <form method="POST" action="{{ route('tenant.login.submit') }}">
         @csrf
-
-        <div class="form-floating mb-3">
-            <input type="text" name="domain" class="form-control" id="domain" placeholder="Tenant Domain" required>
-            <label for="domain">Tenant Domain</label>
-        </div>
 
         <div class="form-floating mb-3">
             <input type="email" name="email" class="form-control" id="email" placeholder="Email Address" required>
