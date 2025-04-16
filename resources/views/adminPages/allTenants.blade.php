@@ -319,6 +319,28 @@
 
 
 
+<!-- add tenant error handling -->
+<script>
+    @if ($errors->any())
+        var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        registerModal.show();
+    @endif
+</script>
+
+
+
+<script>
+    @if ($errors->any())
+        var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        registerModal.show();
+    @endif
+
+    @if (session('admin_error'))
+        var adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        adminModal.show();
+    @endif
+</script>
+
 
 <script>
     $(document).on('click', '.view-btn', function (e) {

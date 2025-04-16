@@ -28,6 +28,7 @@ class TenantController extends Controller
     ]);
 
     $fullDomain = "{$request->domain}.127.0.0.1.nip.io";
+    
 
     $tenant = Tenant::create([
         'name' => $request->name,

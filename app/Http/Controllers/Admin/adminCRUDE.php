@@ -69,6 +69,7 @@ class AdminCRUDE extends Controller
         ]);
     
         $tenant = Tenant::findOrFail($id);
+       
     
         $tenant->update([
             'name' => $request->name,
@@ -76,6 +77,12 @@ class AdminCRUDE extends Controller
             'email' => $request->email,
             'contact_number' => $request->contact_number,
             'barangay_name' => $request->barangay_name,
+            'domain' => $request->domain,
+        ]);
+
+        DB::table('domains')
+        ->where('tenant_id', $id) // or 'id' if it's the primary key
+        ->update([
             'domain' => $request->domain,
         ]);
     

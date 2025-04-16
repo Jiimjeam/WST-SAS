@@ -32,7 +32,7 @@ Route::middleware([
    
 
 
-    Route::get('/login', function () {
+    Route::get('/tenant/login', function () {
         return view('tenant.login');
     })->name('tenant.login');
 
