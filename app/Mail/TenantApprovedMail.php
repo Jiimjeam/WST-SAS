@@ -24,6 +24,6 @@ class TenantApprovedMail extends Mailable
     public function build()
     {
         return $this->subject('Welcome to Our Platform')
-                    ->view('tenant.login');
+                    ->view('tenant.emails');
     }
 }

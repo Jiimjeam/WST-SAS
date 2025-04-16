@@ -53,6 +53,9 @@
         <div class="card mb-4">
           <div class="card-header pb-0">
             <h6>Tenant's Table</h6>
+            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
+              <i class="fas fa-plus me-1"></i> Add Tenant
+            </button>
           </div>
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
@@ -170,6 +173,62 @@
 
 
 
+     <!-- Tenant SignUp Modal -->
+     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="tenantForm" action="{{ route('tenant.register') }}" method="POST" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register New Tenant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Tenant Name</label>
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" required/>
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="domain" class="form-label">Tenant Domain</label>
+                        <input type="text" class="form-control" name="domain" value="{{ old('domain') }}" required/>
+                        @error('domain')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Tenant Email</label>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="e.g., john@example.com" required/>
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contactNumber" class="form-label">Tenant Contact Number</label>
+                        <input type="text" class="form-control" name="contactNumber" value="{{ old('contactNumber') }}" required/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="barangayName" class="form-label">Tenant Barangay Name</label>
+                        <input type="text" class="form-control" name="barangayName" value="{{ old('barangayName') }}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clinicName" class="form-label">Clinic Name</label>
+                        <input type="text" class="form-control" name="clinicName" value="{{ old('clinicName') }}" required/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Register Tenant</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
   <!-- Delete Confirmation popup -->
   <script>
     function confirmDelete(id) {
@@ -218,7 +277,7 @@
 @endif
 
 
-  <!-- Enhanced View Tenant Modal -->
+  <!-- View Tenant Modal -->
 <div class="modal fade" id="viewTenantModal" tabindex="-1" aria-labelledby="viewTenantModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content shadow-lg border-0">

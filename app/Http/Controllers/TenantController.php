@@ -76,8 +76,8 @@ public function approveTenant($id)
 
     tenancy()->end();
 
-    // Send email
     $loginUrl = url("http://{$tenant->domain}/login");
+    
     Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password, $loginUrl));
 
     return redirect()->back()->with('success', "Tenant '{$tenant->domain}' approved, domain added, and welcome email sent.");

@@ -30,6 +30,14 @@ Route::middleware([
     Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);               //Tenant medicine crudes (resource)
     
    
+
+
+    Route::get('/login', function () {
+        return view('tenant.login');
+    })->name('tenant.login');
+
+
+
     Route::fallback(function () {
         return response('Tenant page not found.', 404);
     });

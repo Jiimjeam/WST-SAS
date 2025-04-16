@@ -25,9 +25,7 @@ Route::resource('/tenants', AdminCRUDE::class);
 Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
 Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
 
-Route::get('/tenant/login', function () {
-    return view('tenant.login');
-})->name('tenant.login');
+
 
 
 // Route::get('/test-mail', function () {
