@@ -70,6 +70,16 @@
     <form method="POST" action="{{ route('tenant.login.submit') }}">
         @csrf
 
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul style="color: red;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="form-floating mb-3">
             <input type="email" name="email" class="form-control" id="email" placeholder="Email Address" required>
             <label for="email">Email Address</label>
