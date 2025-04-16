@@ -77,7 +77,7 @@ public function approveTenant($id)
 
     tenancy()->end();
 
-    $loginUrl = url("http://{$tenant->domain}/login");
+    $loginUrl = url("http://{$tenant->domain}:8000/tenant/login");
     
     Mail::to($tenant->email)->send(new TenantApprovedMail($tenant, $password, $loginUrl));
 
