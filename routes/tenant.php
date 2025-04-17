@@ -28,11 +28,19 @@ Route::middleware([
     Route::post('tenant/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
     Route::post('tenant/logout', [TenantLoginAuthController::class, 'logout'])->name('tenant.logout');
 
+    Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
+
+
 
     Route::get('/dashboard', function () {
         $tenant = tenant();
         return view('tenant.dashboard', compact('tenant'));
     })->name('tenant.dashboard');
+
+    Route::get('/settings', function () {
+        $tenant = tenant();
+        return view('tenant.settings', compact('tenant'));
+    })->name('tenant.settings');
     
 
     

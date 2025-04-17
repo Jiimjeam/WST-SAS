@@ -38,7 +38,6 @@ class TenantController extends Controller
         'clinic_name' => $request->clinicName,
         'domain' => $fullDomain,
         'database' => null,  
-        'password' => null,  
         'status' => Tenant::STATUS_PENDING
     ]);
 
@@ -57,7 +56,7 @@ public function approveTenant($id)
     $tenant = Tenant::findOrFail($id);
     $tenant->status = Tenant::STATUS_APPROVED;
 
-    $password = Str::random(5);
+    $password = Str::random(15);
     $tenant->password = $password; 
     $tenant->save();
 
