@@ -18,11 +18,17 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-green-700 text-white flex flex-col">
-    <div class="px-6 py-6 text-2xl font-bold border-b border-green-600">
+      <div class="px-6 py-6 text-2xl font-bold border-b border-green-600 text-center">
         {{ tenant()->name }}
-        <div class="text-sm font-normal text-green-200 mt-1">
-            {{ Auth::user()->position ?? 'N/A' }}
-        </div>
+        
+        @if (Auth::check())
+            <div class="text-base font-medium text-green-100 mt-1">
+                {{ Auth::user()->name }}
+            </div>
+            <div class="text-xs font-normal text-green-300">
+                {{ Auth::user()->position ?? 'N/A' }}
+            </div>
+        @endif
     </div>
       <nav class="flex-1 px-4 py-6 space-y-4">
         <a href="{{ route('tenant.admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
