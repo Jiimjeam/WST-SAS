@@ -10,43 +10,55 @@ use App\Models\User;
 class TenantLoginAuthController extends Controller
 {
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
+{
+    $credentials = $request->validate([
+        'email'    => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    $tenant = tenant(); // From Stancl Tenancy helper
+
+    if (!$tenant) {
+        return back()->withErrors([
+            'tenant' => 'Tenant context could not be determined. Please check your domain.',
         ]);
-    
-        // Ensure tenant is initialized
-        $tenant = tenant(); // From Stancl Tenancy helper
-    
-        if (!$tenant) {
-            return back()->withErrors([
-                'tenant' => 'Tenant context could not be determined. Please check your domain.',
-            ]);
-        }
-    
-        // Check if user exists within the tenant's users table
-        $user = \App\Models\User::where('email', $credentials['email'])->first();
-    
-        if (!$user) {
-            return back()->withErrors([
-                'email' => 'No user found with that email on this tenant.',
-            ]);
-        }
-    
-        // Check password
-        if (!\Hash::check($credentials['password'], $user->password)) {
-            return back()->withErrors([
-                'password' => 'Incorrect password.',
-            ]);
-        }
-    
-        // Login the user
-        Auth::login($user);
-        $request->session()->regenerate();
-    
-        return redirect()->intended('/dashboard');
     }
+
+    // Check if user exists within the tenant's users table
+    $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+    if (!$user) {
+        return back()->withErrors([
+            'email' => 'No user found with that email on this tenant.',
+        ]);
+    }
+
+    // Check password
+    if (!\Hash::check($credentials['password'], $user->password)) {
+        return back()->withErrors([
+            'password' => 'Incorrect password.',
+        ]);
+    }
+
+    // Login the user
+    Auth::login($user);
+    $request->session()->regenerate();
+
+    // Redirect based on the user's position
+    if ($user->position === 'admin') {
+        return redirect()->route('tenant.admin.dashboard'); // Admin dashboard route
+    } elseif ($user->position === 'user') {
+        return redirect()->route('tenant.dashboard'); // User dashboard route
+    } else {
+        // Default redirect (in case the position is not admin or user)
+        return redirect()->route('tenant.default.dashboard');
+    }
+}
+
+
+
+
+
 
     public function logout(Request $request)
     {
@@ -57,6 +69,9 @@ class TenantLoginAuthController extends Controller
 
     return redirect()->route('tenant.login.submit'); 
     }
+
+
+
 
 
     public function updatePassword(Request $request)

@@ -7,10 +7,11 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Models\Medicine;
 
 use App\Http\Controllers\TenantLoginAuthController;
-
+use App\Http\Controllers\Admin_Tenant_CRUDES_Controller;
 
 Route::middleware([
     'web',
@@ -28,21 +29,45 @@ Route::middleware([
     Route::post('tenant/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
     Route::post('tenant/logout', [TenantLoginAuthController::class, 'logout'])->name('tenant.logout');
 
-    Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
+    
+
+    // Admin tenant
+    Route::get('/admin/tenant/dashboard', function () {                  //display dashbaord tab
+        $tenant = tenant();
+        return view('tenant.adminTenant.dashboard', compact('tenant'));
+    })->name('tenant.admin.dashboard');
+
+    Route::get('/admin/tenant/users', function () {                       //display all users
+        $tenant = tenant(); 
+        $users = User::all(); 
+        return view('tenant.adminTenant.allUsers', [
+            'tenant' => $tenant, 
+            'user' => $users, 
+        ]);
+    })->name('tenants.admin.users');
+
+    Route::get('/admin/tenant/settings', function () {                   //display settings tab
+        $tenant = tenant();
+        return view('tenant.adminTenant.settings', compact('tenant'));
+    })->name('tenant.admin.settings');
+
+    Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);       
 
 
 
-    Route::get('/dashboard', function () {
+
+    // User tenant
+    Route::get('/dashboard', function () {                  //display dashbaord tab
         $tenant = tenant();
         return view('tenant.dashboard', compact('tenant'));
     })->name('tenant.dashboard');
 
-    Route::get('/settings', function () {
+    Route::get('/settings', function () {                   //display settings tab
         $tenant = tenant();
         return view('tenant.settings', compact('tenant'));
     })->name('tenant.settings');
-    
 
+    Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
     
     Route::get('/', function () {                       //display medicine and tenant
         $tenant = tenant(); 
@@ -53,9 +78,10 @@ Route::middleware([
         ]);
     })->name('tenants.tenants');
     
-
-    
     Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);               //Tenant medicine crudes (resource)
+
+
+
 
 
 

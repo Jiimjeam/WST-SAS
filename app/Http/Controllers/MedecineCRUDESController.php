@@ -42,8 +42,7 @@ class MedecineCRUDESController extends Controller
      */
     public function show(string $id)
     {
-        // $medicine = Medicine::findOrFail($id);
-        // return view('medicines.show', compact('medicine'));
+        
     }
 
     /**
@@ -51,8 +50,7 @@ class MedecineCRUDESController extends Controller
      */
     public function edit(string $id)
     {
-        // $medicine = Medicine::findOrFail($id);
-        // return view('medicines.edit', compact('medicine'));
+       
     }
 
     /**
