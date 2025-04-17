@@ -94,7 +94,7 @@
     </form>
 
     <div class="text-center mt-3">
-        <a href="/" class="text-muted">← Back to Homepage</a>
+        <a href="{{ route('welcome') }}" class="text-muted">← Back to Homepage</a>
     </div>
 </div>
 

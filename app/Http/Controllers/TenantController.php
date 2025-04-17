@@ -73,6 +73,7 @@ public function approveTenant($id)
         \App\Models\User::create([
             'name' => $tenant->name,
             'email' => $tenant->email,
+            'position' => $tenant->position ?? 'admin',
             'password' => bcrypt($password),
         ]);
     }
