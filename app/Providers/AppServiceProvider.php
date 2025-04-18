@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(TenantContract::class, Tenant::class);
+        $this->app->register(\App\Providers\AuthServiceProvider::class);
     }
 
     /**

@@ -34,39 +34,42 @@ Route::middleware([
     
 
     // Admin tenant
-    Route::get('/admin/tenant/dashboard', function () {                 //display 'tenant', 'logs', 'usersCount', 'medicinesCount' data
-        $tenant = tenant();
-        $logs = Audit::with('user')->latest()->limit(10)->get();
-        $usersCount = \App\Models\User::count(); 
-        $medicinesCount = \App\Models\Medicine::count(); 
-        return view('tenant.adminTenant.dashboard', compact('tenant', 'logs', 'usersCount', 'medicinesCount'));
-    })->name('tenant.admin.dashboard');
+    Route::middleware(['auth', 'can:is-admin'])->group(function () {
+    
+        Route::get('/admin/tenant/dashboard', function () {
+            $tenant = tenant();
+            $logs = Audit::with('user')->latest()->limit(10)->get();
+            $usersCount = User::count(); 
+            $medicinesCount = Medicine::count(); 
+            return view('tenant.adminTenant.dashboard', compact('tenant', 'logs', 'usersCount', 'medicinesCount'));
+        })->name('tenant.admin.dashboard');
+    
+        Route::delete('/admin/tenant/logs/clear', function () {
+            Audit::truncate(); // Clears all logs
+            return back()->with('success', 'All logs have been cleared.');
+        })->name('tenant.admin.logs.clear');
+    
+        Route::get('/admin/tenant/users', function () {
+            $tenant = tenant(); 
+            $users = User::all(); 
+            return view('tenant.adminTenant.allUsers', [
+                'tenant' => $tenant, 
+                'user' => $users, 
+            ]);
+        })->name('tenants.admin.users');
+    
+        Route::get('/admin/tenant/settings', function () {
+            $tenant = tenant();
+            return view('tenant.adminTenant.settings', compact('tenant'));
+        })->name('tenant.admin.settings');
+    
+        Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);
+    
+    });
 
 
 
-    Route::delete('/admin/tenant/logs/clear', function () {
-        Audit::truncate(); // Clears all logs
-        return back()->with('success', 'All logs have been cleared.');
-    })->name('tenant.admin.logs.clear');
-
-
-
-
-    Route::get('/admin/tenant/users', function () {                       //display all users
-        $tenant = tenant(); 
-        $users = User::all(); 
-        return view('tenant.adminTenant.allUsers', [
-            'tenant' => $tenant, 
-            'user' => $users, 
-        ]);
-    })->name('tenants.admin.users');
-
-    Route::get('/admin/tenant/settings', function () {                   //display settings tab
-        $tenant = tenant();
-        return view('tenant.adminTenant.settings', compact('tenant'));
-    })->name('tenant.admin.settings');
-
-    Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);       
+    Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
 
 
@@ -82,7 +85,6 @@ Route::middleware([
         return view('tenant.settings', compact('tenant'));
     })->name('tenant.settings');
 
-    Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
     
     Route::get('/', function () {                       //display medicine and tenant
         $tenant = tenant(); 

@@ -16,15 +16,13 @@ class TenantLoginAuthController extends Controller
         'password' => ['required'],
     ]);
 
-    $tenant = tenant(); // From Stancl Tenancy helper
-
+    $tenant = tenant(); 
     if (!$tenant) {
         return back()->withErrors([
             'tenant' => 'Tenant context could not be determined. Please check your domain.',
         ]);
     }
 
-    // Check if user exists within the tenant's users table
     $user = \App\Models\User::where('email', $credentials['email'])->first();
 
     if (!$user) {
@@ -33,24 +31,20 @@ class TenantLoginAuthController extends Controller
         ]);
     }
 
-    // Check password
     if (!\Hash::check($credentials['password'], $user->password)) {
         return back()->withErrors([
             'password' => 'Incorrect password.',
         ]);
     }
 
-    // Login the user
     Auth::login($user);
     $request->session()->regenerate();
 
-    // Redirect based on the user's position
     if ($user->position === 'admin') {
-        return redirect()->route('tenant.admin.dashboard'); // Admin dashboard route
+        return redirect()->route('tenant.admin.dashboard'); 
     } elseif ($user->position === 'user') {
-        return redirect()->route('tenant.dashboard'); // User dashboard route
+        return redirect()->route('tenant.dashboard'); 
     } else {
-        // Default redirect (in case the position is not admin or user)
         return redirect()->route('tenant.default.dashboard');
     }
 }

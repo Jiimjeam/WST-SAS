@@ -28,16 +28,15 @@
 
     {{-- Clear All Logs Button --}}
     <div class="flex justify-end mb-4">
-      <form method="POST" action="{{ route('tenant.admin.logs.clear') }}" onsubmit="return confirm('Are you sure you want to clear all logs?');">
+      <form id="clearLogsForm" method="POST" action="{{ route('tenant.admin.logs.clear') }}">
         @csrf
         @method('DELETE')
-        <button type="submit"
+        <button type="button" id="clearLogsBtn"
           class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1 px-3 rounded-lg shadow-sm transition-all">
           Clear All Logs
         </button>
       </form>
     </div>
-
     <ul class="divide-y divide-gray-200">
       @forelse($logs as $log)
         <li class="py-3">
@@ -66,5 +65,26 @@
     </ul>
   </div>
 </section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.getElementById('clearLogsBtn').addEventListener('click', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This will permanently delete all logs!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e3342f',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, clear logs!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('clearLogsForm').submit();
+      }
+    });
+  });
+</script>
 
 @endsection
