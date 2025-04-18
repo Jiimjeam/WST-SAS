@@ -15,7 +15,7 @@
   </div>
 </div>
 
-  <section>
+<section>
   <div class="p-6 bg-white rounded-xl shadow-md">
     <h2 class="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
       <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
@@ -37,6 +37,7 @@
         </button>
       </form>
     </div>
+
     <ul class="divide-y divide-gray-200">
       @forelse($logs as $log)
         <li class="py-3">
@@ -56,6 +57,39 @@
                 <span class="italic text-gray-500 ml-2">on {{ class_basename($log->auditable_type) }}</span>
               </p>
               <p class="text-xs text-gray-400 mt-1">{{ $log->created_at->diffForHumans() }}</p>
+
+              @php
+                  $old = $log->old_values ?? [];
+                  $new = $log->new_values ?? [];
+              @endphp
+
+              {{-- Show modified fields for update --}}
+              @if($log->event === 'updated')
+                <div class="mt-2 text-sm text-gray-700 space-y-1">
+                  @foreach($new as $key => $value)
+                    @if(isset($old[$key]) && $old[$key] != $value)
+                      <div>
+                        <strong>{{ ucfirst($key) }}:</strong>
+                        <span class="text-red-600 line-through">{{ $old[$key] }}</span>
+                        <span class="mx-1">→</span>
+                        <span class="text-green-600">{{ $value }}</span>
+                      </div>
+                    @endif
+                  @endforeach
+                </div>
+              @elseif($log->event === 'created')
+                <div class="mt-2 text-sm text-green-700 space-y-1">
+                  @foreach($new as $key => $value)
+                    <div><strong>{{ ucfirst($key) }}:</strong> {{ $value }}</div>
+                  @endforeach
+                </div>
+              @elseif($log->event === 'deleted')
+                <div class="mt-2 text-sm text-red-700 space-y-1">
+                  @foreach($old as $key => $value)
+                    <div><strong>{{ ucfirst($key) }}:</strong> {{ $value }}</div>
+                  @endforeach
+                </div>
+              @endif
             </div>
           </div>
         </li>
@@ -65,7 +99,6 @@
     </ul>
   </div>
 </section>
-
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -86,5 +119,4 @@
     });
   });
 </script>
-
 @endsection
