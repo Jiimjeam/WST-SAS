@@ -62,6 +62,11 @@ Route::middleware([
             $tenant = tenant();
             return view('tenant.adminTenant.settings', compact('tenant'));
         })->name('tenant.admin.settings');
+
+
+        Route::get('/admin/tenant/featureControl', function () {
+            return view('tenant.adminTenant.featureControl');
+        })->name('tenant.admin.featureControl');
     
         Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);
     

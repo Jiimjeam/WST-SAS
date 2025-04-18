@@ -33,6 +33,7 @@
       <nav class="flex-1 px-4 py-6 space-y-4">
         <a href="{{ route('tenant.admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
         <a href="{{ route('tenants.admin.users') }}" class="block px-4 py-2 rounded hover:bg-green-600">Users</a>
+        <a href="{{ route('tenant.admin.featureControl') }}" class="block px-4 py-2 rounded hover:bg-green-600">Feature Control</a>
         <a href="{{ route('tenant.admin.settings') }}" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
       </nav>
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
