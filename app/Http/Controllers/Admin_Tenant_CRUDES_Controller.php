@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use OwenIt\Auditing\Models\Audit;
+
 class Admin_Tenant_CRUDES_Controller extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class Admin_Tenant_CRUDES_Controller extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

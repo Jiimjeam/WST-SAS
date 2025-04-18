@@ -14,7 +14,18 @@ Route::get('/admin/login', function () {
     return redirect('/')->with('showAdminLogin', true);
 })->name('admin.login');
 
+foreach (config('tenancy.central_domains') as $domain) {
+    Route::domain($domain)->group(function () {
+        Route::get('/', function () {
+            return view('welcome');
+        })->name('welcome');
+    });
+}
+
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+
+
+
 Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
 Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
@@ -26,26 +37,6 @@ Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])
 Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
 
 
-
-
-// Route::get('/test-mail', function () {
-//     Mail::raw('This is a test email.', function ($message) {             Email sending tessting!!!
-//         $message->to('your@email.com')
-//                 ->subject('Test Email from Laravel');
-//     });
-
-//     return 'Email sent!';
-// });
-
-
-
-foreach (config('tenancy.central_domains') as $domain) {
-    Route::domain($domain)->group(function () {
-        Route::get('/', function () {
-            return view('welcome');
-        })->name('welcome');
-    });
-}
 
 
 
@@ -61,18 +52,5 @@ Route::middleware([IdentifyTenant::class])->group(function () {
 
 
 
-
-
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

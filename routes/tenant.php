@@ -13,6 +13,8 @@ use App\Models\Medicine;
 use App\Http\Controllers\TenantLoginAuthController;
 use App\Http\Controllers\Admin_Tenant_CRUDES_Controller;
 
+use OwenIt\Auditing\Models\Audit;
+
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
@@ -32,10 +34,23 @@ Route::middleware([
     
 
     // Admin tenant
-    Route::get('/admin/tenant/dashboard', function () {                  //display dashbaord tab
+    Route::get('/admin/tenant/dashboard', function () {                 //display 'tenant', 'logs', 'usersCount', 'medicinesCount' data
         $tenant = tenant();
-        return view('tenant.adminTenant.dashboard', compact('tenant'));
+        $logs = Audit::with('user')->latest()->limit(10)->get();
+        $usersCount = \App\Models\User::count(); 
+        $medicinesCount = \App\Models\Medicine::count(); 
+        return view('tenant.adminTenant.dashboard', compact('tenant', 'logs', 'usersCount', 'medicinesCount'));
     })->name('tenant.admin.dashboard');
+
+
+
+    Route::delete('/admin/tenant/logs/clear', function () {
+        Audit::truncate(); // Clears all logs
+        return back()->with('success', 'All logs have been cleared.');
+    })->name('tenant.admin.logs.clear');
+
+
+
 
     Route::get('/admin/tenant/users', function () {                       //display all users
         $tenant = tenant(); 
