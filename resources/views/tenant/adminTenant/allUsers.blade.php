@@ -81,7 +81,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="position_{{ $users->id }}" class="form-label">Position</label>
-                                                    <input type="text" class="form-control" id="position_{{ $users->id }}" name="position" value="{{ $users->position }}" required>
+                                                    <input type="text" class="form-control" id="position_{{ $users->id }}" name="position" value="{{ $users->position }}" placeholder="e.g. admin/user"  required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -124,7 +124,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="position" class="form-label">Position</label>
-                        <input type="text" class="form-control @error('position') is-invalid @enderror" id="position" name="position" value="{{ old('position') }}" required>
+                        <input type="text" class="form-control @error('position') is-invalid @enderror" id="position" name="position" value="{{ old('position') }}" placeholder="e.g. admin/user"  required>
                     </div>
                 </div>
                 <div class="modal-footer">

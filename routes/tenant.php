@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin_Tenant_CRUDES_Controller;
 
 use OwenIt\Auditing\Models\Audit;
 
+use App\Http\Controllers\FeatureSettingController;
+
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
@@ -63,12 +65,11 @@ Route::middleware([
             return view('tenant.adminTenant.settings', compact('tenant'));
         })->name('tenant.admin.settings');
 
-
-        Route::get('/admin/tenant/featureControl', function () {
-            return view('tenant.adminTenant.featureControl');
-        })->name('tenant.admin.featureControl');
-    
         Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);
+
+
+        Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
+        Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
     
     });
 

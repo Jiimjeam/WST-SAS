@@ -5,6 +5,20 @@
 
 @section('content')
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function showFeatureDisabledAlert(action = 'This') {
+        Swal.fire({
+        icon: 'warning',
+        title: 'Feature Disabled',
+        text: 'feature is disabled by the admin.',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+        });
+    }
+    </script>
+
 <div class="container py-4">
     <div class="text-center mb-4">
         <h1 class="fw-bold">{{ $tenant->name }}'s Clinic</h1>
@@ -14,9 +28,20 @@
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top-4">
             <h5 class="mb-0"><i class="fas fa-database me-2"></i>Clinic Storage</h5>
-            <button class="btn btn-light btn-sm fw-medium" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+            @php
+                $add_medicine = \App\Models\FeatureSetting::where('feature_name', 'add_medicine')->first()?->is_enabled;
+            @endphp
+
+            <button
+                class="btn btn-light btn-sm fw-medium {{ !$add_medicine ? 'opacity-50 cursor-not-allowed' : '' }}"
+                @if ($add_medicine)
+                    data-bs-toggle="modal" data-bs-target="#addMedicineModal"
+                @else
+                    onclick="showFeatureDisabledAlert()"
+                @endif
+        >
                 <i class="fas fa-plus me-1"></i> Add Medicine
-            </button>
+        </button>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -40,15 +65,36 @@
                                 <td>{{ $medicineeee->created_at }}</td>
                                 <td>{{ $medicineeee->updated_at }}</td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editMedicineModal-{{ $medicineeee->id }}">
+
+                                @php
+                                    $update_medicine = \App\Models\FeatureSetting::where('feature_name', 'update_medicine')->first()?->is_enabled;
+                                @endphp
+
+                                <a href="#"
+                                    class="btn btn-sm btn-outline-primary me-1 {{ !$update_medicine ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                        @if ($update_medicine)
+                                            data-bs-toggle="modal" data-bs-target="#editMedicineModal-{{ $medicineeee->id }}"
+                                        @else
+                                            onclick="showFeatureDisabledAlert('Editing')"
+                                        @endif
+                                    >
                                         <i class="fas fa-pen"></i>
-                                    </a>
+                                </a>
+
                                     <form action="{{ route('addMedicine.destroy', $medicineeee->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-outline-danger delete-button">
-                                            <i class="fas fa-archive"></i>
-                                        </button>
+
+                                        @php
+                                            $delete_medicine = \App\Models\FeatureSetting::where('feature_name', 'delete_medicine')->first()?->is_enabled;
+                                        @endphp
+
+                                        <button type="button"
+    class="btn btn-sm btn-outline-danger delete-button {{ !$delete_medicine ? 'opacity-50 cursor-not-allowed' : '' }}"
+    data-delete-enabled="{{ $delete_medicine ? '1' : '0' }}"
+>
+    <i class="fas fa-archive"></i>
+</button>
                                     </form>
                                 </td>
                             </tr>
@@ -147,27 +193,41 @@
 <!-- Delete Confirmation -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const form = this.closest('form');
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const isEnabled = this.getAttribute('data-delete-enabled') === '1';
+
+            if (!isEnabled) {
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This action cannot be undone!",
                     icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    title: 'Feature Disabled',
+                    text: 'Deleting feature is disabled by the admin.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
                 });
+                return;
+            }
+
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
     });
+});
+
 </script>
 
 <!-- Scripts -->
