@@ -81,27 +81,33 @@ Route::middleware([
 
 
     // User tenant
-    Route::get('/dashboard', function () {                  //display dashbaord tab
+   Route::middleware(['auth'])->group(function () {
+
+    // Display dashboard tab
+    Route::get('/dashboard', function () {
         $tenant = tenant();
         return view('tenant.dashboard', compact('tenant'));
     })->name('tenant.dashboard');
 
-    Route::get('/settings', function () {                   //display settings tab
+    // Display settings tab
+    Route::get('/settings', function () {
         $tenant = tenant();
         return view('tenant.settings', compact('tenant'));
     })->name('tenant.settings');
 
-    
-    Route::get('/', function () {                       //display medicine and tenant
-        $tenant = tenant(); 
-        $medicines = Medicine::all(); 
+    // Display medicine and tenant overview
+    Route::get('/', function () {
+        $tenant = tenant();
+        $medicines = Medicine::all();
         return view('tenant.tenant', [
-            'tenant' => $tenant, 
-            'medicine' => $medicines, 
+            'tenant' => $tenant,
+            'medicine' => $medicines,
         ]);
     })->name('tenants.tenants');
     
-    Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);               //Tenant medicine crudes (resource)
+    // Tenant medicine CRUD routes with permissions
+    Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
+});        //Tenant medicine crudes (resource)
 
 
 
