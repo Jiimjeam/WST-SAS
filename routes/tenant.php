@@ -9,12 +9,10 @@ use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Medicine;
-
+use App\Models\FeatureSetting;
 use App\Http\Controllers\TenantLoginAuthController;
 use App\Http\Controllers\Admin_Tenant_CRUDES_Controller;
-
 use OwenIt\Auditing\Models\Audit;
-
 use App\Http\Controllers\FeatureSettingController;
 
 Route::middleware([
@@ -43,7 +41,26 @@ Route::middleware([
             $logs = Audit::with('user')->latest()->limit(10)->get();
             $usersCount = User::count(); 
             $medicinesCount = Medicine::count(); 
-            return view('tenant.adminTenant.dashboard', compact('tenant', 'logs', 'usersCount', 'medicinesCount'));
+
+
+            $defaultFeatures = [
+                'add_medicine',
+                'update_medicine',
+                'delete_medicine',
+            ];
+    
+            // Loop through each default and ensure it exists
+            foreach ($defaultFeatures as $featureName) {
+                FeatureSetting::firstOrCreate(
+                    ['feature_name' => $featureName],
+                    ['is_enabled' => true] // or false if you want them off by default
+                );
+            }
+    
+            // Get all the features to pass to the view
+            $features = FeatureSetting::all();
+
+            return view('tenant.adminTenant.dashboard', compact('tenant', 'logs', 'usersCount', 'medicinesCount', 'features'));
         })->name('tenant.admin.dashboard');
     
         Route::delete('/admin/tenant/logs/clear', function () {
