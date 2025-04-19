@@ -26,7 +26,7 @@
       Recent Activities
     </h2>
 
-    {{-- Clear All Logs Button --}}
+    <!-- {{-- Clear All Logs Button --}} -->
     <div class="flex justify-end mb-4">
       <form id="clearLogsForm" method="POST" action="{{ route('tenant.admin.logs.clear') }}">
         @csrf
@@ -37,7 +37,7 @@
         </button>
       </form>
     </div>
-
+<!-- logs -->
     <ul class="divide-y divide-gray-200">
       @forelse($logs as $log)
         <li class="py-3">

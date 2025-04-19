@@ -124,7 +124,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="position" class="form-label">Position</label>
-                        <input type="text" class="form-control @error('position') is-invalid @enderror" id="position" name="position" value="{{ old('position') }}" placeholder="e.g. admin/user"  required>
+                        <select class="form-select @error('position') is-invalid @enderror" id="position" name="position" required>
+                            <option value="">-- Select Position --</option>
+                            <option value="admin" {{ old('position') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="user" {{ old('position') == 'user' ? 'selected' : '' }}>User</option>
+                        </select>
+
+                        @error('position')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -10,6 +10,20 @@
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+          function showPremiumAlert() {
+              Swal.fire({
+                  icon: 'info',
+                  title: 'Premium Feature',
+                  text: 'This feature is available for Premium users only.',
+                  confirmButtonColor: '#3085d6'
+              });
+          }
+      </script>
+
 
 </head>
 <body class="bg-gray-100 font-sans">
@@ -33,7 +47,18 @@
       <nav class="flex-1 px-4 py-6 space-y-4">
         <a href="{{ route('tenant.admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
         <a href="{{ route('tenants.admin.users') }}" class="block px-4 py-2 rounded hover:bg-green-600">Users</a>
-        <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">Feature Control</a>
+
+        @if (tenant()->plan === 'Premium')
+            <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">
+                Feature Control <i class="fa-solid fa-check-circle ml-1 text-white"></i>
+            </a>
+        @else
+            <a href="javascript:void(0);" class="block px-4 py-2 rounded hover:bg-gray-400 cursor-not-allowed"
+              onclick="showPremiumAlert()">
+                Feature Control <i class="fa-solid fa-lock ml-1 text-white"></i>
+            </a>
+        @endif
+
         <a href="{{ route('tenant.admin.settings') }}" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
       </nav>
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">

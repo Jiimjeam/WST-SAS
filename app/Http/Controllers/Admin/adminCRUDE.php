@@ -66,6 +66,7 @@ class AdminCRUDE extends Controller
             'contact_number' => 'required|string|max:20',
             'barangay_name' => 'required|string|max:255',
             'domain' => 'required|string|max:255',
+            'plan' => 'required',
         ]);
     
         $tenant = Tenant::findOrFail($id);
@@ -78,6 +79,7 @@ class AdminCRUDE extends Controller
             'contact_number' => $request->contact_number,
             'barangay_name' => $request->barangay_name,
             'domain' => $request->domain,
+            'plan' => $request->plan,
         ]);
 
         DB::table('domains')

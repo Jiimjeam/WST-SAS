@@ -34,7 +34,7 @@ class Admin_Tenant_CRUDES_Controller extends Controller
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|unique:users,email',
-        'position' => 'required|string|max:100',
+        'position' => 'required|string',
     ]);
 
     // Automatically assign a default password

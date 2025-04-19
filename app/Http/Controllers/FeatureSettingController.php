@@ -8,12 +8,10 @@ class FeatureSettingController extends Controller
 {
     public function index()
     {
-        // Define the features you want to support
         $defaultFeatures = [
             'add_medicine',
             'update_medicine',
             'delete_medicine',
-            // Add more as needed
         ];
 
         // Loop through each default and ensure it exists

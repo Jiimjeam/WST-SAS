@@ -49,127 +49,134 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-      <div class="col-12">
-        <div class="card mb-4">
-          <div class="card-header pb-0">
-            <h6>Tenant's Table</h6>
-            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
-              <i class="fas fa-plus me-1"></i> Add Tenant
-            </button>
-          </div>
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
-              <table id="myDataTable" class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Id</th>
-                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Barangay</th>
-                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Name</th>
-                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
-                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
-                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                @foreach ($tenantList as $tenant)
-                  <tr>
-                    <td>   
-                        <h6 class="mb-0 text-sm">{{$tenant->id}}</h6>
-                    </td>
-                    <td>
-                    <div class="d-flex px-2 py-1">
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="badge badge-sm bg-gradient-warning">{{ $tenant->barangay_name ?? 'N/A' }}</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->name ?? 'N/A' }}</span>
-                    </td>
-                    <td class="align-middle text-center">
-                      <span class="text-secondary text-xs font-weight-bold">{{ $tenant->clinic_name ?? 'N/A' }}</span>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <a href="http://{{ $tenant->domain }}:8000" target="_blank" class="text-primary text-xs font-weight-bold">
-                        {{ $tenant->domain ?? 'N/A' }}
-                      </a>
-                    </td>
-                  
-                    <td class="text-center">
-                    <button class="btn btn-sm btn-info view-btn" 
-                        data-id="{{ $tenant->id }}" data-bs-toggle="modal" 
-                        data-bs-target="#viewTenantModal">
-                        <i class="fas fa-eye"></i>
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Tenant's Table</h6>
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
+                        <i class="fas fa-plus me-1"></i> Add Tenant
                     </button>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table id="myDataTable" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Id</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Barangay</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Name</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Plan</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tenantList as $tenant)
+                                    <tr>
+                                        <td class="align-middle text-start">
+                                            <h6 class="mb-0 text-sm">{{$tenant->id}}</h6>
+                                        </td>
+                                        <td class="align-middle text-start">
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="badge badge-sm bg-gradient-warning">{{ $tenant->barangay_name ?? 'N/A' }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-start">
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $tenant->name ?? 'N/A' }}</span>
+                                        </td>
+                                        <td class="align-middle text-start">
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $tenant->clinic_name ?? 'N/A' }}</span>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <a href="http://{{ $tenant->domain }}:8000" target="_blank" class="text-primary text-xs font-weight-bold">
+                                                {{ $tenant->domain ?? 'N/A' }}
+                                            </a>
+                                        </td>
+                                        
+                                        <td class="align-middle text-start">
+                                            <span class="text-secondary text-xs font-weight-bold">{{ $tenant->plan ?? 'N/A' }}</span>
+                                        </td>
 
-                    <button class="btn btn-sm btn-primary" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#editTenantModal-{{ $tenant->id }}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-
-                    <form id="delete-form-{{ $tenant->id }}" action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $tenant->id }})">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                   <!-- Edit tenant modal -->
-                    <div class="modal fade" id="editTenantModal-{{ $tenant->id }}" tabindex="-1" aria-labelledby="editTenantModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <form action="{{ route('tenants.update', $tenant->id) }}" method="POST">
-                          @csrf
-                          @method('PUT')
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">Edit Tenant</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label>Name</label>
-                                <input type="text" name="name" value="{{ $tenant->name }}" class="form-control" required>
-                              </div>
-                              <div class="mb-3">
-                                <label>Clinic Name</label>
-                                <input type="text" name="clinic_name" value="{{ $tenant->clinic_name }}" class="form-control" required>
-                              </div>
-                              <div class="mb-3">
-                                <label>Email</label>
-                                <input type="email" name="email" value="{{ $tenant->email }}" class="form-control" required>
-                              </div>
-                              <div class="mb-3">
-                                <label>Contact Number</label>
-                                <input type="text" name="contact_number" value="{{ $tenant->contact_number }}" class="form-control" required>
-                              </div>
-                              <div class="mb-3">
-                                <label>Barangay Name</label>
-                                <input type="text" name="barangay_name" value="{{ $tenant->barangay_name }}" class="form-control" required>
-                              </div>
-                              <div class="mb-3">
-                                <label>Domain</label>
-                                <input type="text" name="domain" value="{{ $tenant->domain }}" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="submit" class="btn btn-success">Update</button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-info view-btn" data-id="{{ $tenant->id }}" data-bs-toggle="modal" data-bs-target="#viewTenantModal">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editTenantModal-{{ $tenant->id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $tenant->id }}" action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $tenant->id }})">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <!-- Edit tenant modal -->
+                                    <div class="modal fade" id="editTenantModal-{{ $tenant->id }}" tabindex="-1" aria-labelledby="editTenantModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('tenants.update', $tenant->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Tenant</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label>Name</label>
+                                                            <input type="text" name="name" value="{{ $tenant->name }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Clinic Name</label>
+                                                            <input type="text" name="clinic_name" value="{{ $tenant->clinic_name }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Email</label>
+                                                            <input type="email" name="email" value="{{ $tenant->email }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Contact Number</label>
+                                                            <input type="text" name="contact_number" value="{{ $tenant->contact_number }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Barangay Name</label>
+                                                            <input type="text" name="barangay_name" value="{{ $tenant->barangay_name }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Domain</label>
+                                                            <input type="text" name="domain" value="{{ $tenant->domain }}" class="form-control" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="plan">Plan</label>
+                                                            <select name="plan" id="plan" class="form-control" required>
+                                                                <option value="Free" {{ $tenant->plan === 'Free' ? 'selected' : '' }}>Free</option>
+                                                                <option value="Premium" {{ $tenant->plan === 'Premium' ? 'selected' : '' }}>Premium</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                  @endforeach
-                </tbody>
-              </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
 
 
 
@@ -373,5 +380,37 @@
         });
     });
 </script>
+
+
+
+
+<!-- confirmation message for changing tenant plan -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.toggle-plan-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const tenantId = this.dataset.tenantId;
+
+                Swal.fire({
+                    title: 'Change Plan?',
+                    text: "Are you sure you want to toggle the plan for this tenant?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, change it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`toggle-plan-form-${tenantId}`).submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
+
+
 
 @endsection

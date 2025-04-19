@@ -23,6 +23,7 @@ class CreateTenantsTable extends Migration
             $table->string('email')->unique();
             $table->string('contact_number')->nullable();
             $table->string('barangay_name')->nullable();
+            $table->string('plan')->default('Free');
             $table->string('domain')->unique();
             $table->string('database')->nullable();
             $table->json('data')->nullable(); 

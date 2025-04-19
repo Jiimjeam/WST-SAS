@@ -99,4 +99,7 @@ public function rejectTenant($id)
 
         return redirect()->back()->with('info', "Tenant '{$tenant->id}' has been rejected and deleted.");
     }
+
+
+
 }

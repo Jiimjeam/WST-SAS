@@ -40,6 +40,8 @@ Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->
 
 
 
+
+
 Route::middleware([IdentifyTenant::class])->group(function () {
     Route::get('/', function () {
         $tenant = app('currentTenant');

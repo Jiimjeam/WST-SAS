@@ -18,7 +18,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     const STATUS_REJECTED = 'rejected';
 
           protected $fillable = [
-        'name', 'email', 'contact_number', 'barangay_name', 'clinic_name', 'domain', 'database'
+        'name', 'email', 'contact_number', 'barangay_name', 'clinic_name', 'domain', 'database', 'plan',
     ];
     
 
@@ -35,6 +35,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'barangay_name',
             'domain',
             'database',
+            'plan',
         ];
     }
 }
