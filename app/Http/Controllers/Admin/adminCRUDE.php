@@ -83,7 +83,7 @@ class AdminCRUDE extends Controller
         ]);
 
         DB::table('domains')
-        ->where('tenant_id', $id) // or 'id' if it's the primary key
+        ->where('tenant_id', $id)
         ->update([
             'domain' => $request->domain,
         ]);

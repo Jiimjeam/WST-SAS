@@ -41,7 +41,6 @@ class AdminLoginController extends Controller
     
         return redirect('/')->with('admin_error', 'Invalid admin credentials')->withInput();
     }
-    
 
   
 

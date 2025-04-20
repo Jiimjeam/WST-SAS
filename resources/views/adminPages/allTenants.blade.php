@@ -96,9 +96,24 @@
                                             </a>
                                         </td>
                                         
+                                        @php
+                                            $plan = strtolower($tenant->plan ?? 'free');
+                                            $gradient = $plan === 'premium'
+                                                ? 'linear-gradient(90deg, #00b09b, #96c93d)' // Green gradient for Premium
+                                                : 'linear-gradient(90deg, #6c757d, #adb5bd)'; // Gray for Free
+                                        @endphp
+
                                         <td class="align-middle text-start">
-                                            <span class="text-secondary text-xs font-weight-bold">{{ $tenant->plan ?? 'N/A' }}</span>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="badge badge-sm text-white mb-0" style="background: {{ $gradient }}">
+                                                        {{ ucfirst($tenant->plan ?? 'Free') }}
+                                                    </h6>
+                                                </div>
+                                            </div>
                                         </td>
+
+
 
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-info view-btn" data-id="{{ $tenant->id }}" data-bs-toggle="modal" data-bs-target="#viewTenantModal">

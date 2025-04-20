@@ -23,24 +23,13 @@ foreach (config('tenancy.central_domains') as $domain) {
 }
 
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
-
-
-
 Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
 Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-
 Route::resource('/tenants', AdminCRUDE::class);
-
 Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
 Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
-
-
-
-
-
-
 
 Route::middleware([IdentifyTenant::class])->group(function () {
     Route::get('/', function () {
