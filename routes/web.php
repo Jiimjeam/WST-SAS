@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Middleware\IdentifyTenant;
 
+
+
 use App\Http\Controllers\Admin\AdminCRUDE;
 
 Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
