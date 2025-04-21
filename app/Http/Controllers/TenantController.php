@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TenantApprovedMail;
 use Illuminate\Support\Str;
 
+use Stancl\JobPipeline\JobPipeline;
+use Stancl\Tenancy\Jobs\CreateDatabase;
+use Stancl\Tenancy\Jobs\MigrateDatabase;
+
 
 class TenantController extends Controller
 {
@@ -56,6 +60,9 @@ public function approveTenant($id)
     $tenant = Tenant::findOrFail($id);
     $tenant->status = Tenant::STATUS_APPROVED;
 
+    event(new \App\Events\TenantApproved($tenant));
+
+
     $password = Str::random(15);
     $tenant->password = $password; 
     $tenant->save();
@@ -66,6 +73,8 @@ public function approveTenant($id)
 
 
     tenancy()->initialize($tenant);
+
+
 
     $existingUser = \App\Models\User::where('email', $tenant->email)->first();
 

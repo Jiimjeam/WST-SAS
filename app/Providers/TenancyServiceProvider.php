@@ -22,14 +22,23 @@ class TenancyServiceProvider extends ServiceProvider
     {
         return [
             Events\CreatingTenant::class => [],
-            Events\TenantCreated::class => [
+            // Events\TenantCreated::class => [
+            //     JobPipeline::make([
+            //         Jobs\CreateDatabase::class,
+            //         Jobs\MigrateDatabase::class,
+            //         // Jobs\SeedDatabase::class,
+            //     ])->send(fn (Events\TenantCreated $event) => $event->tenant)
+            //       ->shouldBeQueued(false),
+            // ],
+
+            \App\Events\TenantApproved::class => [
                 JobPipeline::make([
                     Jobs\CreateDatabase::class,
                     Jobs\MigrateDatabase::class,
-                    // Jobs\SeedDatabase::class,
-                ])->send(fn (Events\TenantCreated $event) => $event->tenant)
+                ])->send(fn (\App\Events\TenantApproved $event) => $event->tenant)
                   ->shouldBeQueued(false),
             ],
+            
             Events\TenantDeleted::class => [
                 JobPipeline::make([
                     Jobs\DeleteDatabase::class,
