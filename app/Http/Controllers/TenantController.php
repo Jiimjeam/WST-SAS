@@ -111,4 +111,23 @@ public function rejectTenant($id)
 
 
 
+
+
+    public function disable(Tenant $tenant)
+{
+    $tenant->statusAorD = 'disabled';
+    $tenant->save();
+
+    return redirect()->back()->with('success', 'Tenant disabled successfully.');
+}
+
+
+public function activate(Tenant $tenant)
+{
+    $tenant->statusAorD = 'activate';
+    $tenant->save();
+
+    return redirect()->back()->with('success', 'Tenant activated successfully.');
+}
+
 }

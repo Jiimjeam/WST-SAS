@@ -44,9 +44,72 @@
         buttons: ["copy", "csv", "excel", "pdf", "print"]
       });
     });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+});
+
+// disable tenant alrt
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.disable-tenant-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // prevent immediate form submit
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will disable the tenant account.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, disable it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // submit the form if confirmed
+                    }
+                });
+            });
+        });
+    });
+
+
+    // Confirmation for activate button
+    document.querySelectorAll('.activate-tenant-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Activate Tenant?',
+                text: "This will activate the tenant and restore access.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, activate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // SweetAlert success message if activation succeeded
+    @if (session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            timer: 2500,
+            showConfirmButton: false
+        });
+    @endif
   </script>
 
-
+  
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
@@ -68,6 +131,7 @@
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Clinic Name</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Domain</th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Plan</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Status</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </thead>
@@ -113,19 +177,66 @@
                                             </div>
                                         </td>
 
+                                        
+                                        @php
+                                            $status = strtolower($tenant->statusAorD ?? 'disabled');
+                                            $gradient = $status === 'activate'
+                                                ? 'linear-gradient(90deg, #007bff, #00aaff)'
+                                                : 'linear-gradient(90deg, #6c757d, #adb5bd)'; 
+                                        @endphp
+
+                                        <td class="align-middle text-start">
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="badge badge-sm text-white mb-0" style="background: {{ $gradient }}">
+                                                        {{ ucfirst($tenant->statusAorD ?? 'Inactive') }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
 
 
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-info view-btn" data-id="{{ $tenant->id }}" data-bs-toggle="modal" data-bs-target="#viewTenantModal">
+                                            <button class="btn btn-sm btn-info view-btn"
+                                                    data-id="{{ $tenant->id }}"
+                                                    data-bs-target="#viewTenantModal"
+                                                    title="View Tenant"
+                                                    data-bs-toggle="tooltip">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editTenantModal-{{ $tenant->id }}">
+
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" title="Edit Tenant" data-bs-toggle="tooltip" data-bs-target="#editTenantModal-{{ $tenant->id }}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <form id="delete-form-{{ $tenant->id }}" action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="display: inline;">
+
+                                            @if ($tenant->statusAorD === 'disabled')
+                                                <form action="{{ route('tenants.activate', $tenant->id) }}" method="POST" class="activate-tenant-form" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success" title="Activate Tenant" data-bs-toggle="tooltip">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+
+
+                                            <form action="{{ route('tenants.disable', $tenant->id) }}" method="POST" class="disable-tenant-form" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-warning" title="Disable Tenant" data-bs-toggle="tooltip">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            </form>
+
+                                            <form id="delete-form-{{ $tenant->id }}" 
+                                                action="{{ route('tenants.destroy', $tenant->id) }}" 
+                                                method="POST" 
+                                                style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $tenant->id }})">
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-danger" 
+                                                        onclick="confirmDelete({{ $tenant->id }})"
+                                                        title="Delete Tenant" 
+                                                        data-bs-toggle="tooltip">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>

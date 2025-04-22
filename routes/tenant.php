@@ -23,6 +23,7 @@ Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
+    'can:check-tenant-statusAorD',
 ])->group(function () {
 
 

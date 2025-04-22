@@ -26,6 +26,7 @@ class CreateTenantsTable extends Migration
             $table->string('plan')->default('Free');
             $table->string('domain')->unique();
             $table->string('database')->nullable();
+            $table->string('statusAorD')->default('active');
             $table->json('data')->nullable(); 
             $table->timestamps();
         });

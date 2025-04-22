@@ -33,6 +33,11 @@ Route::resource('/tenants', AdminCRUDE::class);
 Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
 Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
 
+Route::post('/tenants/{tenant}/disable', [TenantController::class, 'disable'])->name('tenants.disable');
+Route::post('/tenants/{tenant}/activate', [TenantController::class, 'activate'])->name('tenants.activate');
+
+
+
 Route::middleware([IdentifyTenant::class])->group(function () {
     Route::get('/', function () {
         $tenant = app('currentTenant');
