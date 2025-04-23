@@ -90,11 +90,11 @@
                                         @endphp
 
                                         <button type="button"
-    class="btn btn-sm btn-outline-danger delete-button {{ !$delete_medicine ? 'opacity-50 cursor-not-allowed' : '' }}"
-    data-delete-enabled="{{ $delete_medicine ? '1' : '0' }}"
->
-    <i class="fas fa-archive"></i>
-</button>
+                                            class="btn btn-sm btn-outline-danger delete-button {{ !$delete_medicine ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                            data-delete-enabled="{{ $delete_medicine ? '1' : '0' }}"
+                                        >
+                                            <i class="fas fa-archive"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

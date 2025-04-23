@@ -10,6 +10,8 @@
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
 
 </head>
 <body class="bg-gray-100 font-sans">
@@ -30,14 +32,50 @@
             </div>
         @endif
       </div>
-      <nav class="flex-1 px-4 py-6 space-y-4">
-        <a href="{{ route('tenant.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
-        <a href="{{ route('tenants.tenants') }}" class="block px-4 py-2 rounded hover:bg-green-600">Inventory</a>
-        <a href="{{ route('tenant.settings') }}" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
-        <a href="{{ route('tenant.transaction') }}" class="block px-4 py-2 rounded hover:bg-green-600">Transaction Form</a>
-        <a href="{{ route('tenant.visit.logs') }}" class="block px-4 py-2 rounded hover:bg-green-600">Visitation Logs</a>
+      <nav class="flex-1 px-4 py-6 space-y-4 text-white">
+    <a href="{{ route('tenant.dashboard') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6"></path>
+        </svg>
+        Dashboard
+    </a>
 
-      </nav>
+    <a href="{{ route('tenants.tenants') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3h18v18H3V3z"></path>
+        </svg>
+        Inventory
+    </a>
+
+    <a href="{{ route('tenant.settings') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15.5a3.5 3.5 0 0 0 0-7"></path>
+            <path d="M19.4 15a2 2 0 0 1-.4 2.6l-1.5 1.5a2 2 0 0 1-2.6.4l-1.4-.7a2 2 0 0 0-2.4 0l-1.4.7a2 2 0 0 1-2.6-.4L5 17.6a2 2 0 0 1-.4-2.6l.7-1.4a2 2 0 0 0 0-2.4l-.7-1.4a2 2 0 0 1 .4-2.6L6.6 5a2 2 0 0 1 2.6-.4l1.4.7a2 2 0 0 0 2.4 0l1.4-.7a2 2 0 0 1 2.6.4l1.5 1.5a2 2 0 0 1 .4 2.6l-.7 1.4a2 2 0 0 0 0 2.4z"></path>
+        </svg>
+        Settings
+    </a>
+
+    <a href="{{ route('tenant.transaction') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8v4l3 3"></path>
+            <circle cx="12" cy="12" r="10"></circle>
+        </svg>
+        Transaction Form
+    </a>
+
+    <a href="{{ route('tenant.visit.logs') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 12H9m12 0A9 9 0 1 1 3 12a9 9 0 0 1 18 0z"></path>
+        </svg>
+        Visitation Logs
+    </a>
+</nav>
+
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf
         <button type="button" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded" id="logout-button">

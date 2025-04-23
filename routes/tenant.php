@@ -31,6 +31,8 @@ use App\Http\Controllers\FeatureSettingController;
 use App\Http\Controllers\Tenant\TenantAdminController;
 use App\Http\Controllers\Tenant\TenantUserController;
 
+use App\Http\Controllers\Tenant\TransactionController;
+
 
 Route::middleware([
     'web',
@@ -75,6 +77,10 @@ Route::middleware([
 
         Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
         Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
+
+        Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
+
+
 
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
 });        

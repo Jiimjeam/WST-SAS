@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
     <script>
           function showPremiumAlert() {
@@ -45,8 +47,15 @@
         @endif
     </div>
       <nav class="flex-1 px-4 py-6 space-y-4">
-        <a href="{{ route('tenant.admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
-        <a href="{{ route('tenants.admin.users') }}" class="block px-4 py-2 rounded hover:bg-green-600">Users</a>
+        <a href="{{ route('tenant.admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+          <i class="fa-solid fa-gauge"></i>
+          Dashboard
+        </a>
+
+        <a href="{{ route('tenants.admin.users') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+          <i class="fa-solid fa-users"></i>
+          Users
+        </a>
 
         @if (tenant()->plan === 'Premium')
             <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">
@@ -59,8 +68,12 @@
             </a>
         @endif
 
-        <a href="{{ route('tenant.admin.settings') }}" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
+        <a href="{{ route('tenant.admin.settings') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+          <i class="fa-solid fa-gear"></i>
+          Settings
+        </a>
       </nav>
+      
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf
         <button type="button" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded" id="logout-button">

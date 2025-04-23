@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Medicine;
+use App\Models\Transaction;
+
 
 
 class TenantUserController extends Controller
@@ -44,8 +46,10 @@ class TenantUserController extends Controller
 
     public function visitLogs()
     {
-        $tenant = tenant();
-            return view('tenant.visitLogs', compact('tenant'));
+        $transactions = Transaction::all(); 
+        return view('tenant.visitLogs', [
+            'transactions' => $transactions, 
+        ]);
     }
 
 

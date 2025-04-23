@@ -4,10 +4,14 @@
 @section('page-title', 'Transaction Form')
 
 @section('content')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
     <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow p-8">
         <h2 class="text-2xl font-semibold text-green-700 mb-6">Transaction Form</h2>
 
-        <form action="#" method="POST">
+        <form action="{{ route('transactions.store') }}" method="POST">
             @csrf
 
             <div class="mb-4">
@@ -59,6 +63,18 @@
             </div>
         </form>
     </div>
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: @json(session('success')),
+            confirmButtonColor: '#198754'
+        });
+    </script>
+@endif
+
+
 @endsection
 
 @section('styles')
