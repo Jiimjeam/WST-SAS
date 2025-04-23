@@ -32,4 +32,22 @@ class TenantUserController extends Controller
                 'medicine' => $medicines,
             ]);
     }
+
+
+
+    public function transactionForm()
+    {
+        $tenant = tenant();
+            return view('tenant.transaction', compact('tenant'));
+    }
+
+
+    public function visitLogs()
+    {
+        $tenant = tenant();
+            return view('tenant.visitLogs', compact('tenant'));
+    }
+
+
+
 }

@@ -34,6 +34,9 @@
         <a href="{{ route('tenant.dashboard') }}" class="block px-4 py-2 rounded hover:bg-green-600">Dashboard</a>
         <a href="{{ route('tenants.tenants') }}" class="block px-4 py-2 rounded hover:bg-green-600">Inventory</a>
         <a href="{{ route('tenant.settings') }}" class="block px-4 py-2 rounded hover:bg-green-600">Settings</a>
+        <a href="{{ route('tenant.transaction') }}" class="block px-4 py-2 rounded hover:bg-green-600">Transaction Form</a>
+        <a href="{{ route('tenant.visit.logs') }}" class="block px-4 py-2 rounded hover:bg-green-600">Visitation Logs</a>
+
       </nav>
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf

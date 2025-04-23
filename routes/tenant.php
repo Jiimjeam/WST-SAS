@@ -72,6 +72,10 @@ Route::middleware([
         Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
         Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
         Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
+
+        Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
+        Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
+
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
 });        
 
