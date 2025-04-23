@@ -35,6 +35,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'barangay_name',
             'domain',
             'database',
+            'statusAorD',
             'plan',
         ];
     }

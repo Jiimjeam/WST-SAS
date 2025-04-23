@@ -124,7 +124,7 @@ public function rejectTenant($id)
 
 public function activate(Tenant $tenant)
 {
-    $tenant->statusAorD = 'activate';
+    $tenant->statusAorD = 'active';
     $tenant->save();
 
     return redirect()->back()->with('success', 'Tenant activated successfully.');

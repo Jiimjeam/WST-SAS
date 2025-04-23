@@ -180,7 +180,7 @@
                                         
                                         @php
                                             $status = strtolower($tenant->statusAorD ?? 'disabled');
-                                            $gradient = $status === 'activate'
+                                            $gradient = $status === 'active'
                                                 ? 'linear-gradient(90deg, #007bff, #00aaff)'
                                                 : 'linear-gradient(90deg, #6c757d, #adb5bd)'; 
                                         @endphp
