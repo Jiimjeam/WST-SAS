@@ -4,6 +4,10 @@
 @section('page-title', 'All Transactions')
 
 @section('content')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow p-8">
     <h2 class="text-2xl font-semibold text-green-700 mb-6">Transaction Records</h2>
 
@@ -17,11 +21,34 @@
         <table class="min-w-full table-auto border border-gray-200 rounded-lg">
 
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('tenant.transactions.pdf') }}" target="_blank"
-            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl shadow">
-                Generate PDF Report
-            </a>
-        </div>
+    @if (tenant()->plan === 'Premium')
+        <a href="{{ route('tenant.transactions.pdf') }}" target="_blank"
+           class="block px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow">
+            Generate PDF Report <i class="fa-solid fa-download ml-1 text-white"></i>
+        </a>
+    @else
+        <a href="javascript:void(0);" class="block px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 cursor-not-allowed text-white font-semibold shadow"
+           onclick="showPremiumAlert()">
+            Generate PDF Report <i class="fa-solid fa-lock ml-1 text-white"></i>
+        </a>
+    @endif
+</div>
+
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showPremiumAlert() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Premium Feature',
+            text: 'This feature is available for Premium tenants only. Please upgrade your plan to access it.',
+            confirmButtonColor: '#10b981',
+            confirmButtonText: 'Okay'
+        });
+    }
+</script>
+
+
 
 
             <thead class="bg-green-600 text-white">
