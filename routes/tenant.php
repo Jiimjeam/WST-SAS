@@ -74,13 +74,14 @@ Route::middleware([
         Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
         Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
         Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
-
         Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
         Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
 
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
+        
 
 
+        Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transactions.pdf');
 
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
 });        

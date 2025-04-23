@@ -15,6 +15,15 @@
 
     <div class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200 rounded-lg">
+
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('tenant.transactions.pdf') }}" target="_blank"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl shadow">
+                Generate PDF Report
+            </a>
+        </div>
+
+
             <thead class="bg-green-600 text-white">
                 <tr>
                     <th class="px-6 py-3 text-left text-sm font-medium">Patient Name</th>
@@ -23,6 +32,8 @@
                     <th class="px-6 py-3 text-left text-sm font-medium">Description</th>
                     <th class="px-6 py-3 text-left text-sm font-medium">Medicine Given</th>
                     <th class="px-6 py-3 text-left text-sm font-medium">Quantity</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium">Created on</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium">Updated on</th>
                     <th class="px-6 py-3 text-left text-sm font-medium">Actions</th>
                 </tr>
             </thead>
@@ -35,6 +46,8 @@
                     <td class="px-6 py-4">{{ $transaction->description }}</td>
                     <td class="px-6 py-4">{{ $transaction->medicine_given }}</td>
                     <td class="px-6 py-4">{{ $transaction->quantity }}</td>
+                    <td class="px-6 py-4">{{ $transaction->created_at }}</td>
+                    <td class="px-6 py-4">{{ $transaction->updated_at }}</td>
                     <td class="px-6 py-4 flex gap-2">
                         <a href="" class="text-blue-600 hover:underline">Edit</a>
                         <form action="" method="POST" onsubmit="return confirm('Are you sure?');">
@@ -54,4 +67,5 @@
         </table>
     </div>
 </div>
+
 @endsection
