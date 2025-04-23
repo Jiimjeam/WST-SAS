@@ -1,12 +1,25 @@
 <?php
 
 declare(strict_types=1);
-
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
+
+
+$tenant = Tenant::where('domain', request()->getHost())->first();
+
+if ($tenant && $tenant->statusAorD === 'disabled') {
+    Route::get('{any?}', function () use ($tenant) {
+        return response()->view('errors.tenant-disabled', ['tenant' => $tenant], 403);
+    })->where('any', '.*');
+    
+    return; 
+}
+
+
 use App\Models\User;
 use App\Models\Medicine;
 use App\Models\FeatureSetting;

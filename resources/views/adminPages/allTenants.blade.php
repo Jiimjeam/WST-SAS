@@ -205,9 +205,22 @@
                                                 <i class="fas fa-eye"></i>
                                             </button>
 
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" title="Edit Tenant" data-bs-toggle="tooltip" data-bs-target="#editTenantModal-{{ $tenant->id }}">
+                                            <button class="btn btn-sm btn-primary"
+                                                    title="Edit Tenant"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editTenantModal-{{ $tenant->id }}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
+
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                                                    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                                                        new bootstrap.Tooltip(tooltipTriggerEl);
+                                                    });
+                                                });
+                                            </script>
+
 
                                             @if ($tenant->statusAorD === 'disabled')
                                                 <form action="{{ route('tenants.activate', $tenant->id) }}" method="POST" class="activate-tenant-form" style="display: inline;">
