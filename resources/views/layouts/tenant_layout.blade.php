@@ -64,7 +64,7 @@
             <path d="M12 8v4l3 3"></path>
             <circle cx="12" cy="12" r="10"></circle>
         </svg>
-        Transaction Form
+        Visitation Form
     </a>
 
     <a href="{{ route('tenant.visit.logs') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
