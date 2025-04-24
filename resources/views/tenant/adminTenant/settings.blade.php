@@ -52,7 +52,7 @@
 
 <hr class="my-8">
 
-<h2 class="text-2xl font-semibold text-green-700 mb-4">Customize Sidebar Color</h2>
+<h2 class="text-2xl font-semibold text-green-700 mb-4">Interface Customization</h2>
 
 <div class="mb-4">
     <label for="sidebarColor" class="form-label">Pick Sidebar Color</label>

@@ -19,7 +19,7 @@
   <div class="flex h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-green-700 text-white flex flex-col">
+    <aside id="sidebar" class="w-64 text-white flex flex-col" style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}">
       <div class="px-6 py-6 text-2xl font-bold border-b border-green-600 text-center">
         {{ tenant()->name }}
         
@@ -113,5 +113,35 @@
         });
     });
 </script>
+<script>
+document.getElementById('sidebarColor').addEventListener('input', function () {
+    const newColor = this.value;
+    // Live preview
+    document.getElementById('sidebar').style.backgroundColor = newColor;
+
+    fetch("{{ route('tenant.settings.sidebar-color') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ color: newColor })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Sidebar color updated!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
+</script>
+
 </body>
 </html>

@@ -33,11 +33,7 @@ use App\Http\Controllers\Tenant\TenantAdminController;
 use App\Http\Controllers\Tenant\TenantUserController;
 
 use App\Http\Controllers\Tenant\TransactionController;
-<<<<<<< HEAD
 use App\Http\Controllers\Tenant\TenantSettingsController;
-=======
-use App\Http\Controllers\Tenant\TransactionCRUDES;
->>>>>>> cce17e00c502aa708e8ac96089bf108665f1f77d
 
 
 
@@ -73,12 +69,17 @@ Route::middleware([
     });
 
 
+    
+
+    // modify sidebar color
     Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
 
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
     
+
+
     // User tenant
    Route::middleware(['auth'])->group(function () {
 

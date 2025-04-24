@@ -50,6 +50,13 @@
     </form>
 </div>
 
+<hr class="my-8">
 
-    
+<h2 class="text-2xl font-semibold text-green-700 mb-4">Interface Customization</h2>
+
+<div class="mb-4">
+    <label for="sidebarColor" class="form-label">Pick Sidebar Color</label>
+    <input type="color" id="sidebarColor" value="{{ auth()->user()->sidebar_color ?? '#047857' }}"
+           class="form-control form-control-color w-16 h-10" title="Choose your sidebar color">
+</div>
 @endsection
