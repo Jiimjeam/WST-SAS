@@ -33,7 +33,11 @@ use App\Http\Controllers\Tenant\TenantAdminController;
 use App\Http\Controllers\Tenant\TenantUserController;
 
 use App\Http\Controllers\Tenant\TransactionController;
+<<<<<<< HEAD
 use App\Http\Controllers\Tenant\TenantSettingsController;
+=======
+use App\Http\Controllers\Tenant\TransactionCRUDES;
+>>>>>>> cce17e00c502aa708e8ac96089bf108665f1f77d
 
 
 
@@ -86,7 +90,12 @@ Route::middleware([
 
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
         
+        Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
 
+
+
+
+        
 
         Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transactions.pdf');
 

@@ -32,13 +32,6 @@ class TransactionController extends Controller
             return redirect()->back()->with('success', 'Transaction recorded successfully.');
         }
 
-        
-
-
-
-
-
-
     public function generatePDF()
         {
             $transactions = Transaction::all();
