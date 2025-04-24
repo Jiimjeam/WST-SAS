@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('position');
             $table->string('password');
+            $table->string('sidebar_color')->nullable()->default('#047857'); // default green
             $table->timestamps();
         });
     }
