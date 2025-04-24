@@ -47,6 +47,51 @@
                 Update Password
             </button>
         </div>
-    </form>
+    </form> 
 </div>
+
+<hr class="my-8">
+
+<h2 class="text-2xl font-semibold text-green-700 mb-4">Customize Sidebar Color</h2>
+
+<div class="mb-4">
+    <label for="sidebarColor" class="form-label">Pick Sidebar Color</label>
+    <input type="color" id="sidebarColor" value="{{ auth()->user()->sidebar_color ?? '#047857' }}"
+           class="form-control form-control-color w-16 h-10" title="Choose your sidebar color">
+</div>
+
+
+
+
+
+<script>
+document.getElementById('sidebarColor').addEventListener('input', function () {
+    const newColor = this.value;
+    // Live preview
+    document.getElementById('sidebar').style.backgroundColor = newColor;
+
+    fetch("{{ route('tenant.settings.sidebar-color') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ color: newColor })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Sidebar color updated!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
+</script>
+
 @endsection

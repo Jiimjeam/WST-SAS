@@ -75,9 +75,13 @@
                     <td class="px-6 py-4">{{ $transaction->quantity }}</td>
                     <td class="px-6 py-4">{{ $transaction->created_at }}</td>
                     <td class="px-6 py-4">{{ $transaction->updated_at }}</td>
+
+
+
                     <td class="px-6 py-4 flex gap-2">
-                        <a href="" class="text-blue-600 hover:underline">Edit</a>
-                        <form action="" method="POST" onsubmit="return confirm('Are you sure?');">
+                        <a href="{{ route('tenant.transactions.edit', $transaction->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                        
+                        <form action="{{ route('tenant.transactions.destroy', $transaction->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:underline">Delete</button>

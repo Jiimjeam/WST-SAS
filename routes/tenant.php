@@ -9,6 +9,7 @@ use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
 
 
+
 $tenant = Tenant::where('domain', request()->getHost())->first();
 
 if ($tenant && $tenant->statusAorD === 'disabled') {
@@ -32,6 +33,8 @@ use App\Http\Controllers\Tenant\TenantAdminController;
 use App\Http\Controllers\Tenant\TenantUserController;
 
 use App\Http\Controllers\Tenant\TransactionController;
+use App\Http\Controllers\Tenant\TenantSettingsController;
+
 
 
 Route::middleware([
@@ -60,9 +63,13 @@ Route::middleware([
 
         Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
+
+
+
     });
 
 
+    Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
 
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
