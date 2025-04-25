@@ -80,7 +80,11 @@ Route::middleware([
     // profile picture change
     Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
 
- 
+    // logout button controller
+    Route::post('/settings/button-color', [TenantSettingsController::class, 'updateSidebarButtonColor'])->name('tenant.settings.logoutbtn-color');
+
+
+
 
 
     // change pass for both tenant user and tenant admin

@@ -38,6 +38,20 @@ public function updateSidebarTextColor(Request $request)
 }
 
 
+public function updateSidebarButtonColor(Request $request)
+{
+    $request->validate([
+        'color' => 'required|string|max:7',
+    ]);
+
+    $user = auth()->user();
+    $user->Logoutbutton_color = $request->color;
+    $user->save();
+
+    return response()->json(['success' => true]);
+}
+
+
 
 public function uploadPicture(Request $request)
 {

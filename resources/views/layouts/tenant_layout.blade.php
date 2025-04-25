@@ -23,19 +23,19 @@
         id="sidebar2" 
         class="w-64 flex flex-col" 
         style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}; color: {{ auth()->user()->text_color ?? '#ffffff' }}">
-      <div class="px-6 py-6 text-2xl font-bold border-b border-green-600 text-center">
+      <div  class="px-6 py-6 text-2xl font-bol text-center">
         {{ tenant()->name }}
         
         @if (Auth::check())
-            <div class="text-base font-medium text-green-100 mt-1">
+            <div class="text-base font-medium  mt-1">
                 {{ Auth::user()->name }}
             </div>
-            <div class="text-xs font-normal text-green-300">
+            <div class="text-xs font-normal ">
                 {{ Auth::user()->position ?? 'N/A' }}
             </div>
         @endif
       </div>
-      <nav class="flex-1 px-4 py-6 space-y-4 text-white">
+      <nav id="sidebarText3" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}" class="flex-1 px-4 py-6 space-y-4">
     <a href="{{ route('tenant.dashboard') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
             viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -81,7 +81,7 @@
 
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf
-        <button type="button" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded" id="logout-button">
+        <button style="background-color: {{ auth()->user()->Logoutbutton_color ?? '#047857' }}; type="button" class="w-full  py-2 px-4 rounded" id="logout-button">
           <i class="fas fa-sign-out-alt me-1"></i> Logout
         </button>
     </form>
@@ -116,6 +116,10 @@
         });
     });
 </script>
+
+
+
+<!-- sidebar color customization -->
 <script>
 document.getElementById('sidebarColor').addEventListener('input', function () {
     const newColor = this.value;
@@ -145,6 +149,83 @@ document.getElementById('sidebarColor').addEventListener('input', function () {
     });
 });
 </script>
+
+
+
+<!-- sidebar text custom -->
+@if(auth()->check())
+<script>
+    const textColorInputs = document.querySelectorAll('#sidebartextColor');
+
+    textColorInputs.forEach(input => {
+        input.addEventListener('input', function () {
+            const newColor = this.value;
+            const sidebarTextElements = ['sidebar2', 'sidebarText3'];
+
+            sidebarTextElements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.color = newColor;
+            });
+
+            fetch("{{ route('tenant.settings.sidebartext-color') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ color: newColor })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Sidebar text color updated!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endif
+
+
+<!-- Logout button bg color customization -->
+<script>
+    const logoutColorInput = document.getElementById('logoutBtnColor');
+    logoutColorInput.addEventListener('input', function () {
+    const newColor = this.value;
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) logoutBtn.style.backgroundColor = newColor;
+
+    fetch("{{ route('tenant.settings.logoutbtn-color') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ color: newColor })
+    }).then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Logout button color updated!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
+
+</script>
+
 
 </body>
 </html>

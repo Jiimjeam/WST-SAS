@@ -72,6 +72,12 @@
                         class="w-16 h-10 border rounded-md cursor-pointer">
                 </div>
 
+                <div>
+                    <label for="logoutBtnColor" class="block text-sm font-semibold mb-2">Logout Button Color</label>
+                    <input type="color" id="logoutBtnColor" value="{{ auth()->user()->logout_btn_color ?? '#ef4444' }}"
+                        class="w-16 h-10 border rounded-md cursor-pointer">
+                </div>
+
                 <div class="flex items-center gap-2">
                     <span class="text-sm text-gray-100 dark:text-gray-300">Dark Mode</span>
                     <label for="darkModeToggle" class="inline-flex relative items-center cursor-pointer">
@@ -88,44 +94,6 @@
 
 
 
-@if(auth()->check())
-<script>
-    const textColorInputs = document.querySelectorAll('#sidebartextColor');
-
-    textColorInputs.forEach(input => {
-        input.addEventListener('input', function () {
-            const newColor = this.value;
-            const sidebarTextElements = ['sidebarText', 'sidebarText2'];
-
-            sidebarTextElements.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.color = newColor;
-            });
-
-            fetch("{{ route('tenant.settings.sidebartext-color') }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ color: newColor })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Sidebar text color updated!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            });
-        });
-    });
-</script>
 
 
 
@@ -149,5 +117,5 @@
         }
     });
 </script>
-@endif
+
 @endsection
