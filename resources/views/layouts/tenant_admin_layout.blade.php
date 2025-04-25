@@ -33,20 +33,24 @@
   <div class="flex h-screen">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 text-white flex flex-col" style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}">
-      <div class="px-6 py-6 text-2xl font-bold border-b border-green-600 text-center">
+    <aside 
+      id="sidebar" 
+      class="w-64 flex flex-col" 
+      style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}; color: {{ auth()->user()->text_color ?? '#ffffff' }}">
+
+      <div id="sidebarText" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}" class="px-6 py-6 text-2xl font-bold text-center">
         {{ tenant()->name }}
         
         @if (Auth::check())
-            <div class="text-base font-medium text-green-100 mt-1">
+            <div class="text-base font-medium mt-1" >
                 {{ Auth::user()->name }}
             </div>
-            <div class="text-xs font-normal text-green-300">
+            <div class="text-xs font-normal " >
                 {{ Auth::user()->position ?? 'N/A' }}
             </div>
         @endif
     </div>
-      <nav class="flex-1 px-4 py-6 space-y-4">
+      <nav class="flex-1 px-4 py-6 space-y-4" id="sidebarText2" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}">
         <a href="{{ route('tenant.admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
           <i class="fa-solid fa-gauge"></i>
           Dashboard
@@ -59,12 +63,12 @@
 
         @if (tenant()->plan === 'Premium')
             <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">
-                Feature Control <i class="fa-solid fa-check-circle ml-1 text-white"></i>
+            <i class="fa-solid fa-check-circle mr-2"></i> Feature Control
             </a>
         @else
             <a href="javascript:void(0);" class="block px-4 py-2 rounded hover:bg-gray-400 cursor-not-allowed"
               onclick="showPremiumAlert()">
-                Feature Control <i class="fa-solid fa-lock ml-1 text-white"></i>
+              <i class="fa-solid fa-lock ml-1 "></i> Feature Control 
             </a>
         @endif
 

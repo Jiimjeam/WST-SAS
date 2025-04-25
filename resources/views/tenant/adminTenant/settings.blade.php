@@ -61,9 +61,14 @@
 </div>
 
 
+<div class="mb-4">
+    <label for="sidebartextColor" class="form-label">Pick Sidebar text Color</label>
+    <input type="color" id="sidebartextColor" value="{{ auth()->user()->text_color ?? '#ffffff' }}"
+           class="form-control form-control-color w-16 h-10" title="Choose your sidebar text color">
+</div>
 
 
-
+<!-- sdiebar color -->
 <script>
 document.getElementById('sidebarColor').addEventListener('input', function () {
     const newColor = this.value;
@@ -93,5 +98,70 @@ document.getElementById('sidebarColor').addEventListener('input', function () {
     });
 });
 </script>
+
+
+
+@if(auth()->check())
+<script>
+    document.getElementById('sidebartextColor').addEventListener('input', function () {
+        const newColor = this.value;
+        document.getElementById('sidebarText').style.color = newColor;
+
+        fetch("{{ route('tenant.settings.sidebartext-color') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ color: newColor })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Sidebar color updated!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    });
+</script>
+@endif
+
+
+@if(auth()->check())
+<script>
+    document.getElementById('sidebartextColor').addEventListener('input', function () {
+        const newColor = this.value;
+        document.getElementById('sidebarText2').style.color = newColor;
+
+        fetch("{{ route('tenant.settings.sidebartext-color') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ color: newColor })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Sidebar color updated!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    });
+</script>
+@endif
 
 @endsection

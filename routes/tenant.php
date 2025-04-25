@@ -65,14 +65,20 @@ Route::middleware([
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
 
 
+        
+        // modify sidebar color
+        Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
+
+        // modify sidebar text color
+        Route::post('/settings/sidebarText-color', [TenantSettingsController::class, 'updateSidebarTextColor'])->name('tenant.settings.sidebartext-color');
 
     });
 
 
     
 
-    // modify sidebar color
-    Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
+ 
+
 
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
