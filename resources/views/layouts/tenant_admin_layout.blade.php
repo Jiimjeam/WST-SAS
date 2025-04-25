@@ -116,7 +116,7 @@
 </aside>
 
 
-    <main class="flex-1 p-8 overflow-y-auto">
+    <main class="flex-1 p-8  overflow-y-auto" >
       <h1 class="text-3xl font-bold text-green-700 mb-8">@yield('page-title', 'Dashboard')</h1>
 
       @yield('Admin_layout_content')

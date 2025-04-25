@@ -71,6 +71,16 @@
                     <input type="color" id="sidebartextColor" value="{{ auth()->user()->text_color ?? '#ffffff' }}"
                         class="w-16 h-10 border rounded-md cursor-pointer">
                 </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-100 dark:text-gray-300">Dark Mode</span>
+                    <label for="darkModeToggle" class="inline-flex relative items-center cursor-pointer">
+                        <input type="checkbox" id="darkModeToggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                    </label>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -143,5 +153,30 @@ document.getElementById('sidebarColor').addEventListener('input', function () {
         });
     });
 </script>
-@endif
+
+
+
+<script>
+    const toggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+
+    // Initialize toggle from localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+        html.classList.add('dark');
+        toggle.checked = true;
+    }
+
+    toggle.addEventListener('change', function () {
+        if (this.checked) {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
+
+
+
 @endsection

@@ -19,7 +19,10 @@
   <div class="flex h-screen">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 text-white flex flex-col" style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}">
+    <aside 
+        id="sidebar2" 
+        class="w-64 flex flex-col" 
+        style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}; color: {{ auth()->user()->text_color ?? '#ffffff' }}">
       <div class="px-6 py-6 text-2xl font-bold border-b border-green-600 text-center">
         {{ tenant()->name }}
         

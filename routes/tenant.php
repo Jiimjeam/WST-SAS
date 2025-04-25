@@ -101,15 +101,24 @@ Route::middleware([
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
         
         Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
-
-
-
-
         
 
         Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transactions.pdf');
 
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
+
+
+
+
+        // modify sidebar color
+        Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
+
+        // modify sidebar text color
+        Route::post('/settings/sidebarText-color', [TenantSettingsController::class, 'updateSidebarTextColor'])->name('tenant.settings.sidebartext-color');
+
+        // profile picture change
+        Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
+
 });        
 
 
