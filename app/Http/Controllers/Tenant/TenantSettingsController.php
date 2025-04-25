@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+
 
 class TenantSettingsController extends Controller
 {
@@ -31,6 +35,28 @@ public function updateSidebarTextColor(Request $request)
     $user->save();
 
     return response()->json(['success' => true]);
+}
+
+
+
+public function uploadPicture(Request $request)
+{
+    $request->validate([
+        'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $user = Auth::user();
+
+    // Delete old picture if it exists
+    if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+        Storage::disk('public')->delete($user->profile_picture);
+    }
+
+    $path = $request->file('profile_picture')->store('profile_pictures', 'tenant_public');
+    $user->profile_picture = $path;
+    $user->save();
+
+    return back()->with('success', 'Profile picture updated successfully!');
 }
 
 }

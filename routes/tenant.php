@@ -72,6 +72,9 @@ Route::middleware([
         // modify sidebar text color
         Route::post('/settings/sidebarText-color', [TenantSettingsController::class, 'updateSidebarTextColor'])->name('tenant.settings.sidebartext-color');
 
+        // profile picture change
+        Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
+
     });
 
 
