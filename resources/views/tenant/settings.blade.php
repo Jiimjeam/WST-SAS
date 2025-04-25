@@ -86,34 +86,7 @@
     </div>
 </div>
 
-<script>
-document.getElementById('sidebarColor').addEventListener('input', function () {
-    const newColor = this.value;
-    document.getElementById('sidebar').style.backgroundColor = newColor;
 
-    fetch("{{ route('tenant.settings.sidebar-color') }}", {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ color: newColor })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Sidebar background updated!',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    });
-});
-</script>
 
 @if(auth()->check())
 <script>

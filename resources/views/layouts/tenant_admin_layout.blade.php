@@ -146,24 +146,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    document.getElementById("logout-button").addEventListener("click", function (e) {
-        Swal.fire({
-            title: 'Logout?',
-            text: 'Are you sure you want to log out?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, log out',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById("logout-form").submit();
-            }
-        });
-    });
-</script>
+
 
 @if(session('success'))
 <script>

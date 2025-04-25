@@ -120,7 +120,7 @@
 document.getElementById('sidebarColor').addEventListener('input', function () {
     const newColor = this.value;
     // Live preview
-    document.getElementById('sidebar').style.backgroundColor = newColor;
+    document.getElementById('sidebar2').style.backgroundColor = newColor;
 
     fetch("{{ route('tenant.settings.sidebar-color') }}", {
         method: 'POST',

@@ -153,7 +153,7 @@ document.getElementById('sidebarColor').addEventListener('input', function () {
         });
     });
 </script>
-
+@endif
 
 
 <script>

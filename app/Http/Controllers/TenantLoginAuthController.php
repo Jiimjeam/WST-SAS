@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 
+use Illuminate\Support\Facades\DB;
+
 class TenantLoginAuthController extends Controller
 {
+ 
     public function login(Request $request)
 {
     $credentials = $request->validate([
@@ -48,7 +51,7 @@ class TenantLoginAuthController extends Controller
         return redirect()->route('tenant.default.dashboard');
     }
 }
-
+    
 
 
 
