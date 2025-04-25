@@ -109,7 +109,7 @@
   
   <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
     @csrf
-    <button type="button" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded" id="logout-button">
+    <button style="background-color: {{ auth()->user()->Logoutbutton_color ?? '#047857' }}; type="button" class="w-full   py-2 px-4 rounded" id="logout-button">
       <i class="fas fa-sign-out-alt me-1"></i> Logout
     </button>
   </form>
@@ -145,6 +145,38 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<!-- Logout button bg color customization -->
+<script>
+    const logoutColorInput = document.getElementById('logoutBtnColor');
+    logoutColorInput.addEventListener('input', function () {
+    const newColor = this.value;
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) logoutBtn.style.backgroundColor = newColor;
+
+    fetch("{{ route('tenant.settings.logoutbtn-color') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ color: newColor })
+    }).then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Logout button color updated!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
 
 
 
