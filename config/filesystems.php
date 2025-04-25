@@ -48,11 +48,11 @@ return [
         ],
 
         'tenant_public' => [
-            'driver' => 'local',
-            'root' => storage_path('tenant2/app/public'),
-            'url' => env('APP_URL') . '/tenant-storage',
-            'visibility' => 'public',
-        ],
+        'driver' => 'local',
+        'root' => storage_path('tenant2/app/public'),
+        'url' => env('APP_URL') . '/tenant-storage',
+        'visibility' => 'public',
+    ],
 
 
         's3' => [

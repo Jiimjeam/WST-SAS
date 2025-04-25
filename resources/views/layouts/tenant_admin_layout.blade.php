@@ -26,6 +26,14 @@
           }
       </script>
 
+<style>
+    #uploadForm:hover img {
+        opacity: 0.7;
+        transition: 0.3s;
+    }
+</style>
+
+
 
 </head>
 <body class="bg-gray-100 font-sans">
@@ -41,31 +49,21 @@
   <div id="sidebarText" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}" class="px-6 py-6 text-center">
 
     <!-- Profile Picture UI -->
-    <form action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data">
+    <form id="uploadForm" action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data" class="relative w-24 h-24 mx-auto">
     @csrf
 
-    <div class="mb-4">
-        <img src="{{ auth()->user()->profile_picture ? Storage::url(auth()->user()->profile_picture) : asset('img/arvin.jpg') }}"
-        alt="Profile Picture"
-        class="w-24 h-24 mx-auto rounded-full border-1 border-white shadow-md object-cover">
-    </div>
-    
+    <input type="file" id="profile_picture" name="profile_picture" accept="image/*"
+        class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
+        onchange="document.getElementById('uploadForm').submit();">
 
-    <div class="mb-4 text-center">
-        <label for="profile_picture" class="block mb-2 text-sm font-medium text-gray-700">Choose Profile Picture</label>
-        <input type="file" id="profile_picture" name="profile_picture" accept="image/*" 
-               class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none">
-        @error('profile_picture')
-            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-        @enderror
-    </div>
+    <img src="{{ auth()->user()->profile_picture ? asset('profile_pictures/' . auth()->user()->profile_picture) : asset('img/arvin.jpg') }}"
+        alt="Profile Picture">
 
-    <div class="text-center">
-        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-            Update Profile Picture
-        </button>
-    </div>
+    @error('profile_picture')
+        <div class="text-red-500 text-sm mt-1 text-center">{{ $message }}</div>
+    @enderror
 </form>
+
 
     <div class="text-2xl font-bold">
         {{ tenant()->name }}

@@ -48,15 +48,22 @@ public function uploadPicture(Request $request)
     $user = Auth::user();
 
     // Delete old picture if it exists
-    if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
-        Storage::disk('public')->delete($user->profile_picture);
+    if ($user->profile_picture && file_exists(public_path('profile_pictures/' . $user->profile_picture))) {
+        unlink(public_path('profile_pictures/' . $user->profile_picture));
     }
 
-    $path = $request->file('profile_picture')->store('profile_pictures', 'tenant_public');
-    $user->profile_picture = $path;
+    $file = $request->file('profile_picture');
+    $filename = time() . '.' . $file->getClientOriginalExtension();
+    $file->move(public_path('profile_pictures'), $filename);
+
+    $user->profile_picture = $filename;
     $user->save();
 
     return back()->with('success', 'Profile picture updated successfully!');
 }
+
+
+
+
 
 }
