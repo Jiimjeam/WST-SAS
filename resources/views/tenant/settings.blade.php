@@ -81,7 +81,7 @@
 
                     <form id="fontForm" action="{{ route('tenant.settings.updateFont') }}" method="POST">
                         @csrf
-                        <label for="font_family" class="block mb-2">Fonts:</label>
+                        <label for="sidebartextColor" class="block text-sm font-semibold mb-2">Fonts</label>
                         <select name="font_family" id="font_family" class="border rounded p-2">
                             <option value="sans-serif">Sans Serif (Default)</option>
                             <option value="Arial, sans-serif">Arial</option>

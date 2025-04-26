@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+
 class TransactionController extends Controller
 {
     public function store(Request $request)
@@ -36,7 +37,7 @@ class TransactionController extends Controller
         {
             $transactions = Transaction::all();
         
-            $tenantName = tenant()->name ?? 'Unknown Tenant'; // Adjust based on how you access the tenant
+            $tenantName = tenant()->name ?? 'Unknown Tenant'; 
         
             $pdf = Pdf::loadView('tenant.pdf', compact('transactions', 'tenantName'));
             return $pdf->download("transactions-report-{$tenantName}.pdf");

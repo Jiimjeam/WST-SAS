@@ -1,7 +1,7 @@
 @extends('layouts.tenant_layout')
 
-@section('title', 'Transaction Form')
-@section('page-title', 'Transaction Form')
+@section('title', 'Visitation Form')
+@section('page-title', 'Visitation Form')
 
 @section('content')
 
@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow p-8 form-container">
-    <h2 class="text-2xl font-semibold text-green-700 mb-6 text-center">Transaction Form</h2>
+    <h2 class="text-2xl font-semibold text-green-700 mb-6 text-center">Visitation Form</h2>
 
     <form action="{{ route('transactions.store') }}" method="POST" class="space-y-6">
         @csrf
