@@ -72,29 +72,18 @@
                     <td class="px-6 py-4">{{ $transaction->updated_at }}</td>
 
 
-<<<<<<< HEAD
 
-                    <td class="px-6 py-4 flex gap-2">
-                        <a href="{{ route('tenant.transactions.edit', $transaction->id) }}" class="text-blue-600 hover:underline">Edit</a>
-                        
-                        <form action="{{ route('tenant.transactions.destroy', $transaction->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                        </form>
-                    </td>
-=======
-                    <td class="px-6 py-4 flex gap-2">
+                   
+    <td class="px-6 py-4 flex gap-2">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $transaction->id }}">
+            Edit
+        </button>
 
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $transaction->id }}">
-        Edit
-    </button>
-
-    <form action="{{ route('tenant.transactions.destroy', $transaction->id) }}" method="POST" class="delete-form">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm delete-btn">Delete</button>
-    </form>
+        <form action="{{ route('tenant.transactions.destroy', $transaction->id) }}" method="POST" class="delete-form">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm delete-btn">Delete</button>
+        </form>
 
 
     <!-- Edit Modal -->
@@ -164,9 +153,6 @@
 
 </td>
 
-
-
->>>>>>> cce17e00c502aa708e8ac96089bf108665f1f77d
                 </tr>
             @empty
         <tr>

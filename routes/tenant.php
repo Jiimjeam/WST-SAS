@@ -34,6 +34,8 @@ use App\Http\Controllers\Tenant\TenantUserController;
 
 use App\Http\Controllers\Tenant\TransactionController;
 use App\Http\Controllers\Tenant\TenantSettingsController;
+use App\Http\Controllers\Tenant\TransactionCRUDES;
+
 
 
 
