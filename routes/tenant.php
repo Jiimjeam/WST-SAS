@@ -66,10 +66,7 @@ Route::middleware([
         Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
 
-
         
-        
-
     });
 
 
@@ -85,6 +82,11 @@ Route::middleware([
     // logout button color ui 
     Route::post('/settings/button-color', [TenantSettingsController::class, 'updateSidebarButtonColor'])->name('tenant.settings.logoutbtn-color');
 
+    // reset custom ui 
+    Route::post('/settings/reset/default', [TenantSettingsController::class, 'ResetDefaultCustomUI'])->name('tenant.settings.resetDefaut');
+
+
+    Route::post('/settings/update-font', [TenantSettingsController::class, 'updateFont'])->name('tenant.settings.updateFont');
 
 
 

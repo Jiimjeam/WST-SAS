@@ -11,10 +11,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
 
 
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans" style="font-family: {{ auth()->user()->font_family ?? 'sans-serif' }};">
 
   <div class="flex h-screen">
 
@@ -81,7 +82,7 @@
 
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
         @csrf
-        <button style="background-color: {{ auth()->user()->Logoutbutton_color ?? '#047857' }}; type="button" class="w-full  py-2 px-4 rounded" id="logout-button">
+        <button style="background-color: {{ auth()->user()->Logoutbutton_color ?? '#059669' }}" type="button" class="w-full  py-2 px-4 rounded" id="logout-button">
           <i class="fas fa-sign-out-alt me-1"></i> Logout
         </button>
     </form>

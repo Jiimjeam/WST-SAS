@@ -52,6 +52,32 @@ public function updateSidebarButtonColor(Request $request)
 }
 
 
+public function ResetDefaultCustomUI(Request $request)
+{
+    $user = auth()->user();
+    $user->sidebar_color = null; 
+    $user->text_color = null;   
+    $user->Logoutbutton_color = null; 
+    $user->save();
+
+    return redirect()->back()->with('success', 'Settings have been reset to default!');
+}
+
+public function updateFont(Request $request)
+{
+    $request->validate([
+        'font_family' => 'required|string|max:255',
+    ]);
+
+    $user = auth()->user();
+    $user->font_family = $request->font_family;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Font updated successfully!');
+}
+
+
+
 
 public function uploadPicture(Request $request)
 {
