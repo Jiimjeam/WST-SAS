@@ -79,9 +79,9 @@
                             class="w-16 h-10 border rounded-md cursor-pointer">
                     </div>
 
-                    <form action="{{ route('tenant.settings.updateFont') }}" method="POST">
+                    <form id="fontForm" action="{{ route('tenant.settings.updateFont') }}" method="POST">
                         @csrf
-                        <label for="font_family" class="block mb-2">Choose Font:</label>
+                        <label for="font_family" class="block mb-2">Fonts:</label>
                         <select name="font_family" id="font_family" class="border rounded p-2">
                             <option value="sans-serif">Sans Serif (Default)</option>
                             <option value="Arial, sans-serif">Arial</option>
@@ -93,20 +93,16 @@
                             <option value="'Poppins', sans-serif">Poppins</option>
                             <option value="'Roboto', sans-serif">Roboto</option>
                         </select>
-
-                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mt-4">
-                            Save Font
-                        </button>
                     </form>
 
+                    <script>
+                        document.getElementById('font_family').addEventListener('change', function() {
+                            document.getElementById('fontForm').submit();
+                        });
+                    </script>
 
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm font-semibold text-gray-700">Dark Mode</span>
-                        <label for="darkModeToggle" class="inline-flex relative items-center cursor-pointer">
-                            <input type="checkbox" id="darkModeToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        </label>
-                    </div>
+
+                   
 
                 </div>
 

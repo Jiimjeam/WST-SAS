@@ -58,6 +58,7 @@ public function ResetDefaultCustomUI(Request $request)
     $user->sidebar_color = null; 
     $user->text_color = null;   
     $user->Logoutbutton_color = null; 
+    $user->font_family = null; 
     $user->save();
 
     return redirect()->back()->with('success', 'Settings have been reset to default!');
