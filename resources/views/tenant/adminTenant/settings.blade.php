@@ -101,6 +101,22 @@
                         });
                     </script>
 
+                    <!-- Sidebar Position Selector -->
+                    <form id="sidebarPositionForm" action="{{ route('tenant.settings.sidebarIs') }}" method="POST" class="col-span-1">
+                        @csrf
+                        <label for="sidebar_is" class="block text-sm font-semibold mb-2">Sidebar Position</label>
+                        <select name="sidebar_is" id="sidebar_is" class="border rounded p-2 w-full">
+                            <option value="left" {{ auth()->user()->sidebar_is === 'left' ? 'selected' : '' }}>Left (Default)</option>
+                            <option value="right" {{ auth()->user()->sidebar_is === 'right' ? 'selected' : '' }}>Right</option>
+                        </select>
+                    </form>
+
+                    <script>
+                        document.getElementById('sidebar_is').addEventListener('change', function() {
+                            document.getElementById('sidebarPositionForm').submit();
+                        });
+                    </script>
+
                 <!-- Reset Button -->
                 <div class="pt-8">
                 <form action="{{ route('tenant.settings.resetDefaut') }}" method="POST" id="reset-defaults-form">

@@ -38,9 +38,10 @@
 
 
 </head>
-<body class="bg-gray-100 font-sans" style="font-family: {{ auth()->user()->font_family ?? 'sans-serif' }}">
+<body class="bg-gray-100 font-sans" style="font-family: {{ auth()->user()->font_family ?? 'sans-serif' }} ">
 
-  <div class="flex h-screen">
+  
+<div class="flex h-screen {{ auth()->user()->sidebar_is === 'right' ? 'flex-row-reverse' : '' }}">
 
     <!-- Sidebar -->
 <aside 
@@ -48,7 +49,7 @@
   class="w-64 flex flex-col" 
   style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}; color: {{ auth()->user()->text_color ?? '#ffffff' }}">
 
-  <div id="sidebarText" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}" class="px-6 py-6 text-center">
+  <div id="sidebarText" style="" class="px-6 py-6 text-center">
 
     <!-- Profile Picture UI -->
     <form id="uploadForm" action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data" class="relative w-24 h-24 mx-auto">
