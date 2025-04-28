@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('Logoutbutton_color')->nullable()->default('#047857'); 
             $table->string('font_family')->nullable();
             $table->string('profile_picture')->nullable();
+            $table->string('sidebar_is')->nullable()->default('left'); 
             $table->timestamps();
         });
     }

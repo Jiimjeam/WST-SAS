@@ -61,28 +61,32 @@
                 <h1 class="text-lg font-bold text-gray-800">Sidebar</h1>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
+                    <!-- Sidebar Color -->
                     <div>
                         <label for="sidebarColor" class="block text-sm font-semibold mb-2">Sidebar Background Color</label>
                         <input type="color" id="sidebarColor" value="{{ auth()->user()->sidebar_color ?? '#047857' }}"
                             class="w-16 h-10 border rounded-md cursor-pointer">
                     </div>
 
+                    <!-- Sidebar Text Color -->
                     <div>
                         <label for="sidebartextColor" class="block text-sm font-semibold mb-2">Sidebar Text Color</label>
                         <input type="color" id="sidebartextColor" value="{{ auth()->user()->text_color ?? '#ffffff' }}"
                             class="w-16 h-10 border rounded-md cursor-pointer">
                     </div>
 
+                    <!-- Logout Button Color -->
                     <div>
                         <label for="logoutBtnColor" class="block text-sm font-semibold mb-2">Logout Button Color</label>
                         <input type="color" id="logoutBtnColor" value="{{ auth()->user()->logout_btn_color ?? '#ef4444' }}"
                             class="w-16 h-10 border rounded-md cursor-pointer">
                     </div>
 
+                    <!-- Font Selector -->
                     <form id="fontForm" action="{{ route('tenant.settings.updateFont') }}" method="POST">
                         @csrf
-                        <label for="sidebartextColor" class="block text-sm font-semibold mb-2">Fonts</label>
-                        <select name="font_family" id="font_family" class="border rounded p-2">
+                        <label for="font_family" class="block text-sm font-semibold mb-2">Fonts</label>
+                        <select name="font_family" id="font_family" class="border rounded p-2 w-full">
                             <option value="sans-serif">Sans Serif (Default)</option>
                             <option value="Arial, sans-serif">Arial</option>
                             <option value="'Courier New', monospace">Courier New</option>
@@ -101,8 +105,21 @@
                         });
                     </script>
 
+                    <!-- Sidebar Position Selector -->
+                    <form id="sidebarPositionForm" action="{{ route('tenant.settings.sidebarIs') }}" method="POST" class="col-span-1">
+                        @csrf
+                        <label for="sidebar_is" class="block text-sm font-semibold mb-2">Sidebar Position</label>
+                        <select name="sidebar_is" id="sidebar_is" class="border rounded p-2 w-full">
+                            <option value="left" {{ auth()->user()->sidebar_is === 'left' ? 'selected' : '' }}>Left (Default)</option>
+                            <option value="right" {{ auth()->user()->sidebar_is === 'right' ? 'selected' : '' }}>Right</option>
+                        </select>
+                    </form>
 
-                   
+                    <script>
+                        document.getElementById('sidebar_is').addEventListener('change', function() {
+                            document.getElementById('sidebarPositionForm').submit();
+                        });
+                    </script>
 
                 </div>
 
@@ -117,6 +134,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

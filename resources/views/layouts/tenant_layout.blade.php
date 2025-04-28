@@ -15,9 +15,21 @@
 
 
 </head>
+
+
 <body class="bg-gray-100 font-sans" style="font-family: {{ auth()->user()->font_family ?? 'sans-serif' }};">
 
-  <div class="flex h-screen">
+
+<div class="flex h-screen {{ auth()->user()->sidebar_is === 'right' ? 'flex-row-reverse' : '' }}">
+
+
+    <!-- left sidebar -->
+  <!-- <div class="flex h-screen">  -->
+
+    <!-- right sidebar -->
+  <!-- <div class="flex flex-row-reverse h-screen"> -->
+
+
 
     <!-- Sidebar -->
     <aside 

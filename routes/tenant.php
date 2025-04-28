@@ -85,8 +85,11 @@ Route::middleware([
     // reset custom ui 
     Route::post('/settings/reset/default', [TenantSettingsController::class, 'ResetDefaultCustomUI'])->name('tenant.settings.resetDefaut');
 
-
+    //users custom font
     Route::post('/settings/update-font', [TenantSettingsController::class, 'updateFont'])->name('tenant.settings.updateFont');
+
+
+    Route::post('/settings/sidebar/position', [TenantSettingsController::class, 'sidebarIs'])->name('tenant.settings.sidebarIs');
 
 
 
@@ -94,6 +97,7 @@ Route::middleware([
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
+    //download generated pdf
     Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
     
 
