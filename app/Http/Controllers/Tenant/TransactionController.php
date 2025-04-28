@@ -38,7 +38,7 @@ class TransactionController extends Controller
             $transactions = Transaction::all();
         
             $tenantName = tenant()->name ?? 'Unknown Tenant'; 
-        
+            
             $pdf = Pdf::loadView('tenant.pdf', compact('transactions', 'tenantName'));
             return $pdf->download("transactions-report-{$tenantName}.pdf");
         }

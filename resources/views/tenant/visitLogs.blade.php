@@ -17,7 +17,7 @@
 
         <div class="mb-4 flex justify-end">
     @if (tenant()->plan === 'Premium')
-        <a href="{{ route('tenant.transactions.pdf') }}" target="_blank"
+        <a href="{{ route('tenant.transaction.pdf') }}" target="_blank"
            class="block px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow">
             Generate PDF Report <i class="fa-solid fa-download ml-1 text-white"></i>
         </a>
@@ -28,20 +28,6 @@
         </a>
     @endif
 </div>
-
-<!-- SweetAlert2 Script -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function showPremiumAlert() {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Premium Feature',
-            text: 'This feature is available for Premium tenants only. Please upgrade your plan to access it.',
-            confirmButtonColor: '#10b981',
-            confirmButtonText: 'Okay'
-        });
-    }
-</script>
 
 
 
@@ -178,6 +164,9 @@
     });
 </script>
 @endif
+
+
+
 
 
 <script>

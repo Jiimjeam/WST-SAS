@@ -94,6 +94,7 @@ Route::middleware([
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
+    Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
     
 
 
@@ -109,14 +110,8 @@ Route::middleware([
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
         
         Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
-        
-
-        Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transactions.pdf');
 
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
-
-
-
 
 });        
 
