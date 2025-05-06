@@ -8,7 +8,16 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
+<script>
+          function showPremiumAlert() {
+              Swal.fire({
+                  icon: 'info',
+                  title: 'Premium Feature',
+                  text: 'This feature is available for Premium users only.',
+                  confirmButtonColor: '#3085d6'
+              });
+          }
+      </script>
 
 <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow p-8">
     <h2 class="text-2xl font-semibold text-green-700 mb-6">Transaction Records</h2>
@@ -17,7 +26,7 @@
 
         <div class="mb-4 flex justify-end">
     @if (tenant()->plan === 'Premium')
-        <a href="{{ route('tenant.transaction.pdf') }}" target="_blank"
+            <a href="{{ route('tenant.transaction.pdf') }}" target="_blank"
            class="block px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow">
             Generate PDF Report <i class="fa-solid fa-download ml-1 text-white"></i>
         </a>
