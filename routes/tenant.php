@@ -36,6 +36,8 @@ use App\Http\Controllers\Tenant\TransactionController;
 use App\Http\Controllers\Tenant\TenantSettingsController;
 use App\Http\Controllers\Tenant\TransactionCRUDES;
 
+use App\Http\Controllers\GoogleCalendarController;
+
 
 
 
@@ -65,9 +67,20 @@ Route::middleware([
 
         Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
-
-        
     });
+
+
+        Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
+        Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
+        Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');
+
+
+    
+
+
+
+        // profile picture change
+        Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
 
 
     // modify sidebar color
@@ -76,8 +89,7 @@ Route::middleware([
     // modify sidebar text color
     Route::post('/settings/sidebarText-color', [TenantSettingsController::class, 'updateSidebarTextColor'])->name('tenant.settings.sidebartext-color');
 
-    // profile picture change
-    Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
+    
 
     // logout button color ui 
     Route::post('/settings/button-color', [TenantSettingsController::class, 'updateSidebarButtonColor'])->name('tenant.settings.logoutbtn-color');

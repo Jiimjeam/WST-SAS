@@ -107,20 +107,22 @@ public function uploadPicture(Request $request)
 
     $user = Auth::user();
 
-    // Delete old picture if it exists
-    if ($user->profile_picture && file_exists(public_path('profile_pictures/' . $user->profile_picture))) {
-        unlink(public_path('profile_pictures/' . $user->profile_picture));
+    // Delete old picture if exists
+    if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+        Storage::disk('public')->delete($user->profile_picture);
     }
 
-    $file = $request->file('profile_picture');
-    $filename = time() . '.' . $file->getClientOriginalExtension();
-    $file->move(public_path('profile_pictures'), $filename);
+    // Store new picture in 'public/profile_pictures'
+    $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
-    $user->profile_picture = $filename;
+    // Save path to DB
+    $user->profile_picture = $path;
     $user->save();
+    
 
     return back()->with('success', 'Profile picture updated successfully!');
 }
+
 
 
 

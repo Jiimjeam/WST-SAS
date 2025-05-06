@@ -11,6 +11,8 @@ use App\Models\Medicine;
 use App\Models\FeatureSetting;
 use OwenIt\Auditing\Models\Audit;
 
+use App\Http\Controllers\GoogleCalendarController;
+
 class TenantAdminController extends Controller
 {
     public function loginPage()
@@ -69,5 +71,15 @@ class TenantAdminController extends Controller
         $tenant = tenant();
             return view('tenant.adminTenant.settings', compact('tenant'));
     } 
+
+
+    public function calendar()
+{
+    $calendarEvents = []; 
+
+    return view('adminPages.calendar', compact('calendarEvents'));
+}
+    
+
     
 }

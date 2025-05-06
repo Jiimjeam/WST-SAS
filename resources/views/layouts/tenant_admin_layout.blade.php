@@ -35,9 +35,10 @@
     }
 </style>
 
-
-
+@stack('styles')
 </head>
+
+
 <body class="bg-gray-100 font-sans" style="font-family: {{ auth()->user()->font_family ?? 'sans-serif' }} ">
 
   
@@ -51,21 +52,24 @@
 
   <div id="sidebarText" style="" class="px-6 py-6 text-center">
 
+
+
+  
     <!-- Profile Picture UI -->
     <form id="uploadForm" action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data" class="relative w-24 h-24 mx-auto">
-    @csrf
+        @csrf
 
-    <input type="file" id="profile_picture" name="profile_picture" accept="image/*"
-        class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
-        onchange="document.getElementById('uploadForm').submit();">
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*"
+            class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
+            onchange="document.getElementById('uploadForm').submit();">
 
-    <img src="{{ auth()->user()->profile_picture ? asset('profile_pictures/' . auth()->user()->profile_picture) : asset('img/arvin.jpg') }}"
-        alt="Logo">
+            <img src="" alt="Profile Picture">
 
-    @error('profile_picture')
-        <div class="text-red-500 text-sm mt-1 text-center">{{ $message }}</div>
-    @enderror
-</form>
+
+        @error('profile_picture')
+            <div class="text-red-500 text-sm mt-1 text-center">{{ $message }}</div>
+        @enderror
+    </form>
 
 
     <div class="text-2xl font-bold">
@@ -107,6 +111,11 @@
     <a href="{{ route('tenant.admin.settings') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
       <i class="fa-solid fa-gear"></i>
       Settings
+    </a>
+
+    <a href="{{ route('calendar.connect') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <i class="fa-solid fa-calendar-days"></i>
+        Calendar
     </a>
   </nav>
   
@@ -194,5 +203,6 @@
     });
 </script>
 @endif
+@stack('scripts')
 </body>
 </html>
