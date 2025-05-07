@@ -4,19 +4,12 @@
 @section('page-title', 'Support')
 
 @section('Admin_layout_content')
-<a href="javascript:void(0);" 
-   onclick="triggerUpdate()" 
-   class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
-    <i class="fa-solid fa-arrow-rotate-right"></i>
-    Update Application
-</a>
 
-
-<a href="javascript:void(0);" 
-   onclick="checkForUpdate()" 
-   class="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-600">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    Check for Updates
+<a href="javascript:void(0);"
+   onclick="checkForUpdate()"
+   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-blue-500 text-white hover:bg-blue-600 transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+    <i class="fa-solid fa-magnifying-glass text-white"></i>
+    <span class="font-medium">Check for Updates</span>
 </a>
 
 <script>

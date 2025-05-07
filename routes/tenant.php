@@ -72,8 +72,6 @@ Route::middleware([
 
 
 
-
-
     Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
     Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
     Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
