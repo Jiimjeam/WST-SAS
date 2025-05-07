@@ -89,11 +89,38 @@
     fetch("{{ route('app.check_update') }}")
         .then(response => response.json())
         .then(data => {
-            if (data.has_update) {
+            if (data.has_update && data.available_updates.length > 0) {
+                const options = data.available_updates.map(release => 
+                    `<option value="${release.version}">${release.version} - ${release.name}</option>`
+                ).join('');
+
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Update Available',
-                    text: `Version ${data.latest_version} is available. You are currently on version ${data.current_version}.`,
+                    title: 'Select version to update',
+                    html: `
+                        <p>You are currently on version <strong>${data.current_version}</strong>.</p>
+                        <select id="release-select" class="swal2-select" style="width:80%;">
+                            ${options}
+                        </select>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Update',
+                    preConfirm: () => {
+                        const selectedVersion = document.getElementById('release-select').value;
+                        if (!selectedVersion) {
+                            Swal.showValidationMessage('Please select a version');
+                        }
+                        return selectedVersion;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const selected = result.value;
+                        Swal.fire({
+                            icon: 'info',
+                            title: `Preparing update to ${selected}`,
+                            text: `You chose to update from ${data.current_version} to ${selected}.`,
+                        });
+                        // Here you can call your update API
+                    }
                 });
             } else {
                 Swal.fire({
