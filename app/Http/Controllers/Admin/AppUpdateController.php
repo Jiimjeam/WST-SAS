@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use ZipArchive;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use ZipArchive;
+
 
 class AppUpdateController extends Controller
 {
@@ -27,7 +29,6 @@ class AppUpdateController extends Controller
         ])->get("https://api.github.com/repos/Jiimjeam/WST-SAS/releases/tags/$version");
     
         if ($response->failed()) {
-            Log::error("GitHub API fetch failed for version $version");
             return response()->json(['error' => 'Failed to fetch release.'], 500);
         }
     
@@ -35,41 +36,70 @@ class AppUpdateController extends Controller
         $assets = $release['assets'] ?? [];
     
         if (empty($assets)) {
-            Log::warning("No assets found in GitHub release $version");
             return response()->json(['error' => 'No downloadable assets in this release.'], 404);
         }
     
+        // Download the update ZIP
         $downloadUrl = $assets[0]['browser_download_url'];
+        $zipDir = storage_path('app');
+        $zipFilePath = $zipDir . "/update-{$version}.zip";
     
-        
-        $tenantUpdatePath = storage_path("tenant2/app");
-        if (!File::exists($tenantUpdatePath)) {
-            File::makeDirectory($tenantUpdatePath, 0755, true);
+        // Ensure the directory exists
+        if (!File::exists($zipDir)) {
+            File::makeDirectory($zipDir, 0755, true);
         }
     
-        $zipFilePath = $tenantUpdatePath . "/update-{$version}.zip";
-    
-        // Download the file
         $download = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('GITHUB_TOKEN')
         ])->get($downloadUrl);
     
         if ($download->failed()) {
-            Log::error("Failed to download update file from $downloadUrl");
             return response()->json(['error' => 'Failed to download update file.'], 500);
         }
     
-        try {
-            file_put_contents($zipFilePath, $download->body());
-        } catch (\Exception $e) {
-            Log::error("Error writing ZIP file: " . $e->getMessage());
-            return response()->json(['error' => 'Failed to save the update file.'], 500);
-        }
+        file_put_contents($zipFilePath, $download->body());
     
-        return response()->json([
-            'message' => "Update $version downloaded successfully.",
-            'file' => basename($zipFilePath)
-        ]);
+        // === AUTO-APPLY UPDATE ===
+        try {
+            $extractPath = storage_path("app/update-temp-{$version}");
+    
+            // Ensure extract path exists
+            if (!File::exists($extractPath)) {
+                File::makeDirectory($extractPath, 0755, true);
+            }
+    
+            $zip = new ZipArchive;
+            if ($zip->open($zipFilePath) === TRUE) {
+                $zip->extractTo($extractPath);
+                $zip->close();
+            } else {
+                return response()->json(['error' => 'Failed to unzip the update file.'], 500);
+            }
+    
+            $basePath = base_path();
+            $files = File::allFiles($extractPath);
+    
+            foreach ($files as $file) {
+                $relativePath = str_replace($extractPath, '', $file->getPathname());
+                $targetPath = $basePath . $relativePath;
+    
+                $targetDir = dirname($targetPath);
+                if (!File::exists($targetDir)) {
+                    File::makeDirectory($targetDir, 0755, true);
+                }
+    
+                File::copy($file->getPathname(), $targetPath);
+            }
+    
+            // Clear Laravel caches
+            Artisan::call('config:clear');
+            Artisan::call('view:clear');
+    
+            return response()->json(['message' => "Update $version applied successfully."]);
+        } catch (\Exception $e) {
+            \Log::error('Update failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Update failed: ' . $e->getMessage()], 500);
+        }
     }
 
 

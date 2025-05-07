@@ -95,7 +95,7 @@
   <nav class="flex-1 px-4 py-6 space-y-4" id="sidebarText2" style="color: {{ auth()->user()->text_color ?? '#ffffff' }}">
     <a href="{{ route('tenant.admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
       <i class="fa-solid fa-gauge"></i>
-      Dashboard++
+      Dashboard
     </a>
 
     <a href="{{ route('tenants.admin.users') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
@@ -105,35 +105,35 @@
 
     @if (tenant()->plan === 'Premium')
         <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">
-        <i class="fa-solid fa-check-circle mr-2"></i> Feature Control++
+        <i class="fa-solid fa-check-circle mr-2"></i> Feature Control
         </a>
     @else
         <a href="javascript:void(0);" class="block px-4 py-2 rounded hover:bg-gray-400 cursor-not-allowed"
           onclick="showPremiumAlert()">
-          <i class="fa-solid fa-lock ml-1 "></i> Feature Control ++
+          <i class="fa-solid fa-lock ml-1 "></i> Feature Control
         </a>
     @endif
 
     <a href="{{ route('tenant.admin.settings') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
       <i class="fa-solid fa-gear"></i>
-      Settings++
+      Settings
     </a>
 
     <a href="{{ route('calendar.connect') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
         <i class="fa-solid fa-calendar-days"></i>
-        Calendar++
+        Calendar
     </a>
 
     <a href="{{ route('support') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
         <i class="fa-solid fa-headset"></i>
-        Support++
+        Support
     </a>
   </nav>
   
   <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
     @csrf
     <button style="background-color: {{ auth()->user()->Logoutbutton_color ?? '#059669' }}" type="button" class="w-full   py-2 px-4 rounded" id="logout-button">
-      <i class="fas fa-sign-out-alt me-1"></i> Logout++
+      <i class="fas fa-sign-out-alt me-1"></i> Logout
     </button>
   </form>
 </aside>
