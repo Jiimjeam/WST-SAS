@@ -62,28 +62,27 @@ Route::middleware([
         Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
         Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
-
         Route::get('/support', [SupportController::class, 'index'])->name('support');
 
-        Route::post('/admin/app/update', [App\Http\Controllers\Admin\AppUpdateController::class, 'update'])->name('app.update');
         Route::get('/check-update', [App\Http\Controllers\Admin\AppUpdateController::class, 'checkForUpdate'])->name('app.check_update');
-
+        Route::post('/admin/app/update', [App\Http\Controllers\Admin\AppUpdateController::class, 'performUpdate'])->name('app.perform_update');
 
 
     });
 
+
+
+
+
     Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
     Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
-    Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');
-        
+    Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
 
     // modify sidebar color
     Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
 
     // modify sidebar text color
     Route::post('/settings/sidebarText-color', [TenantSettingsController::class, 'updateSidebarTextColor'])->name('tenant.settings.sidebartext-color');
-
-    
 
     // logout button color ui 
     Route::post('/settings/button-color', [TenantSettingsController::class, 'updateSidebarButtonColor'])->name('tenant.settings.logoutbtn-color');
@@ -94,9 +93,7 @@ Route::middleware([
     //users custom font
     Route::post('/settings/update-font', [TenantSettingsController::class, 'updateFont'])->name('tenant.settings.updateFont');
 
-
     Route::post('/settings/sidebar/position', [TenantSettingsController::class, 'sidebarIs'])->name('tenant.settings.sidebarIs');
-
 
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
@@ -104,6 +101,7 @@ Route::middleware([
     //download generated pdf
     Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
     
+
 
 
     // User tenant
@@ -117,9 +115,6 @@ Route::middleware([
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
         Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
-
-        
-
 });        
 
 

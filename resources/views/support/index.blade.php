@@ -20,64 +20,8 @@
 </a>
 
 <script>
-    function triggerUpdate() {
-        Swal.fire({
-            title: 'Update App?',
-            text: 'This will download and apply the latest update.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, update',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            preConfirm: () => {
-                // Show loading spinner
-                Swal.fire({
-                    title: 'Updating...',
-                    text: 'Please wait while the update is being applied.',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
 
-                return fetch("{{ route('app.update') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    console.log(response); // Log the response for debugging
-                    if (!response.ok) throw new Error("Update failed.");
-                    return response.json();
-                })
-                .catch(error => {
-                    console.error('Error during update:', error); // Log any errors
-                    throw error;
-                });
-            }
-        }).then(result => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Updated!',
-                    text: 'The application has been updated successfully.',
-                });
-            }
-        }).catch(error => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Failed!',
-                text: error.message || 'An error occurred during update.',
-            });
-        });
-    }
-
-
-
-    function checkForUpdate() {
+function checkForUpdate() {
     Swal.fire({
         title: 'Checking for updates...',
         allowOutsideClick: false,
@@ -90,7 +34,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.has_update && data.available_updates.length > 0) {
-                const options = data.available_updates.map(release => 
+                const options = data.available_updates.map(release =>
                     `<option value="${release.version}">${release.version} - ${release.name}</option>`
                 ).join('');
 
@@ -114,12 +58,47 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const selected = result.value;
+
                         Swal.fire({
-                            icon: 'info',
-                            title: `Preparing update to ${selected}`,
-                            text: `You chose to update from ${data.current_version} to ${selected}.`,
+                            title: `Updating to ${selected}...`,
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
                         });
-                        // Here you can call your update API
+
+                        fetch("{{ route('app.perform_update') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({ version: selected })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.message) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Update Downloaded',
+                                    text: result.message
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: result.error || 'Something went wrong.'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Request Failed',
+                                text: 'Unable to complete the update request.'
+                            });
+                        });
                     }
                 });
             } else {
@@ -139,6 +118,7 @@
             });
         });
 }
+
 
 </script>
 

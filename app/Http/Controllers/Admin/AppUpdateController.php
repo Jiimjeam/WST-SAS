@@ -12,48 +12,64 @@ use Illuminate\Support\Facades\Http;
 
 class AppUpdateController extends Controller
 {
-    public function update(Request $request)
+    public function performUpdate(Request $request)
     {
-        // 1. Define download path
-        $updateUrl = 'https://github.com/Jiimjeam/WST-SAS/releases/download/v1.2.0-alpha/resources.zip';
-        $zipPath = storage_path('app/resources.zip');
-        $extractTo = base_path();
-
-        try {
-            Log::info("Attempting to download update from: $updateUrl");
-
-            $response = Http::withHeaders([
-                'User-Agent' => 'LaravelApp'
-            ])->get($updateUrl);
-
-            if (!$response->successful()) {
-                Log::error("Failed to download the update from URL: $updateUrl - Status: " . $response->status());
-                return response()->json(['success' => false, 'message' => 'Unable to download update.'], 500);
-            }
-
-            file_put_contents($zipPath, $response->body());
-            Log::info("Update file downloaded and saved to: $zipPath");
-
-            $zip = new ZipArchive;
-            if ($zip->open($zipPath) === TRUE) {
-                Log::info("Extracting files to: $extractTo");
-                $zip->extractTo($extractTo);
-                $zip->close();
-                Log::info("Files successfully extracted.");
-
-                File::delete($zipPath);
-                Log::info("Update zip file deleted after extraction.");
-            } else {
-                Log::error("Failed to unzip the update file.");
-                return response()->json(['success' => false, 'message' => 'Failed to unzip update.'], 500);
-            }
-
-            return response()->json(['success' => true, 'message' => 'Application updated.']);
-
-        } catch (\Exception $e) {
-            Log::error("Error during update: " . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred during the update.'], 500);
+        $version = $request->input('version');
+    
+        if (!$version) {
+            return response()->json(['error' => 'No version specified.'], 400);
         }
+    
+        // Fetch the release from GitHub
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('GITHUB_TOKEN'),
+            'Accept' => 'application/vnd.github.v3+json'
+        ])->get("https://api.github.com/repos/Jiimjeam/WST-SAS/releases/tags/$version");
+    
+        if ($response->failed()) {
+            Log::error("GitHub API fetch failed for version $version");
+            return response()->json(['error' => 'Failed to fetch release.'], 500);
+        }
+    
+        $release = $response->json();
+        $assets = $release['assets'] ?? [];
+    
+        if (empty($assets)) {
+            Log::warning("No assets found in GitHub release $version");
+            return response()->json(['error' => 'No downloadable assets in this release.'], 404);
+        }
+    
+        $downloadUrl = $assets[0]['browser_download_url'];
+    
+        
+        $tenantUpdatePath = storage_path("tenant2/app");
+        if (!File::exists($tenantUpdatePath)) {
+            File::makeDirectory($tenantUpdatePath, 0755, true);
+        }
+    
+        $zipFilePath = $tenantUpdatePath . "/update-{$version}.zip";
+    
+        // Download the file
+        $download = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('GITHUB_TOKEN')
+        ])->get($downloadUrl);
+    
+        if ($download->failed()) {
+            Log::error("Failed to download update file from $downloadUrl");
+            return response()->json(['error' => 'Failed to download update file.'], 500);
+        }
+    
+        try {
+            file_put_contents($zipFilePath, $download->body());
+        } catch (\Exception $e) {
+            Log::error("Error writing ZIP file: " . $e->getMessage());
+            return response()->json(['error' => 'Failed to save the update file.'], 500);
+        }
+    
+        return response()->json([
+            'message' => "Update $version downloaded successfully.",
+            'file' => basename($zipFilePath)
+        ]);
     }
 
 
