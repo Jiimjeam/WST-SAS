@@ -81,8 +81,6 @@ public function sidebarIs(Request $request)
 }
 
 
-
-
 public function ResetDefaultCustomUI(Request $request)
 {
     $user = auth()->user();
@@ -97,8 +95,6 @@ public function ResetDefaultCustomUI(Request $request)
 }
 
 
-
-
 public function uploadPicture(Request $request)
 {
     $request->validate([
@@ -106,25 +102,30 @@ public function uploadPicture(Request $request)
     ]);
 
     $user = Auth::user();
+    $tenantId = tenant()->id ?? 'default';
 
-    // Delete old picture if exists
-    if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
-        Storage::disk('public')->delete($user->profile_picture);
+    // Define path
+    $uploadPath = public_path("uploads/tenants/{$tenantId}");
+
+    if (!file_exists($uploadPath)) {
+        mkdir($uploadPath, 0755, true);
     }
 
-    // Store new picture in 'public/profile_pictures'
-    $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+    // Delete old image if exists
+    if ($user->profile_picture && file_exists(public_path($user->profile_picture))) {
+        unlink(public_path($user->profile_picture));
+    }
 
-    // Save path to DB
-    $user->profile_picture = $path;
+    $file = $request->file('profile_picture');
+    $filename = time() . '_' . $file->getClientOriginalName();
+    $file->move($uploadPath, $filename);
+
+    // Save relative path to DB
+    $user->profile_picture = "uploads/tenants/{$tenantId}/{$filename}";
     $user->save();
-    
 
-    return back()->with('success', 'Profile picture updated successfully!');
+    return back()->with('success', 'Profile picture updated!');
 }
-
-
-
 
 
 

@@ -9,7 +9,6 @@ use App\Http\Controllers\MedecineCRUDESController;
 use App\Models\Tenant;
 
 
-
 $tenant = Tenant::where('domain', request()->getHost())->first();
 
 if ($tenant && $tenant->statusAorD === 'disabled') {
@@ -20,7 +19,6 @@ if ($tenant && $tenant->statusAorD === 'disabled') {
     return; 
 }
 
-
 use App\Models\User;
 use App\Models\Medicine;
 use App\Models\FeatureSetting;
@@ -28,16 +26,14 @@ use App\Http\Controllers\TenantLoginAuthController;
 use App\Http\Controllers\Admin_Tenant_CRUDES_Controller;
 use OwenIt\Auditing\Models\Audit;
 use App\Http\Controllers\FeatureSettingController;
-
 use App\Http\Controllers\Tenant\TenantAdminController;
 use App\Http\Controllers\Tenant\TenantUserController;
-
 use App\Http\Controllers\Tenant\TransactionController;
 use App\Http\Controllers\Tenant\TenantSettingsController;
 use App\Http\Controllers\Tenant\TransactionCRUDES;
 
 use App\Http\Controllers\GoogleCalendarController;
-
+use App\Http\Controllers\SupportController;
 
 
 
@@ -62,26 +58,24 @@ Route::middleware([
         Route::delete('/admin/tenant/logs/clear', [TenantAdminController::class, 'LogsClear'])->name('tenant.admin.logs.clear');
         Route::get('/admin/tenant/users', [TenantAdminController::class, 'Users'])->name('tenants.admin.users');
         Route::get('/admin/tenant/settings', [TenantAdminController::class, 'Settings'])->name('tenant.admin.settings');
-
         Route::resource('/admin/tenant/addUser', Admin_Tenant_CRUDES_Controller::class);
-
         Route::get('/admin/tenant/features', [FeatureSettingController::class, 'index'])->name('tenant.admin.features');
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
-    });
-
+        Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
 
         Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
         Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
         Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');
 
+        Route::get('/support', [SupportController::class, 'index'])->name('support');
 
-    
+        Route::post('/admin/app/update', [App\Http\Controllers\Admin\AppUpdateController::class, 'update'])->name('app.update');
 
 
+    });
 
-        // profile picture change
-        Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
 
+        
 
     // modify sidebar color
     Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
@@ -104,8 +98,6 @@ Route::middleware([
     Route::post('/settings/sidebar/position', [TenantSettingsController::class, 'sidebarIs'])->name('tenant.settings.sidebarIs');
 
 
-
-
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
@@ -122,11 +114,8 @@ Route::middleware([
         Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
         Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
         Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
-
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
-        
         Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
-
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
 
 });        

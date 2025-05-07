@@ -38,6 +38,12 @@
         style="background-color: {{ auth()->user()->sidebar_color ?? '#047857' }}; color: {{ auth()->user()->text_color ?? '#ffffff' }}">
       <div  class="px-6 py-6 text-2xl font-bol text-center">
         {{ tenant()->name }}
+
+        <!-- @if (Auth::user()->profile_picture)
+            <img src="{{ asset(Auth::user()->profile_picture) }}" alt="Profile Picture" class="rounded-full w-20 h-20 object-cover mx-auto mt-4">
+        @else
+            <img src="{{ asset('default-profile.png') }}" alt="Default Profile Picture" class="rounded-full w-20 h-20 object-cover mx-auto mt-4">
+        @endif -->
         
         @if (Auth::check())
             <div class="text-base font-medium  mt-1">

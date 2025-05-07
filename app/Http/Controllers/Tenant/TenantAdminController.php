@@ -74,11 +74,11 @@ class TenantAdminController extends Controller
 
 
     public function calendar()
-{
-    $calendarEvents = []; 
+    {
+        return view('adminPages.calendar');
+    }
+    
 
-    return view('adminPages.calendar', compact('calendarEvents'));
-}
     
 
     

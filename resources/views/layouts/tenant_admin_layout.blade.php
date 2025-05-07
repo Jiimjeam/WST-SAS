@@ -55,15 +55,21 @@
 
 
   
-    <!-- Profile Picture UI -->
-    <form id="uploadForm" action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data" class="relative w-24 h-24 mx-auto">
-        @csrf
+   <!-- Profile Picture Upload -->
+<form id="uploadForm" action="{{ route('profile.uploadPicture') }}" method="POST" enctype="multipart/form-data" class="relative w-24 h-24 mx-auto">
+    @csrf
+    <input type="file" name="profile_picture" accept="image/*"
+        class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
+        onchange="document.getElementById('uploadForm').submit();">
 
-        <input type="file" id="profile_picture" name="profile_picture" accept="image/*"
-            class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
-            onchange="document.getElementById('uploadForm').submit();">
+    <img src="{{ asset(auth()->user()->profile_picture ?? 'default-profile.png') }}"
+         alt="Profile Picture"
+         class="rounded-full w-24 h-24 object-cover">
+</form>
 
-            <img src="" alt="Profile Picture">
+
+
+
 
 
         @error('profile_picture')
@@ -116,6 +122,11 @@
     <a href="{{ route('calendar.connect') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
         <i class="fa-solid fa-calendar-days"></i>
         Calendar
+    </a>
+
+    <a href="{{ route('support') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
+        <i class="fa-solid fa-headset"></i>
+        Support
     </a>
   </nav>
   
