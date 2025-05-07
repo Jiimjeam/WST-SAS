@@ -63,21 +63,18 @@ Route::middleware([
         Route::patch('/admin/tenant/features/{feature}/toggle', [FeatureSettingController::class, 'toggle'])->name('tenant.admin.feature.toggle');
         Route::post('/profile/upload-picture', [TenantSettingsController::class, 'uploadPicture'])->name('profile.uploadPicture');
 
-
-
-        
-        Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
-        Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
-        Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');
-
         Route::get('/support', [SupportController::class, 'index'])->name('support');
 
         Route::post('/admin/app/update', [App\Http\Controllers\Admin\AppUpdateController::class, 'update'])->name('app.update');
+        Route::get('/check-update', [App\Http\Controllers\Admin\AppUpdateController::class, 'checkForUpdate'])->name('app.check_update');
+
 
 
     });
 
-
+    Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
+    Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
+    Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');
         
 
     // modify sidebar color
@@ -120,6 +117,8 @@ Route::middleware([
         Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
         Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
         Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
+
+        
 
 });        
 

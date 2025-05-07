@@ -11,6 +11,14 @@
     Update Application
 </a>
 
+
+<a href="javascript:void(0);" 
+   onclick="checkForUpdate()" 
+   class="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-600">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    Check for Updates
+</a>
+
 <script>
     function triggerUpdate() {
         Swal.fire({
@@ -66,6 +74,45 @@
             });
         });
     }
+
+
+
+    function checkForUpdate() {
+    Swal.fire({
+        title: 'Checking for updates...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch("{{ route('app.check_update') }}")
+        .then(response => response.json())
+        .then(data => {
+            if (data.has_update) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Update Available',
+                    text: `Version ${data.latest_version} is available. You are currently on version ${data.current_version}.`,
+                });
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Up to Date',
+                    text: 'You are using the latest version.',
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: 'Could not check for updates.',
+            });
+        });
+}
+
 </script>
 
 @endsection
