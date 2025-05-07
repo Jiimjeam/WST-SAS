@@ -6,20 +6,21 @@
 @section('Admin_layout_content')
 <div class="card">
   <div class="card-body">
-    <div id="calendar" style="height: 600px;"></div> 
+    <div id="calendar" style="height: 800px;"></div> 
   </div>
 </div>
 @endsection
 
 @push('styles')
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
 @endpush
 
 @push('scripts')
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
