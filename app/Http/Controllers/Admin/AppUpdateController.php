@@ -104,33 +104,44 @@ class AppUpdateController extends Controller
 
 
 
-    public function checkForUpdate()
-{
-    $currentVersion = 'v1.1.0-alpha';
 
-    $response = Http::withHeaders([
-        'Authorization' => 'Bearer ' . env('GITHUB_TOKEN'),
-        'Accept' => 'application/vnd.github.v3+json'
-    ])->get('https://api.github.com/repos/Jiimjeam/WST-SAS/releases');
 
-    if ($response->failed()) {
-        return response()->json(['error' => 'Failed to fetch release info.'], 500);
+
+
+
+        public function checkForUpdate()
+    {
+        $versionFilePath = base_path('version.txt');
+
+        if (!file_exists($versionFilePath)) {
+            return response()->json(['error' => 'Version file not found.'], 500);
+        }
+
+        $currentVersion = trim(file_get_contents($versionFilePath));
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('GITHUB_TOKEN'),
+            'Accept' => 'application/vnd.github.v3+json'
+        ])->get('https://api.github.com/repos/Jiimjeam/WST-SAS/releases');
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Failed to fetch release info.'], 500);
+        }
+
+        $releases = collect($response->json())
+            ->filter(fn($release) => isset($release['tag_name']) && $release['tag_name'] !== $currentVersion)
+            ->map(fn($release) => [
+                'version' => $release['tag_name'],
+                'name' => $release['name'] ?? $release['tag_name'],
+                'published_at' => $release['published_at'],
+                'body' => $release['body'] ?? '',
+            ])
+            ->values();
+
+        return response()->json([
+            'current_version' => $currentVersion,
+            'available_updates' => $releases,
+            'has_update' => $releases->isNotEmpty(),
+        ]);
     }
-
-    $releases = collect($response->json())
-        ->filter(fn($release) => isset($release['tag_name']) && $release['tag_name'] !== $currentVersion)
-        ->map(fn($release) => [
-            'version' => $release['tag_name'],
-            'name' => $release['name'] ?? $release['tag_name'],
-            'published_at' => $release['published_at'],
-            'body' => $release['body'] ?? '',
-        ])
-        ->values();
-
-    return response()->json([
-        'current_version' => $currentVersion,
-        'available_updates' => $releases,
-        'has_update' => $releases->isNotEmpty(),
-    ]);
-}
 }
