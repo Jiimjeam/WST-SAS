@@ -14,7 +14,8 @@ class TenantUserController extends Controller
     public function UserDashboard()
     {
         $tenant = tenant();
-        return view('tenant.dashboard', compact('tenant'));
+        $medicinesCount = Medicine::count(); 
+        return view('tenant.dashboard', compact('tenant', 'medicinesCount'));
     } 
 
 

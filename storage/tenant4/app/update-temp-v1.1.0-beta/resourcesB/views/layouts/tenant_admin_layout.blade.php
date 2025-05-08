@@ -103,16 +103,7 @@
       Users
     </a>
 
-    @if (tenant()->plan === 'Premium')
-        <a href="{{ route('tenant.admin.features') }}" class="block px-4 py-2 rounded hover:bg-green-600">
-        <i class="fa-solid fa-check-circle mr-2"></i> Feature Control
-        </a>
-    @else
-        <a href="javascript:void(0);" class="block px-4 py-2 rounded hover:bg-gray-400 cursor-not-allowed"
-          onclick="showPremiumAlert()">
-          <i class="fa-solid fa-lock ml-1 "></i> Feature Control
-        </a>
-    @endif
+
 
     <a href="{{ route('tenant.admin.settings') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
       <i class="fa-solid fa-gear"></i>
