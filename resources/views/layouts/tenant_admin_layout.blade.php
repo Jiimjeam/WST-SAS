@@ -18,15 +18,47 @@
 
 
     <script>
-          function showPremiumAlert() {
-              Swal.fire({
-                  icon: 'info',
-                  title: 'Premium Feature',
-                  text: 'This feature is available for Premium users only.',
-                  confirmButtonColor: '#3085d6'
-              });
-          }
-      </script>
+    function showPremiumAlert() {
+        Swal.fire({
+            icon: 'info',
+            title: 'Premium Feature',
+            text: 'This feature is available for Premium users only.',
+            showCancelButton: true,
+            confirmButtonText: '👑 Upgrade to Premium',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#3085d6'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Send a request to notify admin in your central app
+                fetch("{{ route('tenant.notify_upgrade_request') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        message: "A tenant has requested to upgrade to Premium."
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Request Sent',
+                        text: 'Your upgrade request has been sent to the administrator.'
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Could not send the request. Please try again later.'
+                    });
+                });
+            }
+        });
+    }
+</script>
 
 <style>
     #uploadForm:hover img {

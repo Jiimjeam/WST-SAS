@@ -92,6 +92,7 @@
             <span class="nav-link-text ms-1">All Tenants</span>
           </a>
         </li>
+
         <li class="nav-item {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }}">
           <a class="nav-link {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }} " href="{{ route('admin.pendingTenants') }}"> 
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -112,8 +113,6 @@
             <span class="nav-link-text ms-1">Pending Tenants</span>
           </a>
         </li>
-        
-
 
 
 

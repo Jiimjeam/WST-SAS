@@ -35,6 +35,8 @@ use App\Http\Controllers\Tenant\TransactionCRUDES;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\SupportController;
 
+use App\Http\Controllers\WeatherController;
+
 
 
 Route::middleware([
@@ -67,14 +69,28 @@ Route::middleware([
         Route::get('/check-update', [App\Http\Controllers\Admin\AppUpdateController::class, 'checkForUpdate'])->name('app.check_update');
         Route::post('/admin/app/update', [App\Http\Controllers\Admin\AppUpdateController::class, 'performUpdate'])->name('app.perform_update');
 
+        Route::post('/notify-upgrade-request', [UpgradeRequestController::class, 'notifyAdmin'])->name('tenant.notify_upgrade_request');
+
+        Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
+        Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
+        Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
 
     });
 
+    // User tenant
+   Route::middleware(['auth'])->group(function () {
 
+    Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
+    Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
+    Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
+    Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
+    Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
+    Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
+    Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
+    Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
+});        
+    
 
-    Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
-    Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
-    Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
 
     // modify sidebar color
     Route::post('/settings/sidebar-color', [TenantSettingsController::class, 'updateSidebarColor'])->name('tenant.settings.sidebar-color');
@@ -98,23 +114,6 @@ Route::middleware([
 
     //download generated pdf
     Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
-    
-
-
-
-    // User tenant
-   Route::middleware(['auth'])->group(function () {
-
-        Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
-        Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
-        Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
-        Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
-        Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
-        Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
-        Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
-        Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
-});        
-
 
     Route::fallback(function () {
         return response('Tenant page not found.', 404);
