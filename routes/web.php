@@ -12,21 +12,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 
-Route::post('/receive-upgrade-request', function (Request $request) {
-    UpgradeNotification::create([
-        'tenant_name' => $request->input('tenant_name'),
-        'message' => $request->input('message')
-    ]);
+// Route::post('/receive-upgrade-request', function (Request $request) {
+//     UpgradeNotification::create([
+//         'tenant_name' => $request->input('tenant_name'),
+//         'message' => $request->input('message')
+//     ]);
 
-    return response()->json(['status' => 'success']);
-});
-
-
-
+//     return response()->json(['status' => 'success']);
+// });
 
 
 Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+
+
+
 
 Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');

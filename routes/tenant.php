@@ -47,35 +47,12 @@ Route::middleware([
 ])->group(function () {
 
 
-
-    Route::post('/notify-upgrade', function (Illuminate\Http\Request $request) {
-    $centralApiUrl = 'http://my-central-app:8000/admin/notifications'; // change to your real URL
-    $tenantName = config('app.name'); 
-    try {
-        Http::post($centralApiUrl, [
-            'tenant_name' => $tenantName,
-            'message' => $request->message
-        ]);
-
-        return response()->json(['status' => 'sent']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Could not send notification'], 500);
-    }
-})->name('tenant.notify_upgrade_request');
-
-
-
-
-
-
-
     Route::get('tenant/login', [TenantAdminController::class, 'loginPage'])->name('tenant.login');
     Route::post('tenant/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
     Route::post('tenant/logout', [TenantLoginAuthController::class, 'logout'])->name('tenant.logout');
 
     // Admin tenant
     Route::middleware(['auth', 'can:is-admin'])->group(function () {
-
         Route::get('/admin/tenant/dashboard', [TenantAdminController::class, 'TenanAdminDashbaord'])->name('tenant.admin.dashboard');
         Route::delete('/admin/tenant/logs/clear', [TenantAdminController::class, 'LogsClear'])->name('tenant.admin.logs.clear');
         Route::get('/admin/tenant/users', [TenantAdminController::class, 'Users'])->name('tenants.admin.users');
@@ -99,16 +76,14 @@ Route::middleware([
 
     // User tenant
    Route::middleware(['auth'])->group(function () {
-
-    Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
-    Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
-    Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
-    Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
-    Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
-    Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
-    Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
-    Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
-
+        Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
+        Route::get('/settings', [TenantUserController::class, 'UserSettings'])->name('tenant.settings');
+        Route::get('/', [TenantUserController::class, 'UserMedicine'])->name('tenants.tenants');
+        Route::get('/Transaction/form', [TenantUserController::class, 'transactionForm'])->name('tenant.transaction');
+        Route::get('/visit/logs', [TenantUserController::class, 'visitLogs'])->name('tenant.visit.logs');
+        Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
+        Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
+        Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
 });  
 
 

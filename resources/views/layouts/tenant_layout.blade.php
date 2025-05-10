@@ -96,10 +96,7 @@
         </svg>
         Visitation Logs
     </a>
-    <a href="{{ route('calendar.connect') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-green-600">
-        <i class="fa-solid fa-calendar-days"></i>
-        Calendar
-    </a>
+    
 </nav>
 
       <form action="{{ route('tenant.logout') }}"  method="POST" class="px-4 pb-6" id="logout-form">
