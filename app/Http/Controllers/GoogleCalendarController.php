@@ -35,6 +35,8 @@ class GoogleCalendarController extends Controller
         return redirect()->route('tenant.admin.calendar');
     }
 
+    
+
     public static function getCalendarEvents()
     {
         $client = new Google_Client();

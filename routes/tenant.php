@@ -34,7 +34,7 @@ use App\Http\Controllers\Tenant\TransactionCRUDES;
 
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\SupportController;
-
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\WeatherController;
 
 
@@ -47,11 +47,31 @@ Route::middleware([
 ])->group(function () {
 
 
+
+    Route::post('/notify-upgrade', function (Illuminate\Http\Request $request) {
+    $centralApiUrl = 'http://my-central-app:8000/admin/notifications'; // change to your real URL
+    $tenantName = config('app.name'); 
+    try {
+        Http::post($centralApiUrl, [
+            'tenant_name' => $tenantName,
+            'message' => $request->message
+        ]);
+
+        return response()->json(['status' => 'sent']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Could not send notification'], 500);
+    }
+})->name('tenant.notify_upgrade_request');
+
+
+
+
+
+
+
     Route::get('tenant/login', [TenantAdminController::class, 'loginPage'])->name('tenant.login');
     Route::post('tenant/login', [TenantLoginAuthController::class, 'login'])->name('tenant.login.submit');
     Route::post('tenant/logout', [TenantLoginAuthController::class, 'logout'])->name('tenant.logout');
-
-    
 
     // Admin tenant
     Route::middleware(['auth', 'can:is-admin'])->group(function () {
@@ -71,9 +91,9 @@ Route::middleware([
 
         Route::post('/notify-upgrade-request', [UpgradeRequestController::class, 'notifyAdmin'])->name('tenant.notify_upgrade_request');
 
-        Route::get('/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
+        Route::get('/admin/calendar/connect', [GoogleCalendarController::class, 'redirectToGoogle'])->name('calendar.connect');
         Route::get('/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback'])->name('google.callback');
-        Route::get('/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
+        Route::get('/admin/calendar', [TenantAdminController::class, 'calendar'])->name('tenant.admin.calendar');  
 
     });
 
@@ -88,7 +108,10 @@ Route::middleware([
     Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
     Route::resource('transactions', TransactionCRUDES::class)->names('tenant.transactions');
     Route::resource('/tenants/addMedicine', MedecineCRUDESController::class);
-});        
+
+});  
+
+
     
 
 

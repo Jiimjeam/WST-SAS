@@ -92,7 +92,6 @@
             <span class="nav-link-text ms-1">All Tenants</span>
           </a>
         </li>
-
         <li class="nav-item {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }}">
           <a class="nav-link {{ request()->routeIs('admin.pendingTenants') ? 'active' : '' }} " href="{{ route('admin.pendingTenants') }}"> 
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -113,6 +112,19 @@
             <span class="nav-link-text ms-1">Pending Tenants</span>
           </a>
         </li>
+        
+        <li class="nav-item {{ request()->routeIs('admin.notifications') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('admin.notifications') ? 'active' : '' }}" href="{{ route('admin.notifications') }}"> 
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <!-- Notification Bell Icon -->
+              <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 17H20L18.29 15.29C17.11 14.11 16.5 12.6 16.5 11V9C16.5 6.24 14.26 4 11.5 4C8.74 4 6.5 6.24 6.5 9V11C6.5 12.6 5.89 14.11 4.71 15.29L3 17H8M10 21C10 22.1 10.9 23 12 23C13.1 23 14 22.1 14 21H10Z" fill="#000000"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Notifications</span>
+          </a>
+        </li>
+
 
 
 

@@ -9,18 +9,29 @@ use App\Http\Controllers\Admin\AdminCRUDE;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+
+Route::post('/receive-upgrade-request', function (Request $request) {
+    UpgradeNotification::create([
+        'tenant_name' => $request->input('tenant_name'),
+        'message' => $request->input('message')
+    ]);
+
+    return response()->json(['status' => 'success']);
+});
+
+
 
 
 
 Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 
-
-
-
-
 Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
+Route::get('/admin/notifications', [AdminLoginController::class, 'notifications'])->name('admin.notifications');
+
 Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 Route::resource('/tenants', AdminCRUDE::class);

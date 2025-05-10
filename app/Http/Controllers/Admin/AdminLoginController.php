@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Tenant;
+use App\Models\UpgradeNotification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,12 @@ class AdminLoginController extends Controller
                     'tenantList' => $tenantList
                 ]
             );
+        }
+
+        public function notifications()
+        {
+            $notifications = UpgradeNotification::orderBy('created_at', 'desc')->get();
+            return view('adminPages.notifications', compact('notifications'));
         }
 
     public function PendingTenants()

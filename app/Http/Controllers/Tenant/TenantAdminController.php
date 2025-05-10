@@ -77,9 +77,4 @@ class TenantAdminController extends Controller
     {
         return view('adminPages.calendar');
     }
-    
-
-    
-
-    
 }
