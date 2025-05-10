@@ -28,7 +28,9 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
-
+        Gate::define('access-admin', function ($admin) {
+            return $admin->role === 'admin'; 
+        });
        
 
         Gate::define('check-tenant-statusAorD', function (?User $user = null) {

@@ -27,20 +27,19 @@ Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin
 
 
 
+    Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
+    Route::get('/admin/notifications', [AdminLoginController::class, 'notifications'])->name('admin.notifications');
 
-Route::get('/admin/dashboard', [AdminLoginController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/tenants', [AdminLoginController::class, 'AllTenants'])->name('admin.AllTenants');
-Route::get('/admin/notifications', [AdminLoginController::class, 'notifications'])->name('admin.notifications');
+    Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
+    Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-Route::get('/admin/pendingTenants', [AdminLoginController::class, 'PendingTenants'])->name('admin.pendingTenants');
-Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-Route::resource('/tenants', AdminCRUDE::class);
-Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
-Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
+    Route::resource('/tenants', AdminCRUDE::class);
+    Route::post('/tenants/{id}/approve', [TenantController::class, 'approveTenant'])->name('tenants.approve');
+    Route::post('/tenants/{id}/reject', [TenantController::class, 'rejectTenant'])->name('tenants.reject');
 
-Route::post('/tenants/{tenant}/disable', [TenantController::class, 'disable'])->name('tenants.disable');
-Route::post('/tenants/{tenant}/activate', [TenantController::class, 'activate'])->name('tenants.activate');
-
+    Route::post('/tenants/{tenant}/disable', [TenantController::class, 'disable'])->name('tenants.disable');
+    Route::post('/tenants/{tenant}/activate', [TenantController::class, 'activate'])->name('tenants.activate');
 
 
 
