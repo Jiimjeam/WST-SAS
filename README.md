@@ -1,3 +1,21 @@
+# add central app admin
+        use App\Models\Admin;
+        use Illuminate\Support\Facades\Hash;
+        You sent
+        Admin::create([
+            'email' => 'limj1674@gmail.com',
+            'password' => Hash::make('123123123')
+        ]);
+
+        
+# Don't push github secret!
+        git reset --soft HEAD~1
+        git restore --staged .env
+        git restore .env
+        git commit -m "Remove secret from commit"
+
+    
+
 # Clinic Storage – Multi-Tenant Storage System
 
         Description:
