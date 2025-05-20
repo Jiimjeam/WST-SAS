@@ -1,4 +1,4 @@
-# add central app admin
+# add central app admin using php artisan tinker
         use App\Models\Admin;
         use Illuminate\Support\Facades\Hash;
         You sent
