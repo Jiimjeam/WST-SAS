@@ -1,7 +1,11 @@
+#install Composer (composer i)
+#php artisan migrate:fresh
+#add admin through tinker. (note: paste the header imports first then the Admin::create syntax)
+
 # add central app admin using php artisan tinker
         use App\Models\Admin;
         use Illuminate\Support\Facades\Hash;
-        You sent
+        
         Admin::create([
             'email' => 'limj1674@gmail.com',
             'password' => Hash::make('123123123')
