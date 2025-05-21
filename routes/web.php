@@ -11,19 +11,14 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\TestController;
 
-// Route::post('/receive-upgrade-request', function (Request $request) {
-//     UpgradeNotification::create([
-//         'tenant_name' => $request->input('tenant_name'),
-//         'message' => $request->input('message')
-//     ]);
 
-//     return response()->json(['status' => 'success']);
-// });
 
 
 Route::post('/register-tenant', [TenantController::class, 'store'])->name('tenant.register');
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+Route::get('/test10', [TestController::class, 'index'])->name('index');
 
 
 

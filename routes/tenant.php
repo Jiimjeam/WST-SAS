@@ -74,6 +74,9 @@ Route::middleware([
 
     });
 
+    //download generated pdf
+    Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
+
     // User tenant
    Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [TenantUserController::class, 'UserDashboard'])->name('tenant.dashboard');
@@ -110,8 +113,7 @@ Route::middleware([
     // change pass for both tenant user and tenant admin
     Route::put('/settings/password', [TenantLoginAuthController::class, 'updatePassword'])->name('tenant.password.update');
 
-    //download generated pdf
-    Route::get('/transactions/pdf', [TransactionController::class, 'generatePDF'])->name('tenant.transaction.pdf');
+    
 
     Route::fallback(function () {
         return response('Tenant page not found.', 404);
